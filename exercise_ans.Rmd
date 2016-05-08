@@ -1,0 +1,55 @@
+---
+title: "exercise answer"
+author: "York Lin"
+date: "2016年5月8日"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##p42 example
+```{R, echo=TRUE}
+h = c(180,169,173)
+w = c(73,87,43)
+bmi = w / ((h/100)^2)
+names(bmi) = c("Brian", "Toby", "Sherry")
+bmi < 18.5 | bmi >= 24
+```
+
+##p53 example
+```{R}
+kevin = c(85,73)
+marry = c(72,64)
+jerry = c(59,66)
+mat = matrix(c(kevin, marry, jerry), nrow=3, byrow= TRUE)
+colnames(mat) = c('first', 'second')
+rownames(mat) = c('kevin', 'marry', 'jerry')
+
+final = mat %*% c(0.4,0.6)
+final
+```
+
+##p68 example
+```{R}
+tw2330 = read.csv("table.csv", header=TRUE)
+str(tw2330)
+max(tw2330$Close)
+min(tw2330$Close)
+summary(tw2330$Close)
+
+hist(tw2330$Close)
+boxplot(tw2330$Close)
+
+tw2330$Date = as.Date(tw2330$Date)
+plot(tw2330$Date, tw2330$Close)
+
+stock2 = tw2330[tw2330$Date >= '2015-01-01',]
+str(stock2)
+summary(stock2$Close)
+ordered_stock = stock2[order(stock2$Close),]
+ordered_stock[1,]
+ordered_stock[nrow(ordered_stock),]
+stock2[1,] - ordered_stock[1,]
+```
