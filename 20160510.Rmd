@@ -5,10 +5,6 @@ date: "2016年5月8日"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
 ##R intro
 Functional Programming
 ```{r, echo=TRUE}
@@ -145,7 +141,7 @@ height_vec < 175 & height_vec > 170
 ```
 
 
-#seq() & rep() & paste()
+##seq() & rep() & paste()
 ```{R, echo=TRUE}
 1:20
 seq(1,20)
@@ -166,7 +162,7 @@ paste(c("big","bang"),1:4)
 paste(c("big","bang"),1:4,,collapse = "+" )
 ```
 
-##MatriX
+##Matrix
 ```{R}
 matrix(1:9, byrow=TRUE, nrow=3)
 matrix(1:9, nrow=3)
