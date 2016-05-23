@@ -67,7 +67,7 @@ tapply(x2,t,mean)
 ```
 
 ##What’s the difference between machine learning, statistics, and data mining?
--http://www.r-bloggers.com/whats-the-difference-between-machine-learning-statistics-and-data-mining/
+- http://www.r-bloggers.com/whats-the-difference-between-machine-learning-statistics-and-data-mining/
 
 # Descriptive Statistics
 ##表格
@@ -76,22 +76,29 @@ tapply(x2,t,mean)
 load("Statistics/cdc.Rdata")
 str(cdc)
 names(cdc)
+
 #轉換資料類型
 cdc$exerany = factor(cdc$exerany)
 cdc$hlthplan = factor(cdc$hlthplan)
 cdc$smoke100 = factor(cdc$smoke100)
+
 #一維次數分配表
 table(cdc$exerany)
+
 #相對比例
 table(cdc$exerany) / length(cdc$exerany)
+
 #二維次數分配表
 table(cdc$gender,cdc$exerany)
+
 #連續型資料作表
 table(cdc$height)
 summary(cdc$height)
 cut(cdc$height,seq(45,95,by=5))
+
 #包含上界不包含下界
 table(cut(cdc$height,seq(45,95,by=5),right=T))
+
 #包含下界不包含上界
 table(cut(cdc$height,seq(45,95,by=5),right=F)) 
 table(cut(cdc$height,seq(45,95,by=5),right=F,labels=seq(1,length(seq(45,95,by=5))-1)))
@@ -110,6 +117,7 @@ barplot(table(cdc$smoke100),xlab='有無吸菸',ylab='人數',main='title',col='
 pie(table(cdc$smoke100))
 pie(table(cdc$genhlth))
 pie(table(cdc$genhlth),col = rainbow(5))
+
 #加上各分類比例
 pct = round(table(cdc$genhlth) / length(cdc$genhlth) *100,1)
 labels = paste(names(pct),pct,"%")
@@ -117,6 +125,7 @@ pie(pct, labels = labels)
 
 gender_smokers = table(cdc$gender,cdc$smoke100)
 mosaicplot(gender_smokers)
+
 #屬量資料: 直方圖、盒鬚圖、莖葉圖
 hist(cdc$age)
 
@@ -130,7 +139,6 @@ sample(cdc$age,100)
 stem(sample(cdc$age,100))
 ?stem
 stem(sample(cdc$age,100),scale=2)
-
 
 boxplot(cdc$weight)
 boxplot(cdc$weight, horizontal=TRUE)
@@ -201,11 +209,15 @@ sd(cdc$weight)
 ```
 
 ##package:ggplot2
-http://docs.ggplot2.org/current/
+documentation
+- http://docs.ggplot2.org/current/
+
+cheat sheet
+- https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf
 
 why ggplot2?
--fancy by default, good for demo and report 
--consistent across all kinds of plot in syntax and behavior
+- fancy by default, good for demo and report 
+- consistent across all kinds of plot in syntax and behavior
 - strong support community(the mostly download package on CRAN)
 ```{R}
 #basic syntax
@@ -238,10 +250,10 @@ ggplot(cdc,aes(x=height,fill=genhlth)) + geom_bar(position = 'identity', alpha=0
 
 ggplot(cdc,aes(x=height,fill=genhlth)) + geom_density(position = 'identity', alpha=0.4)
 
-ggsave(filename='yourname.png',plot = g)
+ggsave(filename='your_file_name.png',plot = g)
 ```
 
-#inference statistics
+#Inferential Statistics
 ##Probability
 ```{R}
 sample(1:10)
@@ -260,7 +272,6 @@ flipping_coin_three_times = flipping_coin(100) + flipping_coin(100) + flipping_c
 flipping_coin_three_times
 table(flipping_coin_three_times)
 barplot(table(flipping_coin_three_times))
-
 
 ```
 
