@@ -51,7 +51,7 @@ ordered_stock[nrow(ordered_stock),]
 ordered_stock[1,"Close"] - ordered_stock[nrow(ordered_stock),"Close"]
 
 ```
-#page80
+##page80
 ```{R}
 nine_nine = function(){
   mat = matrix(rep(1,9^2),nrow = 9)
@@ -71,7 +71,7 @@ nine_nine2 = function(){
 }
 ```
 
-#p84
+##p84
 ```{R}
 match_func = function(filename= "data/match.txt"){
   mat = matrix(-1, nrow=5, ncol = 5)
@@ -87,20 +87,13 @@ match_func = function(filename= "data/match.txt"){
 ```
 
 
-#p84-2
+##p84-2
 ```{R}
 match_func = function(filename){
   t = read.table(filename,sep = '|');
-  c = 0;
   mat = matrix(rep(-1,length(levels(t[,1]))^2), nrow = length(levels(t[,1])), dimnames = list(levels(t[,1]),levels(t[,2])));
-  for(i in seq(nrow(mat))){
-    for(j in seq(ncol(mat))){
-      if(i != j){
-        mat[i,j] = t[c+1,3];
-        #print(t[c,3]);
-        c = c + 1;
-      }
-    }
+  for(i in 1:nrow(t)){
+    mat[t[i,1], t[i,2]] = t[i,3];
   }
   mat
 }
