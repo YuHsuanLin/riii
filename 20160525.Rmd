@@ -1,0 +1,131 @@
+---
+title: "R_0525"
+author: "York Lin"
+date: "2016年5月23日"
+output: html_document
+---
+
+##Confidence Interval
+```{R}
+population = ames$Gr.Liv.Area
+mean(population)
+
+samp = sample(population, 50)
+sample_mean = mean(samp)
+
+sde = sd(samp)/sqrt(50)
+
+qnorm(0.5)
+
+lower = sample_mean + qnorm(0.025) * sde
+upper = sample_mean + qnorm(0.975) * sde
+
+#t distribution
+curve(dnorm(x), -5, 5, col="black")
+#curve(dt(x, df=10), -5, 5, col="green", add=T)
+curve(dt(x, df=2), -5, 5, col="red", add=T)
+```
+
+##Testing hypothesis
+```{R}
+pop_mean <- 300
+pop_sd <- 10
+coke = c(278,289,291,291,291,285,295,278,304,287,291,287,288,300,309,280,294,283,292,306)
+
+sde <- pop_sd / sqrt(length(coke))
+z   <- (mean(coke) - pop_mean) / sde
+z
+curve(dnorm(x), -3,3)
+p   <- (1 - pnorm(abs(z))) * 2
+p
+################
+p2 <- pnorm(z)
+p2
+#p2 < alpha / 2 = 0.025 => reject H0
+
+
+names(cdc)
+hist(cdc$height)
+boxplot(cdc$height)
+boxplot(cdc$height~ cdc$gender)
+
+pop_mean = mean(cdc$height)
+pop_sd = sd(cdc$height)
+
+set.seed(123)
+samp = sample(cdc[cdc$gender == 'm',]$height, 20)
+boxplot(samp)
+abline(h = pop_mean, col= "red")
+sde <- pop_sd / sqrt(length(samp))
+z   <- (mean(samp) - pop_mean) / sde
+
+# two sample means are equal
+p   <- (1 - pnorm(abs(z))) * 2
+
+# the mean height of the sample is taller than the mean height of the population
+p   <- 1- pnorm(z)
+
+z.test <- function(x, pop_mean, pop_sd, side="twoside"){
+  sde <- pop_sd / sqrt(length(x))
+  z   <- (mean(x) - pop_mean) / sde
+
+  switch(side, 
+         twoside={
+           p   <- (1 - pnorm(abs(z))) * 2
+         },
+         less={
+           p   <- pnorm(z)
+         },
+         greater={
+           p   <- 1- pnorm(z)
+         }
+  )
+  return(list(z = z , p = p))
+}
+
+help(package ="stats")
+
+#use asbio package
+install.packages('asbio')
+library(asbio)
+
+#testing
+one.sample.z(data = samp,null.mu = pop_mean,sigma = pop_sd,alternative = 'greater')
+
+#C.I
+ci.mu.z(data = samp,conf = 0.95,sigma = pop_sd,summarized = T,xbar = mean(samp),n = length(samp) )
+
+
+```
+
+
+##Covariance & Correlation
+```{R}
+x = c(160,170,180)
+y = c(64, 68, 72)
+
+cov_xy = sum((x - mean(x)) * (y - mean(y))) / 2
+cov(x,y)
+
+cor_xy = (sum((x - mean(x)) * (y - mean(y))) / 2) / (sd(x) * sd(y))  
+cor(x,y)
+
+plot(x,y)
+
+
+data(mtcars)
+mtcars
+
+cov(mtcars)
+cor(mtcars)
+cov(mtcars[1:3])
+
+
+gdp = read.csv("data/gdp.csv",header=TRUE)
+
+gdp = gdp[1:15,]
+gdp$GDP = as.numeric(sub(",", "", gdp$GDP))
+gdp$Export = as.numeric(sub(",", "", gdp$Export))
+cor(gdp$Export, gdp$GDP)
+```
+
