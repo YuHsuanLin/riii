@@ -203,20 +203,22 @@ ci.mu.z(data = samp,conf = 0.95,sigma = pop_sd,summarized = T,xbar = mean(samp),
 
 ```
 
-
 ##Covariance & Correlation
 ```{R}
 x = c(160,170,180)
 y = c(64, 68, 72)
 
 cov_xy = sum((x - mean(x)) * (y - mean(y))) / 2
+cov_xy
+
 cov(x,y)
 
-cor_xy = (sum((x - mean(x)) * (y - mean(y))) / 2) / (sd(x) * sd(y))  
+cor_xy = cov(x,y) / (sd(x) * sd(y))  
+cor_xy
+
 cor(x,y)
 
 plot(x,y)
-
 
 data(mtcars)
 mtcars
@@ -233,4 +235,120 @@ gdp$GDP = as.numeric(sub(",", "", gdp$GDP))
 gdp$Export = as.numeric(sub(",", "", gdp$Export))
 cor(gdp$Export, gdp$GDP)
 ```
+
+##Linear Regression
+hypothesis
+- 殘差為常態分佈
+- 殘差具有隨機性
+- 殘差具有變異數齊一性
+```{R}
+load("Statistics/mlb11.Rdata")
+correlation = cor(mlb11$runs, mlb11$at_bats)
+correlation
+
+plot(mlb11$at_bats, mlb11$runs)
+m1 = lm(runs ~ at_bats, data = mlb11)
+m1
+abline(m1,col='red')
+summary(m1)
+
+#殘差分析
+par(mfrow=c(2,2))
+plot(m1)
+#檢定殘差是否為常態分配
+#H0:殘差為常態分配
+durbinWatsonTest(m1)
+#檢定各殘差變異數是否相等
+#H0:各殘差變異數相等
+ncvTest(m1)
+
+data(iris)
+str(iris)
+plot(iris)
+fit = lm(Sepal.Length ~ .,data=iris)
+summary(fit)
+
+vif(fit)
+
+fit2 = lm(Sepal.Length ~ Sepal.Width + Petal.Length + Species,data=iris)
+summary(fit2)
+vif(fit2)
+
+fit3 = lm(Sepal.Length ~ Sepal.Width + Petal.Length,data=iris)
+summary(fit3)
+#檢查膨脹係數因子
+vif(fit3)
+
+plot(fit3)
+
+```
+##package dplyr
+- 類SQL語法,select,filter,arrange,mutate...
+- Chaining %>%, debug方便
+
+```{R}
+install.packages('dplyr')
+library(dplyr)
+data("Titanic")
+titanic = data.frame(Titanic)
+str(titanic)
+
+#原始R選取欄位方式
+titanic[,c("Sex","Age")]
+#dplyr選取資料
+select(titanic,Sex,Age)
+select(titanic,Sex:Survived)
+
+#原始R篩選欄位方式
+titanic[titanic$Sex=="Male" & titanic$Age=="Adult",]
+#dplyr篩選資料
+filter(titanic,Sex=="Male",Age=="Adult")
+filter(titanic,Sex=="Male" | Class=="Crew")
+filter(titanic,Sex=="Male" & Class=="Crew")
+#從某變數中抓出某特性的資料
+filter(titanic,Class %in% c('1st','Crew'))
+
+filter(select(titanic,Sex,Class,Age),Age=="Child")
+
+#Chaining
+1:10 %>%
+  sum() %>%
+  sqrt()
+
+titanic %>%
+  select(Sex,Class,Age) %>%
+  filter(Age == 'Child')
+
+#dplyr排序資料
+titanic %>%
+  select(Sex,Class,Freq,Age) %>%
+  filter(Age == 'Child') %>%
+  arrange(desc(Freq))
+
+#dplyr新增資料
+freqsum = titanic %>%
+  select(Freq) %>%
+  sum()
+
+titanic1 = titanic %>%
+  select(Sex,Age,Freq) %>%
+  mutate(portion=round(Freq/freqsum*100,2))
+
+#dplyr分組計算
+sexstat = titanic %>%
+  group_by(Sex) %>%
+  summarise(Sexsum = sum(Freq,na.rm=T))
+
+barplot(sexstat$Sexsum,names.arg = sexstat$Sex)
+
+titanic %>%
+  group_by(Class) %>%
+  summarise_each(funs(min(.,na.rm=T),max(.,na.rm=T)), matches("Freq"))
+
+```
+
+
+##Learning map
+- http://scikit-learn.org/stable/_static/ml_map.png
+
 
