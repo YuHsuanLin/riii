@@ -61,7 +61,7 @@ apply(m1,2,sum)
 
 x2 = c(80,70,59,88,72,57)
 t = c(1,1,2,1,1,2)
-tapply(x2,t,mean)
+  tapply(x2,t,mean)
 
 
 ```
@@ -234,6 +234,7 @@ g+geom_bar(fill='snow',color='black')
 g <- ggplot(cdc,aes(x=genhlth,fill=gender))
 g+geom_bar()
 
+
 g_bygrp <- ggplot(cdc,aes(x=exerany,fill=genhlth))
 g_bygrp + geom_bar()
 g_bygrp + geom_bar(position='stack')
@@ -246,7 +247,7 @@ ggplot(precounted,aes(x=genhlth,y=Freq))+ geom_bar(stat='identity')
 g <- ggplot(cdc,aes(x=genhlth,y=height))
 g + geom_boxplot()
 
-ggplot(cdc,aes(x=height,fill=genhlth)) + geom_bar(position = 'identity', alpha=0.4)
+ggplot(cdc,aes(x=height,fill=genhlth)) + geom_bar(position = 'identity', alpha=0.7)
 
 ggplot(cdc,aes(x=height,fill=genhlth)) + geom_density(position = 'identity', alpha=0.4)
 
@@ -262,11 +263,11 @@ sample(c(0,1), size= 10, replace = T)
 sample.int(20, 12) # 兩個參數都要放整數，此例為取1:20中的12個不重複樣本
 
 coins = c("heads", "tails")
-fair_coin = sample(coins, size = 100, replace = TRUE)
+fair_coin = sample(coins, size = 10000, replace = TRUE)
 table(fair_coin)
 
 #連續投擲硬幣3次
-flipping_coin = function(n){sample(0:1,n,rep=T)}
+flipping_coin = function(n){sample(0:1,size=n,rep=T)}
 flipping_coin(100)
 flipping_coin_three_times = flipping_coin(100) + flipping_coin(100) + flipping_coin(100)
 flipping_coin_three_times
@@ -281,7 +282,7 @@ barplot(table(flipping_coin_three_times))
 #進行n次二項實驗成功的次數(成功;失敗)
 
 #產生n個該機率分配的樣本點
-rbinom(n = 10,size= 10,prob= 0.5)
+rbinom(n = 5,size= 10,prob= 0.5)
 table(rbinom(n =10,size= 10,prob= 0.5))
 barplot(table(rbinom(n = 10,size= 10, prob= 0.5)))
 
@@ -314,6 +315,8 @@ barplot(table(rpois(n = 10,lambda = 3)))
 barplot(table(rpois(n = 1000,lambda = 3)))
 
 dpois(x=3,lambda = 3)
+
+ppois(q=2,lambda = 3)
 ppois(q=3,lambda = 3)
 qpois(p=0.5,lambda = 3)
 
@@ -323,109 +326,5 @@ rgeom(n=10,prob = 0.5)
 barplot(table(rgeom(n=10,prob = 0.5)))
 barplot(table(rgeom(n=1000,prob = 0.5)))
 barplot(table(rgeom(n=1000,prob = 0.2)))
-
-```
-
-##常見連續機率分配
-```{R}
-#uniform distribution
-runif(n = 10,min = 0,max = 1)
-hist(runif(1000,min = 0,max = 1))
-curve(dunif,0,1)
-
-#normal distribution(標準常態分佈=> mean=0 , sd=1)
-rnorm(1000,mean = 3,sd = 2)
-hist(rnorm(1000,mean = 3,sd = 2))
-
-par(mfrow=c(3,1))
-hist(rnorm(1000,mean = 0,sd = 1))
-hist(rnorm(1000,mean = 0,sd = 2))
-hist(rnorm(1000,mean = 0,sd = 3))
-
-hist(rnorm(1000,mean = 0,sd = 1))
-hist(rnorm(1000,mean = 3,sd = 1))
-hist(rnorm(1000,mean = 6,sd = 1))
-par(mfrow=c(1,1))
-curve(dnorm,-3,3)
-
-pnorm(1)
-
-
-curve(dnorm, -3,3)
-pnorm(1) - pnorm(-1)
-x = c(-1,seq(-1,1,0.1),1)
-y = c(0,dnorm(seq(-1,1,0.1)),0)
-polygon(x,y, col = "blue")
-
-pnorm(2) - pnorm(-2)
-pnorm(1.96) - pnorm(-1.96)
-
-curve(dnorm, -3,3)
-pnorm(1) - pnorm(-1)
-x = c(-1.96,seq(-1.96,1.96,0.1),1.96)
-y = c(0,dnorm(seq(-1.96,1.96,0.1)),0)
-polygon(x,y, col = "red")
-```
-
-##抽樣分配
-```{R}
-
-load('Statistics/ames.Rdata')
-area = ames$Gr.Liv.Area
-hist(area)
-qqnorm(area)
-qqline(area,col='red')
-shapiro.test(area) # 檢查是否符合常態分配，p值<0.05拒絕假設其為常態分配的虛無假設
-
-a = rnorm(1000)
-qqnorm(a)
-qqline(a,col='red')
-shapiro.test(a)
-b = rpois(1000, lambda = 3)
-hist(b)
-shapiro.test(b)
-
-sample_means10 = rep(NA, 5000)
-sample_means50 = rep(NA, 5000)
-sample_means100 = rep(NA, 5000)
-
-for (i in 1:5000){
-    samp = sample(area, 10)
-    sample_means10[i] = mean(samp)
-    samp = sample(area, 50)
-    sample_means50[i] = mean(samp)
-    samp = sample(area, 100)
-    sample_means100[i] = mean(samp)
-}
-
-par(mfrow = c(3, 1))
-xlimits = range(sample_means10)
-hist(sample_means10, breaks = 20, xlim = xlimits)
-hist(sample_means50, breaks = 20, xlim = xlimits)
-hist(sample_means100, breaks = 20, xlim = xlimits)
-
-pop_mean = mean(area)
-pop_mean
-
-# 各種機率分配的中央極限定裡
-CLT = function(x) {
-  op<-par(mfrow=c(2,2)) # 設為 2*2 的四格繪圖版
-  hist(x, nclass=50)     # 繪製 x 序列的直方圖 (histogram)。
-  m2 <- matrix(x, nrow=2 )  # 將 x 序列分為 2*k 兩個一組的矩陣 m2。
-  xbar2 <- apply(m2, 2, mean)   # 取每兩個一組的平均值 (x1+x2)/2 放入 xbar2 中。
-  hist(xbar2, nclass=50)     # 繪製 xbar2 序列的直方圖 (histogram)。
-  m10 <- matrix(x, nrow=10 )   # 將 x 序列分為 10*k 兩個一組的矩陣 m10。
-  xbar10 <- apply(m10, 2, mean) # 取每10個一組的平均值 (x1+..+x10)/10 放入 xbar10 中。
-  hist(xbar10, nclass=50)    # 繪製 xbar10 序列的直方圖 (histogram)。
-  m20 <- matrix(x, nrow=20 )   # 將 x 序列分為 25*k 兩個一組的矩陣 m25。
-  xbar20 <- apply(m20, 2, mean) # 取每20個一組的平均值 (x1+..+x20)/20 放入 xbar20 中。
-  hist(xbar20, nclass=50)    # 繪製 xbar20 序列的直方圖 (histogram)。
-}
-
-CLT(rbinom(100000, 20, 0.5)) # 用參數為 n=20, p=0.5 的二項分布驗證中央極限定理。
-CLT(runif(100000)) # 用參數為 a=0, b=1 的均等分布驗證中央極限定理。
-CLT(rpois(100000, 4)) # 用參數為 lambda=4 的布瓦松分布驗證中央極限定理。
-CLT(rgeom(100000, 0.5)) # 用參數為 p=0.5 的幾何分布驗證中央極限定理。
-CLT(rnorm(100000)) # 用參數為 mean=0, sd=1 的標準常態分布驗證中央極限定理。
 
 ```
