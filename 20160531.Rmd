@@ -1,0 +1,282 @@
+---
+title: "R_0531"
+author: "York Lin"
+date: "2016年5月28日"
+output: html_document
+---
+
+##Learning map
+- http://scikit-learn.org/stable/_static/ml_map.png
+
+#Classification
+
+##Decision Tree - using churn data in C50 package
+```{R}
+install.packages("C50")
+library(C50)
+
+data(churn)
+str(churnTrain)
+
+names(churnTrain) %in% c("state", "area_code", "account_length")
+! names(churnTrain) %in% c("state", "area_code", "account_length")
+#選擇建模變數
+variable.list = !names(churnTrain) %in% c('state','area_code','account_length')
+churnTrain=churnTrain[,variable.list]
+
+str(churnTrain)
+..
+set.seed(2)
+#把資料分成training data 和 testing data
+ind<-sample(1:2, nrow(churnTrain), replace=T, prob=c(0.7, 0.3))
+trainset=churnTrain[ind==1,]
+testset=churnTrain[ind==2,]
+
+
+table(sample(x = 1:2,size = 100, replace=T))
+table(sample(x = 1:2,size = 100, replace=T, prob=c(0.7,0.3)))
+
+a = c(1,2,3,4,5,6,7,8,9)
+ind = c(1,0,1,0,1,0,1,0,1)
+ind == 1
+a[ind == 1]
+a[ind == 0]
+
+```
+
+##rpart
+```{R}
+install.packages('rpart')
+library('rpart')
+#使用rpart(CART)建立決策樹模型
+
+churn.rp<-rpart(churn ~., data=trainset)
+churn.rp
+summary(churn.rp)
+
+con = rpart.control(cp=0.0001)
+?rpart.control
+churn.rp<-rpart(churn ~., data=trainset,control = con)
+
+#畫出決策樹
+plot(churn.rp, margin=0.1)
+plot(churn.rp, uniform=TRUE, branch=0.6, margin=0.1)
+?plot.rpart
+text(churn.rp, all=TRUE, use.n=TRUE)
+
+printcp(churn.rp)
+plotcp(churn.rp)
+```
+
+##Prune
+
+```{R}
+#找出minimum cross-validation errors
+min(churn.rp$cptable[,"xerror"])
+which.min(churn.rp$cptable[,"xerror"])
+churn.cp = churn.rp$cptable[which.min(churn.rp$cptable[,"xerror"]), "CP"]
+#將churn.cp設為臨界值來修剪樹
+prune.tree=prune(churn.rp, cp=churn.cp)
+
+plot(prune.tree, margin=0.1)
+text(prune.tree, all=TRUE, use.n=TRUE)
+
+predictions <-predict(churn.rp, testset, type="class")
+table(testset$churn, predictions)
+
+
+confusionMatrix(table(predictions, testset$churn))
+?confusionMatrix
+
+```
+
+##ctree
+```{R}
+#install.packages("party")
+library('party')
+ctree.model = ctree(churn ~ . , data = trainset)
+plot(ctree.model, margin=0.1)
+
+daycharge.model = ctree(churn ~ total_day_charge, data = trainset)
+plot(daycharge.model)
+
+ctree.predict = predict(ctree.model ,testset)
+table(ctree.predict, testset$churn)
+
+confusionMatrix(table(ctree.predict, testset$churn))
+```
+
+##C5.0
+```{R}
+c50.model = C5.0(churn ~., data=trainset)
+
+?C5.0Control
+
+c=C5.0Control(minCases = 20)
+c50.model = C5.0(churn ~., data=trainset,control = c)
+
+summary(c50.model)
+plot(c50.model)
+
+c50.predict = predict(c50.model,testset)
+table(c50.predict, testset$churn)
+
+confusionMatrix(table(c50.predict, testset$churn))
+```
+
+##support vector machine
+
+- https://c3h3notes.wordpress.com/2010/10/25/r%E4%B8%8A%E7%9A%84libsvm-package-e1071-%E5%8F%83%E6%95%B8%E7%AF%87/
+- https://www.zhihu.com/question/21883548
+
+```{R}
+install.packages('e1071')
+library('e1071')
+model  = svm(churn~., data = trainset, kernel="radial", cost=1, gamma = 1/ncol(trainset))
+
+summary(model)
+
+svm.pred = predict(model, testset[, !names(testset) %in% c("churn")])
+
+svm.table=table(svm.pred, testset$churn)
+svm.table
+
+confusionMatrix(svm.table)
+
+tuned = tune.svm(churn~., data = trainset, gamma = 10^(-6:-1), cost = 10^(1:2))
+
+summary(tuned)
+
+model.tuned = svm(churn~., data = trainset, gamma = tuned$best.parameters$gamma, cost = tuned$best.parameters$cost)
+
+summary(model.tuned)
+
+svm.tuned.pred = predict(model.tuned, testset[, !names(testset) %in% c("churn")])
+
+svm.tuned.table=table(svm.tuned.pred, testset$churn)
+svm.tuned.table
+
+confusionMatrix(svm.tuned.table)
+```
+
+##k-nearest neighbor classifer
+- https://www.youtube.com/watch?v=UqYde-LULfs
+
+```{R}
+install.packages("class")
+library(class)
+head(trainset)
+levels(trainset$international_plan) = list("0"="no", "1"="yes")
+levels(trainset$voice_mail_plan) = list("0"="no", "1"="yes")
+levels(testset$international_plan) = list("0"="no", "1"="yes")
+levels(testset$voice_mail_plan) = list("0"="no", "1"="yes")
+head(trainset)
+
+churn.knn  = knn(trainset[,! names(trainset) %in% c("churn")], testset[,! names(testset) %in% c("churn")], trainset$churn, k=3)
+
+summary(churn.knn)
+
+table(testset$churn, churn.knn)
+
+confusionMatrix(table(testset$churn, churn.knn))
+```
+
+##naive bayes
+example
+- https://www.youtube.com/watch?v=ZAfarappAO0
+```{R}
+
+library(e1071) 
+classifier=naiveBayes(trainset[, !names(trainset) %in% 
+c("churn")], trainset$churn)
+
+classifier
+
+bayes.table = table(predict(classifier, testset[,!names(testset) %in% c("churn")]), testset$churn)
+
+bayes.table
+
+confusionMatrix(bayes.table)
+```
+
+##Estimating model performance with k-fold cross-validation
+```{R}
+ind = cut(1:nrow(churnTrain), breaks=10, labels=F)
+ind
+
+accuracies = c()
+for (i in 1:10) {
+  fit = svm(churn ~., churnTrain[ind != i,])
+  predictions = predict(fit, churnTrain[ind == i, ! names(churnTrain) %in% c("churn")], type="class")
+  correct_count = sum(predictions == churnTrain[ind == i,c("churn")])
+  accuracies = append(correct_count / nrow(churnTrain[ind == i,]), accuracies)
+}
+accuracies
+mean(accuracies)
+
+
+```
+
+##caret cross-validation
+```{R}
+install.packages("caret")
+library(caret)
+control=trainControl(method="repeatedcv", number=10, repeats=3)
+model =train(churn~., data=trainset, method="rpart", preProcess="scale", trControl=control)
+model
+predictions = predict(model, testset[-17])
+
+table(predictions,testset$churn)
+```
+
+##find importance variable
+```{R}
+library('caret')
+importance = varImp(model, scale=FALSE)
+importance
+plot(importance)
+
+```
+
+```{R}
+install.packages("rminer")
+library(rminer)
+model=fit(churn~.,trainset,model="rpart")
+VariableImportance=Importance(model,trainset,method="sensv")
+
+L=list(runs=1,sen=t(VariableImportance$imp),sresponses=VariableImportance$sresponses)
+mgraph(L,graph="IMP",leg=names(trainset),col="gray",Grid=10)
+```
+
+##ROC
+```{R}
+predictions <-predict(churn.rp, testset)
+predictions
+
+xary = c()
+yary = c()
+for(i in seq(0,1,0.1)){
+  f <- as.factor(ifelse(predictions[,1] > i, 0, 1))
+  levels(f) = c("yes", "no")
+  tb <- table(f, testset$churn )
+  cm <- confusionMatrix(tb)
+  y = cm$byClass[1]
+  x = 1- cm$byClass[2]
+  xary = c(xary, x)
+  yary = c(yary, y)
+}
+```
+
+```{R}
+install.packages("ROCR")
+library(ROCR)
+predictions <-predict(churn.rp, testset, type="prob")
+head(predictions)
+pred.to.roc<-predictions[, 1]
+head(pred.to.roc)
+pred.rocr<-prediction(pred.to.roc, testset$churn)
+pred.rocr
+perf.rocr<-performance(pred.rocr, measure ="auc", x.measure="cutoff")
+perf.tpr.rocr<-performance(pred.rocr, "tpr","fpr")
+plot(perf.tpr.rocr,colorize=T,main=paste("AUC:",(perf.rocr@y.values)))
+```
