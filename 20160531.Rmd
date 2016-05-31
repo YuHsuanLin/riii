@@ -7,6 +7,8 @@ output: html_document
 
 ##Learning map
 - http://scikit-learn.org/stable/_static/ml_map.png
+- http://www.r-bloggers.com/whats-the-difference-between-machine-learning-statistics-and-data-mining/
+- http://mp.weixin.qq.com/s?__biz=MjM5ODczNTkwMA==&mid=2650107069&idx=1&sn=44a2eab6c4858c56af236749fdd1d784#rd
 
 #Classification
 
