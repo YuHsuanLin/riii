@@ -56,14 +56,15 @@ churn.rp<-rpart(churn ~., data=trainset)
 churn.rp
 summary(churn.rp)
 
-con = rpart.control(cp=0.0001)
+con = rpart.control(cp=0.01)
 ?rpart.control
 churn.rp<-rpart(churn ~., data=trainset,control = con)
 
 #畫出決策樹
 plot(churn.rp, margin=0.1)
-plot(churn.rp, uniform=TRUE, branch=0.6, margin=0.1)
+plot(churn.rp, uniform=TRUE,branch=0.6, margin=0.1)
 ?plot.rpart
+text(churn.rp)
 text(churn.rp, all=TRUE, use.n=TRUE)
 
 printcp(churn.rp)
@@ -94,7 +95,7 @@ confusionMatrix(table(predictions, testset$churn))
 
 ##ctree
 ```{R}
-#install.packages("party")
+install.packages("party")
 library('party')
 ctree.model = ctree(churn ~ . , data = trainset)
 plot(ctree.model, margin=0.1)
@@ -189,8 +190,7 @@ example
 ```{R}
 
 library(e1071) 
-classifier=naiveBayes(trainset[, !names(trainset) %in% 
-c("churn")], trainset$churn)
+classifier=naiveBayes(trainset[, !names(trainset) %in% c("churn")], trainset$churn)
 
 classifier
 
@@ -251,6 +251,8 @@ mgraph(L,graph="IMP",leg=names(trainset),col="gray",Grid=10)
 ```
 
 ##ROC
+- https://www.youtube.com/watch?v=OAl6eAyP-yo
+- http://www.navan.name/roc/
 ```{R}
 predictions <-predict(churn.rp, testset)
 predictions
