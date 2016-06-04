@@ -5,7 +5,62 @@ date: "2016年6月3日"
 output: html_document
 ---
 
+##ROC
+- https://www.youtube.com/watch?v=OAl6eAyP-yo
+- http://www.navan.name/roc/
 
+```{R}
+library(C50)
+data(churn)
+str(churnTrain)
+
+variable.list = !names(churnTrain) %in% c('state','area_code','account_length')
+churnTrain=churnTrain[,variable.list]
+
+ind<-sample(1:2, nrow(churnTrain), replace=T, prob=c(0.7, 0.3))
+trainset=churnTrain[ind==1,]
+testset=churnTrain[ind==2,]
+
+library('rpart')
+churn.rp<-rpart(churn ~., data=trainset)
+churn.rp
+summary(churn.rp)
+
+predictions <-predict(churn.rp, testset, type="class")
+table(testset$churn, predictions)
+confusionMatrix(table(predictions, testset$churn))
+
+
+predictions <-predict(churn.rp, testset)
+predictions
+
+xary = c()
+yary = c()
+for(i in seq(0,1,0.1)){
+  f <- as.factor(ifelse(predictions[,1] > i, 0, 1))
+  levels(f) = c("yes", "no")
+  tb <- table(f, testset$churn )
+  cm <- confusionMatrix(tb)
+  y = cm$byClass[1]
+  x = 1- cm$byClass[2]
+  xary = c(xary, x)
+  yary = c(yary, y)
+}
+
+
+install.packages("ROCR")
+library(ROCR)
+predictions <-predict(churn.rp, testset, type="prob")
+head(predictions)
+pred.to.roc<-predictions[, 1]
+head(pred.to.roc)
+pred.rocr<-prediction(pred.to.roc, testset$churn)
+pred.rocr
+perf.rocr<-performance(pred.rocr, measure ="auc", x.measure="cutoff")
+perf.tpr.rocr<-performance(pred.rocr, "tpr","fpr")
+plot(perf.tpr.rocr,colorize=T,main=paste("AUC:",(perf.rocr@y.values)))
+
+```
 
 ##距離計算
 ```{R}
