@@ -165,7 +165,6 @@ plot(iris, col=fit$cluster)
 plot(iris$Sepal.Length, iris$Petal.Width, col=fit$cluster)
 ```
 
-
 ##evaluate model
 ```{R}
 set.seed(22)
@@ -181,7 +180,7 @@ set.seed(22)
 WSS =sapply(nk, function(k){kmeans(customer, centers=k)$tot.withinss})
 
 WSS
-plot(nk, WSS, type="l", xlab="number of k", ylab="within sum of squares")
+plot(x=nk, y=WSS, type="l", xlab="number of k", ylab="within sum of squares")
 ```
 
 ```{R}
@@ -189,15 +188,14 @@ install.packages("fpc")
 library(fpc)
 #install.packages("robustbase", repos="http://R-Forge.R-project.org")
 nk=2:10
-SW =sapply(nk, function(k){cluster.stats(dist(customer), kmeans(customer, centers=k)$cluster)$avg.silwidth
-  })
+SW =sapply(nk, function(k){cluster.stats(dist(customer), kmeans(customer, centers=k)$cluster)$avg.silwidth})
 
 
 kmeans(customer, centers=2)
 ?cluster.stats
 cluster.stats(dist(customer), kmeans(customer, centers=2)$cluster)
 
-plot(nk, SW, type="l", xlab="number of clusers", ylab="average silhouette width")
+plot(x=nk, y=SW, type="l", xlab="number of clusers", ylab="average silhouette width")
 
 nk[which.max(SW)]
 ```
@@ -227,7 +225,6 @@ plot(q[1,],q[2,],xlab=rownames(q)[1],ylab=rownames(q)[2])
 set.seed(22)
 km = kmeans(customer, 4)
 km$withinss
-km$betweenss
 ```
 
 ##iris data
@@ -250,6 +247,7 @@ plot(data$Sepal.Length, data$Sepal.Width,col=class)
 ```
 
 ##density-based method-DBSCAN
+- http://123android.blogspot.tw/2012/01/28dec11-data-mining.html
 ```{R}
 install.packages("mlbench")
 # mlbench package provides many methods to generate simulated data with different shapes and sizes.
