@@ -1,0 +1,358 @@
+---
+title: "R_0525"
+author: "York Lin"
+date: "2016年5月23日"
+output: html_document
+---
+
+##常見連續機率分配
+```{R}
+#uniform distribution
+runif(n = 10,min = 0,max = 1)
+hist(runif(10000,min = 0,max = 1))
+curve(dunif(x,min=0,max=2),0,2)
+
+punif(q=0.5,min = 0,max = 1)
+qunif(p=0.3,min = 0,max = 1)
+
+#normal distribution(標準常態分佈=> mean=0 , sd=1)
+rnorm(1000,mean = 3,sd = 2)
+hist(rnorm(1000,mean = 3,sd = 2))
+
+par(mfrow=c(3,1))
+xlimits = range(-10,10)
+hist(rnorm(10000,mean = 0,sd = 1),xlim=xlimits)
+hist(rnorm(10000,mean = 0,sd = 2),xlim=xlimits)
+hist(rnorm(10000,mean = 0,sd = 3),xlim=xlimits)
+
+hist(rnorm(10000,mean = 0,sd = 1),xlim=xlimits)
+hist(rnorm(10000,mean = 3,sd = 1),xlim=xlimits)
+hist(rnorm(10000,mean = 6,sd = 1),xlim=xlimits)
+par(mfrow=c(1,1))
+curve(dnorm,-3,3)
+
+pnorm(1)
+
+curve(dnorm, -3,3)
+pnorm(2) - pnorm(-2)
+x = c(-1,seq(-1,1,0.1),1)
+y = c(0,dnorm(seq(-1,1,0.1)),0)
+polygon(x,y, col = "blue")
+
+pnorm(2) - pnorm(-2)
+pnorm(1.96) - pnorm(-1.96)
+
+curve(dnorm, -3,3)
+x = c(-1.96,seq(-1.96,1.96,0.1),1.96)
+y = c(0,dnorm(seq(-1.96,1.96,0.1)),0)
+polygon(x,y, col = "red")
+```
+
+##抽樣分配
+```{R}
+
+load('Statistics/ames.Rdata')
+area = ames$Gr.Liv.Area
+hist(area)
+qqnorm(area)
+qqline(area,col='red')
+shapiro.test(area) # 檢查是否符合常態分配，p值<0.05拒絕假設其為常態分配的虛無假設
+
+a = rnorm(1000)
+qqnorm(a)
+qqline(a,col='red')
+shapiro.test(a)
+b = rpois(1000, lambda = 3)
+hist(b)
+shapiro.test(b)
+
+sample_means10 = rep(NA, 5000)
+sample_means50 = rep(NA, 5000)
+sample_means100 = rep(NA, 5000)
+
+for (i in 1:5000){
+    samp = sample(area, 10)
+    sample_means10[i] = mean(samp)
+    samp = sample(area, 50)
+    sample_means50[i] = mean(samp)
+    samp = sample(area, 100)
+    sample_means100[i] = mean(samp)
+}
+
+par(mfrow = c(3, 1))
+xlimits = range(sample_means10)
+hist(sample_means10, breaks = 20, xlim = xlimits)
+hist(sample_means50, breaks = 20, xlim = xlimits)
+hist(sample_means100, breaks = 20, xlim = xlimits)
+
+pop_mean = mean(area)
+pop_mean
+
+# 各種機率分配的中央極限定裡
+CLT = function(x) {
+  op<-par(mfrow=c(2,2)) # 設為 2*2 的四格繪圖版
+  hist(x, nclass=50)     # 繪製 x 序列的直方圖 (histogram)。
+  m2 <- matrix(x, nrow=2 )  # 將 x 序列分為 2*k 兩個一組的矩陣 m2。
+  xbar2 <- apply(m2, 2, mean)   # 取每兩個一組的平均值 (x1+x2)/2 放入 xbar2 中。
+  hist(xbar2, nclass=50)     # 繪製 xbar2 序列的直方圖 (histogram)。
+  m10 <- matrix(x, nrow=10 )   # 將 x 序列分為 10*k 兩個一組的矩陣 m10。
+  xbar10 <- apply(m10, 2, mean) # 取每10個一組的平均值 (x1+..+x10)/10 放入 xbar10 中。
+  hist(xbar10, nclass=50)    # 繪製 xbar10 序列的直方圖 (histogram)。
+  m20 <- matrix(x, nrow=20 )   # 將 x 序列分為 25*k 兩個一組的矩陣 m25。
+  xbar20 <- apply(m20, 2, mean) # 取每20個一組的平均值 (x1+..+x20)/20 放入 xbar20 中。
+  hist(xbar20, nclass=50)    # 繪製 xbar20 序列的直方圖 (histogram)。
+}
+
+CLT(rbinom(n=100000, size = 20, prob = 0.5)) # 用參數為 n=20, p=0.5 的二項分布驗證中央極限定理。
+CLT(runif(n=100000,min = 0,max = 1)) # 用參數為 a=0, b=1 的均等分布驗證中央極限定理。
+CLT(rpois(n=100000, lambda = 4)) # 用參數為 lambda=4 的布瓦松分布驗證中央極限定理。
+CLT(rgeom(n=100000, prob = 0.5)) # 用參數為 p=0.5 的幾何分布驗證中央極限定理。
+CLT(rnorm(n=100000,mean = 0,sd = 1)) # 用參數為 mean=0, sd=1 的標準常態分布驗證中央極限定理。
+
+```
+
+##Confidence Interval
+```{R}
+population = ames$Gr.Liv.Area
+mean(population)
+
+samp = sample(population, 50)
+sample_mean = mean(samp)
+
+sde = sd(samp)/sqrt(50)
+
+qnorm(0.5)
+
+lower = sample_mean + qnorm(0.025) * sde
+upper = sample_mean + qnorm(0.975) * sde
+
+#t distribution
+curve(dnorm(x), -5, 5, col="black")
+#curve(dt(x, df=10), -5, 5, col="green", add=T)
+curve(dt(x, df=2), -5, 5, col="red", add=T)
+```
+
+##Testing hypothesis
+```{R}
+pop_mean <- 300
+pop_sd <- 10
+coke = c(278,289,291,291,291,285,295,278,304,287,291,287,288,300,309,280,294,283,292,306)
+
+sde <- pop_sd / sqrt(length(coke))
+z   <- (mean(coke) - pop_mean) / sde
+z
+curve(dnorm(x), -3,3)
+p   <- (1 - pnorm(abs(z))) * 2
+p
+################
+p2 <- pnorm(z)
+p2
+#p2 < alpha / 2 = 0.025 => reject H0
+
+
+names(cdc)
+hist(cdc$height)
+boxplot(cdc$height)
+boxplot(cdc$height~ cdc$gender)
+
+pop_mean = mean(cdc$height)
+pop_sd = sd(cdc$height)
+
+set.seed(123)
+samp1 = sample(cdc[cdc$gender == 'm',]$height, 20)
+boxplot(samp)
+abline(h = pop_mean, col= "red")
+sde <- pop_sd / sqrt(length(samp))
+z   <- (mean(samp) - pop_mean) / sde
+
+# two sample means are equal
+p   <- (1 - pnorm(abs(z))) * 2
+
+# the mean height of the sample is taller than the mean height of the population
+p   <- 1- pnorm(z)
+
+z.test <- function(x, pop_mean, pop_sd, side="twoside"){
+  sde <- pop_sd / sqrt(length(x))
+  z   <- (mean(x) - pop_mean) / sde
+
+  switch(side, 
+         twoside={
+           p   <- (1 - pnorm(abs(z))) * 2
+         },
+         less={
+           p   <- pnorm(z)
+         },
+         greater={
+           p   <- 1- pnorm(z)
+         }
+  )
+  return(list(z = z , p = p))
+}
+
+help(package ="stats")
+
+#use asbio package
+install.packages('asbio')
+library(asbio)
+
+#testing
+one.sample.z(data = samp,null.mu = pop_mean,sigma = pop_sd,alternative = 'greater')
+
+#C.I
+ci.mu.z(data = samp,conf = 0.95,sigma = pop_sd,summarized = T,xbar = mean(samp),n = length(samp) )
+
+
+```
+
+##Covariance & Correlation
+```{R}
+x = c(160,170,180)
+y = c(64, 68, 72)
+
+cov_xy = sum((x - mean(x)) * (y - mean(y))) / 2
+cov_xy
+
+cov(x,y)
+
+cor_xy = cov(x,y) / (sd(x) * sd(y))  
+cor_xy
+
+cor(x,y)
+
+plot(x,y)
+
+data(mtcars)
+mtcars
+
+cov(mtcars)
+cor(mtcars)
+cov(mtcars[1:3])
+
+
+gdp = read.csv("data/gdp.csv",header=TRUE)
+
+gdp = gdp[1:15,]
+gdp$GDP = as.numeric(sub(",", "", gdp$GDP))
+gdp$Export = as.numeric(sub(",", "", gdp$Export))
+cor(gdp$Export, gdp$GDP)
+```
+
+##Linear Regression
+hypothesis
+- 變數之間是線性關係
+- 殘差為常態分佈
+- 殘差具有隨機性
+- 殘差具有變異數齊一性
+```{R}
+load("Statistics/mlb11.Rdata")
+correlation = cor(mlb11$runs, mlb11$at_bats)
+correlation
+
+plot(mlb11$at_bats, mlb11$runs)
+m1 = lm(runs ~ at_bats, data = mlb11)
+m1
+abline(m1,col='red')
+summary(m1)
+
+#殘差分析
+par(mfrow=c(2,2))
+plot(m1)
+#檢定殘差是否為常態分配
+#H0:殘差為常態分配
+library(car)
+durbinWatsonTest(m1)
+#檢定各殘差變異數是否相等
+#H0:各殘差變異數相等
+ncvTest(m1)
+
+data(iris)
+str(iris)
+plot(iris)
+fit = lm(Sepal.Length ~ .,data=iris)
+summary(fit)
+
+cor(iris[1:4])
+vif(fit)
+
+fit2 = lm(Sepal.Length ~ Sepal.Width + Petal.Length + Species,data=iris)
+summary(fit2)
+vif(fit2)
+
+fit3 = lm(Sepal.Length ~ Sepal.Width + Petal.Length,data=iris)
+summary(fit3)
+#檢查膨脹係數因子
+vif(fit3)
+
+plot(fit3)
+
+```
+##package dplyr
+- 類SQL語法,select,filter,arrange,mutate...
+- Chaining %>%, debug方便
+
+```{R}
+install.packages('dplyr')
+library(dplyr)
+data("Titanic")
+titanic = data.frame(Titanic)
+str(titanic)
+
+#原始R選取欄位方式
+titanic[,c("Sex","Age")]
+#dplyr選取資料
+select(titanic,Sex,Age)
+select(titanic,Sex:Survived)
+
+#原始R篩選欄位方式
+titanic[titanic$Sex=="Male" & titanic$Age=="Adult",]
+#dplyr篩選資料
+filter(titanic,Sex=="Male",Age=="Adult")
+filter(titanic,Sex=="Male" | Class=="Crew")
+filter(titanic,Sex=="Male" & Class=="Crew")
+#從某變數中抓出某特性的資料
+filter(titanic,Class %in% c('1st','Crew'))
+
+filter(select(titanic,Sex,Class,Age),Age=="Child")
+
+#Chaining
+1:10 %>%
+  sum() %>%
+  sqrt()
+
+titanic %>%
+  select(Sex,Class,Age) %>%
+  filter(Age == 'Child')
+
+#dplyr排序資料
+titanic %>%
+  select(Sex,Class,Freq,Age) %>%
+  filter(Age == 'Child') %>%
+  arrange(desc(Freq))
+
+#dplyr新增資料
+freqsum = titanic %>%
+  select(Freq) %>%
+  sum()
+
+titanic1 = titanic %>%
+  select(Sex,Age,Freq) %>%
+  mutate(portion=round(Freq/freqsum*100,2))
+
+#dplyr分組計算
+sexstat = titanic %>%
+  group_by(Sex) %>%
+  summarise(Sexsum = sum(Freq,na.rm=T))
+
+barplot(sexstat$Sexsum,names.arg = sexstat$Sex)
+
+titanic %>%
+  group_by(Class) %>%
+  summarise_each(funs(min(.,na.rm=T),max(.,na.rm=T)), matches("Freq"))
+
+```
+
+
+##Learning map
+- http://scikit-learn.org/stable/_static/ml_map.png
+
+

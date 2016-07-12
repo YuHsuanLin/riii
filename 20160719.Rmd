@@ -1,0 +1,330 @@
+---
+title: "R_0524"
+author: "York Lin"
+date: "2016年5月23日"
+output: html_document
+---
+
+```{R}
+x =c(65,75)
+x
+x[1]
+x+10
+x+c(5,10)
+
+y =c(84,76)
+c(x,y)
+
+mat = matrix(c(x,y),nrow = 2,byrow = T,dimnames = list(c('Kevin','Toby'),c('First','Second')))
+mat
+mat[1,1]
+mat[1,]
+mat[,1]
+
+mat2 = rbind(mat,c(78,63))
+rownames(mat2)[nrow(mat2)] = 'Sam'
+mat2
+mat2[1:2,]
+
+rowSums(mat2)
+
+m1=matrix(1:4,byrow = T,nrow = 2)
+m2=matrix(5:8,byrow = T,nrow = 2)
+m1+m2
+m1*m2
+m1%*%m2
+
+a = c('sunny', 'sunny', 'rainy')
+f_a = factor(a)
+f_a
+f_a = factor(a,order=T,levels = c('rainy','sunny'))
+f_a
+
+
+df = data.frame(a=c(1,2,3), b= c(2,3,4),c = c('a','b','c'))
+str(df)
+df[1,]
+df[,1]
+
+employee = list(age=30, grade="B")
+employee
+employee$age
+
+
+x=list(c(1,2,3,4),c(5,6,7,8))
+lapply(x,sum)
+sapply(x,sum)
+
+m1
+apply(m1,1,sum)
+apply(m1,2,sum)
+
+x2 = c(80,70,59,88,72,57)
+t = c(1,1,2,1,1,2)
+  tapply(x2,t,mean)
+
+
+```
+
+##What’s the difference between machine learning, statistics, and data mining?
+- http://www.r-bloggers.com/whats-the-difference-between-machine-learning-statistics-and-data-mining/
+
+# Descriptive Statistics
+##表格
+```{R}
+#import data
+load("Statistics/cdc.Rdata")
+str(cdc)
+names(cdc)
+
+#轉換資料類型
+cdc$exerany = factor(cdc$exerany)
+cdc$hlthplan = factor(cdc$hlthplan)
+cdc$smoke100 = factor(cdc$smoke100)
+
+#一維次數分配表
+table(cdc$exerany)
+
+#相對比例
+table(cdc$exerany) / length(cdc$exerany)
+
+#二維次數分配表
+table(cdc$gender,cdc$exerany)
+
+#連續型資料作表
+table(cdc$height)
+summary(cdc$height)
+cut(cdc$height,seq(45,95,by=5))
+
+#包含上界不包含下界
+table(cut(cdc$height,seq(45,95,by=5),right=T))
+
+#包含下界不包含上界
+table(cut(cdc$height,seq(45,95,by=5),right=F)) 
+table(cut(cdc$height,seq(45,95,by=5),right=F,labels=seq(1,length(seq(45,95,by=5))-1)))
+cdc$h_group = cut(cdc$height,seq(45,95,by=5),right=F)
+str(cdc)
+
+```
+
+##統計圖
+```{R}
+#屬值資料: 長條圖、圓餅圖
+barplot(table(cdc$smoke100))
+?barplot
+barplot(table(cdc$smoke100),xlab='有無吸菸',ylab='人數',main='title',col='blue')
+
+pie(table(cdc$smoke100))
+pie(table(cdc$genhlth))
+pie(table(cdc$genhlth),col = rainbow(5))
+
+#加上各分類比例
+pct = round(table(cdc$genhlth) / length(cdc$genhlth) *100,1)
+labels = paste(names(pct),pct,"%")
+pie(pct, labels = labels)
+
+gender_smokers = table(cdc$gender,cdc$smoke100)
+mosaicplot(gender_smokers)
+
+#屬量資料: 直方圖、盒鬚圖、莖葉圖
+hist(cdc$age)
+
+par(mfrow=c(3,1))
+hist(cdc$height)
+hist(cdc$height,breaks = 30)
+hist(cdc$height,breaks = 50)
+
+stem(cdc$age)
+sample(cdc$age,100)
+stem(sample(cdc$age,100))
+?stem
+stem(sample(cdc$age,100),scale=2)
+
+boxplot(cdc$weight)
+boxplot(cdc$weight, horizontal=TRUE)
+par(mfrow=c(1,1))
+boxplot(cdc$weight ~ cdc$gender)
+boxplot(cdc$height ~ cdc$gender)
+
+bmi = (cdc$weight/cdc$height^2) * 703
+boxplot(bmi ~ cdc$genhlth)
+
+#觀察兩組資料間關係:點散布圖
+plot(cdc$weight, cdc$height)
+plot(cdc$weight, cdc$wtdesire)
+
+```
+
+##統計量
+```{R}
+#集中量數:mean median mode
+
+a = c(100,120,130,110,100,90,80,90,100,110)
+sum(a) / 10
+mean(a)
+
+#有極端值
+b = c(a, 10000)
+mean(b)
+
+a 
+sort(a)
+median(a)
+
+sort(b)
+median(b)
+
+table(c(1,4,4,3))
+which.max(table(c(1,4,4,3)))
+names(which.max(table(c(1,4,4,3))))
+
+mean(cdc$weight)
+median(cdc$weight)
+names(which.max(table(cdc$h_group)))
+
+#離差量數:range IQR variance stardard deviation
+
+a = c(173,162,150,160,155,168,171,185,175,178,182)
+sort(a)
+range(a)
+
+quantile(a,0.5)
+quantile(a,0.25)
+quantile(a,0.75)
+quantile(a,0.75) - quantile(a,0.25)
+IQR(a)
+fivenum(a)
+
+boxplot(a,horizontal = T)
+
+b = c(a,226)
+range(b)
+IQR(b)
+boxplot(b,horizontal = T)
+
+
+var(cdc$weight)
+sqrt(var(cdc$weight))
+sd(cdc$weight)
+```
+
+##package:ggplot2
+documentation
+- http://docs.ggplot2.org/current/
+
+cheat sheet
+- https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf
+
+why ggplot2?
+- fancy by default, good for demo and report 
+- consistent across all kinds of plot in syntax and behavior
+- strong support community(the mostly download package on CRAN)
+```{R}
+#basic syntax
+#ggplot(data,aes(x,y,group,...))+geom_object(...)
+g <- ggplot(cdc,aes(x=height,y=weight))
+g+geom_point(aes(col=exerany))
+
+g <- ggplot(cdc,aes(x=genhlth))
+g+geom_bar()
+g+geom_bar() + ylab('Count') + ggtitle('cdc')
+#fill => 填滿顏色; color => 邊線顏色
+g+geom_bar(fill='snow',color='black')
+
+g <- ggplot(cdc,aes(x=genhlth,fill=gender))
+g+geom_bar()
+
+
+g_bygrp <- ggplot(cdc,aes(x=exerany,fill=genhlth))
+g_bygrp + geom_bar()
+g_bygrp + geom_bar(position='stack')
+g_bygrp + geom_bar(position='dodge')
+
+precounted = as.data.frame(table(cdc$genhlth,dnn = c('genhlth')))
+precounted
+ggplot(precounted,aes(x=genhlth,y=Freq))+ geom_bar(stat='identity')
+
+g <- ggplot(cdc,aes(x=genhlth,y=height))
+g + geom_boxplot()
+
+ggplot(cdc,aes(x=height,fill=genhlth)) + geom_bar(position = 'identity', alpha=0.7)
+
+ggplot(cdc,aes(x=height,fill=genhlth)) + geom_density(position = 'identity', alpha=0.4)
+
+ggsave(filename='your_file_name.png',plot = g)
+```
+
+#Inferential Statistics
+##Probability
+```{R}
+sample(1:10)
+sample(1:10, size = 5)
+sample(c(0,1), size= 10, replace = T)
+sample.int(20, 12) # 兩個參數都要放整數，此例為取1:20中的12個不重複樣本
+
+coins = c("heads", "tails")
+fair_coin = sample(coins, size = 10000, replace = TRUE)
+table(fair_coin)
+
+#連續投擲硬幣3次
+flipping_coin = function(n){sample(0:1,size=n,rep=T)}
+flipping_coin(100)
+flipping_coin_three_times = flipping_coin(100) + flipping_coin(100) + flipping_coin(100)
+flipping_coin_three_times
+table(flipping_coin_three_times)
+barplot(table(flipping_coin_three_times))
+
+```
+
+##常見間斷機率分配
+```{R}
+#binomial distribution (size=1 => bernoulli distribution) 
+#進行n次二項實驗成功的次數(成功;失敗)
+
+#產生n個該機率分配的樣本點
+rbinom(n = 5,size= 10,prob= 0.5)
+table(rbinom(n =10,size= 10,prob= 0.5))
+barplot(table(rbinom(n = 10,size= 10, prob= 0.5)))
+
+barplot(table(rbinom(100, 3, 0.5))) #連續投3次硬幣例子
+
+barplot(table(rbinom(100, 1, 0.5)))
+#機率分配的高度(間斷分配 =>　該事件發生機率；連續分配 => y軸高度，無特別意義)
+dbinom(x = 0,size = 3, prob= 0.5)
+dbinom(x = 1,size = 3, prob= 0.5)
+dbinom(x = 2,size = 3, prob= 0.5)
+dbinom(x = 3,size = 3, prob= 0.5)
+
+#累積機率
+pbinom(q = 0,size = 3,prob = 0.5)
+pbinom(q = 1,size = 3,prob = 0.5)
+pbinom(q = 2,size = 3,prob = 0.5)
+pbinom(q = 3,size = 3,prob = 0.5)
+
+#pbinom的反函數
+qbinom(p = 0,size = 3,prob = 0.5)
+qbinom(p = 0.125,size = 3,prob = 0.5)
+qbinom(p = 0.5,size = 3,prob = 0.5)
+qbinom(p = 0.875,size = 3,prob = 0.5)
+qbinom(p = 1,size = 3,prob = 0.5)
+
+#poisson distribution
+#一段時間內某事件發生的次數
+rpois(n = 10,lambda = 3)
+barplot(table(rpois(n = 10,lambda = 3)))
+barplot(table(rpois(n = 1000,lambda = 3)))
+
+dpois(x=3,lambda = 3)
+
+ppois(q=2,lambda = 3)
+ppois(q=3,lambda = 3)
+qpois(p=0.5,lambda = 3)
+
+#geometric distribution
+#進行某一實驗直到第一次成功所需失敗的次數
+rgeom(n=10,prob = 0.5)
+barplot(table(rgeom(n=10,prob = 0.5)))
+barplot(table(rgeom(n=1000,prob = 0.5)))
+barplot(table(rgeom(n=1000,prob = 0.2)))
+
+```
