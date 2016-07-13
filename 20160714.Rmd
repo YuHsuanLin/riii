@@ -1,9 +1,21 @@
 ---
-title: "R_0510"
+title: "R_0711"
 author: "York Lin"
-date: "2016年5月8日"
+date: "2016年7月11日"
 output: html_document
 ---
+what is R?
+- https://zh.wikipedia.org/wiki/R%E8%AF%AD%E8%A8%80
+
+R vs Python?
+- https://www.datacamp.com/community/tutorials/r-or-python-for-data-analysis
+
+most popular programming language for analytics
+- http://www.kdnuggets.com/2015/05/poll-r-rapidminer-python-big-data-spark.html
+- http://www.kdnuggets.com/polls/2015/r-vs-python.html
+
+Kaggle
+- https://www.kaggle.com/
 
 ##R intro
 Functional Programming
@@ -13,7 +25,6 @@ sum(x)
 mean(x)
 var(x)
 sqrt(var(x))
-sd(x)
 ```
 Object Oriented Language
 - http://rightthewaygeek.blogspot.tw/2013/10/r-oop1-class.html
@@ -41,49 +52,18 @@ john <- new("BMI",name="JOHN",weight=70,height=182)
 
 ## RDemo
 ```{r RDemo, echo=TRUE}
+#安裝car套件
 install.packages("car")
+#引用car套件
 library("car")
+#使用範例資料Quartet
 data(Quartet)
-
+#利用Quartet資料x和y1變數畫出點散佈圖
 plot(Quartet$x, Quartet$y1)
+#建立回歸模型並assign到fit變數中
 fit = lm(Quartet$y1 ~ Quartet$x)
+#在plot畫出的點散佈圖上加上迴歸線
 abline(fit, col="red")
-```
-
-
-##R basic command
-```{R}
-#文件查詢
-help(package="base")
-?base:sum
-?sum
-help.search("sum")
-
-demo()
-data()
-ls()
-rm()
-typeof()
-class()
-str()
-```
-
-##Basic computing
-```{R, echo=TRUE}
-3+8
-3-8
-3*8
-3/8
-1/0
-11%%2
-```
-
-##Assignment
-```{R}
-a = 3
-a <- 5
-fit = lm(y1 ~ x, data =Quartet)
-fit <- lm(y1 ~ x, data =Quartet)
 ```
 
 ##Basic type
@@ -99,10 +79,76 @@ atomic:
 - vector
 - matrix
 - factor
+
 recursive:
 (可以有混合的資料型態)
 - dataframe
 - list
+
+##R basic command
+```{R}
+#文件查詢
+help(package="base")
+?base:sum
+?sum
+help.search("sum")
+
+#範例演釋
+demo()
+example()
+
+#使用內建資料集
+data()
+
+#看現有變數
+ls()
+#移除變數
+rm()
+#查看資料型態
+# difference between class, typeof, and mode
+#http://stackoverflow.com/questions/6258004/r-types-and-classes-of-variables
+class()
+typeof()
+mode()
+
+class(1.3)
+typeof(1.3)
+mode(1.3)
+
+class(1)
+typeof(1L)
+mode(1L)
+#查看資料結構
+str()
+
+str(c(1,2,3))
+```
+
+##Basic computing
+```{R, echo=TRUE}
+3+8
+3-8
+3*8
+3/8
+1/0
+11%%2
+3<4
+2==5
+T == TRUE
+
+```
+
+##Assignment
+```{R}
+a = 3
+a <- 5 # ( alt + - )
+
+a / 2
+a = a / 2
+
+fit = lm(y1 ~ x, data =Quartet)
+fit <- lm(y1 ~ x, data =Quartet)
+```
 
 ##Vector
 - R語言最基本的物件
@@ -122,6 +168,13 @@ x + c(10)
 x + c(1,2)
 x + c(1,2,1,2)
 
+x == c(1,99,3,4)
+
+c(1,2,3)
+c(1, TRUE, "three")
+c(2,T,3)
+c(c(1,2,3,4),c(5))
+
 x = c(1,2,3,4,NA)
 sum(x)
 sum(x, na.rm=T)
@@ -138,18 +191,28 @@ height_vec / 100
 height_vec > 175 | height_vec < 170
 height_vec < 175 & height_vec > 170
 
-```
+height_vec[1]
+height_vec['Brian']
+height_vec[height_vec > 175]
 
+```
 
 ##seq() & rep() & paste()
 ```{R, echo=TRUE}
 1:20
 seq(1,20)
-seq(1,20,2)
+20:1
+?seq
 seq(1,20,by=2)
 seq(1,20,length=2)
 
+x <- seq(1, 20, 0.1)
+y <- sin(x)
+#y <- cos(x)
+plot(x, y)
+
 rep(1,5)
+?rep
 rep(c(1,2), times=5)
 rep(c(1,2), times=c(1,2))
 rep(c(1,2), each=5)
@@ -182,6 +245,8 @@ t(mat) #transpose
 mat[1,]
 mat[,1]
 mat[1:2,]
+mat[c('kevin','jerry'),]
+mat[c('kevin','jerry'),'first']
 rowSums(mat)
 colSums(mat)
 
@@ -307,7 +372,7 @@ write.csv(test.data, file = "test.csv")
 
 ##List
 ```{R}
-item = list(thing="hat", size="8.25")
+item = list(thing="hat", size=8.25)
 item
 
 test = list(name="Toby", score = c(87,57,72))
@@ -320,7 +385,7 @@ class(flower$data)
 flower$data[1,"Sepal.Width"]
 ```
 
-##Flow Contorl
+##Flow Control
 ```{R}
 x=5;
 if(x>3){
