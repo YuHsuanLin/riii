@@ -1,15 +1,11 @@
 ---
 title: "exercise answer"
 author: "York Lin"
-date: "2016年5月8日"
+date: "2016年7月11日"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
-##p42 example
+##p33 example
 ```{R, echo=TRUE}
 h = c(180,169,173)
 w = c(73,87,43)
@@ -18,7 +14,7 @@ names(bmi) = c("Brian", "Toby", "Sherry")
 bmi < 18.5 | bmi >= 24
 ```
 
-##p53 example
+##p44 example
 ```{R}
 kevin = c(85,73)
 marry = c(72,64)
@@ -31,7 +27,7 @@ final = mat %*% c(0.4,0.6)
 final
 ```
 
-##p68 example
+##p59 example
 ```{R}
 tw2330 = read.csv("table.csv", header=TRUE)
 str(tw2330)
@@ -51,7 +47,7 @@ ordered_stock[nrow(ordered_stock),]
 ordered_stock[1,"Close"] - ordered_stock[nrow(ordered_stock),"Close"]
 
 ```
-##page80
+##page72
 ```{R}
 nine_nine = function(){
   mat = matrix(rep(1,9^2),nrow = 9)
@@ -71,7 +67,7 @@ nine_nine2 = function(){
 }
 ```
 
-##p84
+##p76
 ```{R}
 match_func = function(filename= "data/match.txt"){
   mat = matrix(-1, nrow=5, ncol = 5)
@@ -86,8 +82,7 @@ match_func = function(filename= "data/match.txt"){
 }
 ```
 
-
-##p84-2
+##p76-2
 ```{R}
 match_func = function(filename){
   t = read.table(filename,sep = '|');
