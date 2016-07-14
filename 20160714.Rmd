@@ -361,12 +361,12 @@ getwd()
 setwd("C:/Users/BigData/Desktop")
 tw2330 = read.csv("table.csv", header=TRUE)
 
-test.data = read.table("match.txt" ,header = TRUE, sep="|")
+test.data = read.table("data/match.txt" ,header = TRUE, sep="|")
 
 #table
-write.table(test.data, file = "test.txt" , sep = " ")
+write.table(test.data, file = "data/test.txt" , sep = " ")
 #csv
-write.csv(test.data, file = "test.csv")
+write.csv(test.data, file = "data/test.csv")
 
 ```
 

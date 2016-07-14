@@ -36,7 +36,7 @@ mat2
 
 ##p59 example
 ```{R}
-tw2330 = read.csv("table.csv", header=TRUE)
+tw2330 = read.csv("data/2330.csv", header=TRUE)
 str(tw2330)
 tw2330$Date = as.Date(tw2330$Date)
 max(tw2330$Close)
