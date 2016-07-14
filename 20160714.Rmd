@@ -206,7 +206,7 @@ seq(1,20)
 seq(1,20,by=2)
 seq(1,20,length=2)
 
-x <- seq(1, 20, 0.1)
+x <- seq(1, 20, by=0.1)
 y <- sin(x)
 #y <- cos(x)
 plot(x, y)
@@ -300,7 +300,7 @@ weather_factor
 
 ##Dataframe
 ```{R}
-df = data.frame(a=c(1,2,3,4,5),b=c(2,3,4,5,6))
+df = data.frame(a=c(1,2,3,4,5),b=c('2','3','4','5','6'))
 df
 class(df)
 str(df)
@@ -333,7 +333,7 @@ setosa.data = iris[Species=="setosa",1:5]
 ###注意attach只是目前資料集的快照(snapshot),若原始資料有更動,attach中的資料不會跟著變動
 iris[1,1]
 iris[1,1] = 5.5
-iris
+head(iris)
 Sepal.Length[1]
 detach()
 
