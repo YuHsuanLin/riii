@@ -86,7 +86,7 @@ tapply(iris$Sepal.Length, iris$Species, mean)
 ```{R}
 #import data
 getwd()
-setwd("/Users/YorkLin/lecture/riii")
+setwd("~/lecture/riii")
 load("Statistics/cdc.Rdata")
 str(cdc)
 head(cdc)
