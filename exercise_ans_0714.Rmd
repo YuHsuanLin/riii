@@ -70,30 +70,3 @@ nine_nine2 = function(){
   mat
 }
 ```
-
-##p76
-```{R}
-match_func = function(filename= "data/match.txt"){
-  mat = matrix(-1, nrow=5, ncol = 5)
-  rownames(mat) = c("A","B","C","D","E")
-  colnames(mat) = c("A","B","C","D","E")
-  
-  match = read.table(filename, sep= "|")
-  for (i in 1:nrow(match)){
-    mat[match[i,1], match[i,2]] = match[i,3];
-  }
-  mat
-}
-```
-
-##p76-2
-```{R}
-match_func = function(filename){
-  t = read.table(filename,sep = '|');
-  mat = matrix(rep(-1,length(levels(t[,1]))^2), nrow = length(levels(t[,1])), dimnames = list(levels(t[,1]),levels(t[,2])));
-  for(i in 1:nrow(t)){
-    mat[t[i,1], t[i,2]] = t[i,3];
-  }
-  mat
-}
-```

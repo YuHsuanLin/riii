@@ -1,7 +1,7 @@
 ---
-title: "R_0525"
+title: "R_0721"
 author: "York Lin"
-date: "2016年5月23日"
+date: "2016年7月16日"
 output: html_document
 ---
 
@@ -351,8 +351,5 @@ titanic %>%
 
 ```
 
-
 ##Learning map
 - http://scikit-learn.org/stable/_static/ml_map.png
-
-

@@ -1,86 +1,103 @@
 ---
-title: "R_0524"
+title: "R_0719"
 author: "York Lin"
-date: "2016年5月23日"
+date: "2016年7月16日"
 output: html_document
 ---
 
+##Function
 ```{R}
-x =c(65,75)
-x
-x[1]
-x+10
-x+c(5,10)
+f = function(a){
+    print(a+3)
+}
 
-y =c(84,76)
-c(x,y)
+f1 = function(a = 3) {
+    a+3
+}
 
-mat = matrix(c(x,y),nrow = 2,byrow = T,dimnames = list(c('Kevin','Toby'),c('First','Second')))
-mat
-mat[1,1]
-mat[1,]
-mat[,1]
+f2 = function(a, b = 2, c = NULL) {
+   a + b
+}
 
-mat2 = rbind(mat,c(78,63))
-rownames(mat2)[nrow(mat2)] = 'Sam'
-mat2
-mat2[1:2,]
+b = 3
+f3 = function(a) {
+    b = 2
+    b
+}
 
-rowSums(mat2)
-
-m1=matrix(1:4,byrow = T,nrow = 2)
-m2=matrix(5:8,byrow = T,nrow = 2)
-m1+m2
-m1*m2
-m1%*%m2
-
-a = c('sunny', 'sunny', 'rainy')
-f_a = factor(a)
-f_a
-f_a = factor(a,order=T,levels = c('rainy','sunny'))
-f_a
-
-
-df = data.frame(a=c(1,2,3), b= c(2,3,4),c = c('a','b','c'))
-str(df)
-df[1,]
-df[,1]
-
-employee = list(age=30, grade="B")
-employee
-employee$age
-
-
-x=list(c(1,2,3,4),c(5,6,7,8))
-lapply(x,sum)
-sapply(x,sum)
-
-m1
-apply(m1,1,sum)
-apply(m1,2,sum)
-
-x2 = c(80,70,59,88,72,57)
-t = c(1,1,2,1,1,2)
-  tapply(x2,t,mean)
-
-
+f4 = function(a,b){
+    if(a > 3){
+       a = 100;
+    }
+    a + b;
+}
 ```
 
-##What’s the difference between machine learning, statistics, and data mining?
-- http://www.r-bloggers.com/whats-the-difference-between-machine-learning-statistics-and-data-mining/
+##lapply sapply apply tapply
+```{R}
+grades =list(kevin = c(80,60,92), marry = c(56,75,64,84,56), QOO = c(10,20,3,4,10))
+
+unlist(grades[1])
+for (i in 1:length(grades)){
+      print(sum(unlist(grades[i])));
+}
+
+lapply(grades, sum)
+lapply(grades, mean)
+lapply(grades, function(e){list(sum = sum(e), min = min(e))})
+
+lapply(c(1,2,3,4,5),  function(e){paste(as.character(e), "hello")})
+m1 = matrix(1:4, byrow=TRUE, nrow=2)
+m2 = matrix(5:8, byrow=TRUE, nrow=2)
+
+li = list(m1, m2)
+lapply(li, mean)
+
+
+class(lapply(grades, sum))
+sapply(grades, sum)
+class(sapply(grades, sum))
+
+m1 = matrix(1:4, byrow=TRUE, nrow=2)
+m2 = matrix(5:8, byrow=TRUE, nrow=2)
+li = list(m1, m2)
+sapply(li, mean)
+sapply(li,function(e) e[1,])
+
+m = matrix(1:4, byrow=TRUE, nrow=2)
+apply(m, 1, sum) # rowsums
+apply(m, 2, sum) # colsums
+
+rowmeans = apply(m, 1, mean)
+colmeans = apply(m, 2, mean)
+
+x = c(80,70,59,88,72,57)
+t = c(1,1,2,1,1,2)
+tapply(x,t, mean)
+
+data(iris)
+
+tapply(iris$Sepal.Length, iris$Species, mean)
+
+```
 
 # Descriptive Statistics
 ##表格
 ```{R}
 #import data
+getwd()
+setwd("/Users/YorkLin/lecture/riii")
 load("Statistics/cdc.Rdata")
 str(cdc)
+head(cdc)
 names(cdc)
 
 #轉換資料類型
-cdc$exerany = factor(cdc$exerany)
-cdc$hlthplan = factor(cdc$hlthplan)
-cdc$smoke100 = factor(cdc$smoke100)
+cdc$exerany = as.factor(cdc$exerany)
+cdc$hlthplan = as.factor(cdc$hlthplan)
+cdc$smoke100 = as.factor(cdc$smoke100)
+
+str(cdc)
 
 #一維次數分配表
 table(cdc$exerany)
@@ -233,7 +250,6 @@ g+geom_bar(fill='snow',color='black')
 
 g <- ggplot(cdc,aes(x=genhlth,fill=gender))
 g+geom_bar()
-
 
 g_bygrp <- ggplot(cdc,aes(x=exerany,fill=genhlth))
 g_bygrp + geom_bar()
