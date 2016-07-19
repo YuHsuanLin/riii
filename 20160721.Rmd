@@ -5,6 +5,59 @@ date: "2016年7月16日"
 output: html_document
 ---
 
+##常見間斷機率分配
+```{R}
+#binomial distribution (size=1 => bernoulli distribution) 
+#進行n次二項實驗成功的次數(成功;失敗)
+
+#產生n個該機率分配的樣本點
+rbinom(n = 5,size= 10,prob= 0.5)
+table(rbinom(n =10,size= 10,prob= 0.5))
+barplot(table(rbinom(n = 10,size= 10, prob= 0.5)))
+
+barplot(table(rbinom(100, 3, 0.5))) #連續投3次硬幣例子
+
+barplot(table(rbinom(100, 1, 0.5)))
+#機率分配的高度(間斷分配 =>　該事件發生機率；連續分配 => y軸高度，無特別意義)
+dbinom(x = 0,size = 3, prob= 0.5)
+dbinom(x = 1,size = 3, prob= 0.5)
+dbinom(x = 2,size = 3, prob= 0.5)
+dbinom(x = 3,size = 3, prob= 0.5)
+
+#累積機率
+pbinom(q = 0,size = 3,prob = 0.5)
+pbinom(q = 1,size = 3,prob = 0.5)
+pbinom(q = 2,size = 3,prob = 0.5)
+pbinom(q = 3,size = 3,prob = 0.5)
+
+#pbinom的反函數
+qbinom(p = 0,size = 3,prob = 0.5)
+qbinom(p = 0.125,size = 3,prob = 0.5)
+qbinom(p = 0.5,size = 3,prob = 0.5)
+qbinom(p = 0.875,size = 3,prob = 0.5)
+qbinom(p = 1,size = 3,prob = 0.5)
+
+#poisson distribution
+#一段時間內某事件發生的次數
+rpois(n = 10,lambda = 3)
+barplot(table(rpois(n = 10,lambda = 3)))
+barplot(table(rpois(n = 1000,lambda = 3)))
+
+dpois(x=3,lambda = 3)
+
+ppois(q=2,lambda = 3)
+ppois(q=3,lambda = 3)
+qpois(p=0.5,lambda = 3)
+
+#geometric distribution
+#進行某一實驗直到第一次成功所需失敗的次數
+rgeom(n=10,prob = 0.5)
+barplot(table(rgeom(n=10,prob = 0.5)))
+barplot(table(rgeom(n=1000,prob = 0.5)))
+barplot(table(rgeom(n=1000,prob = 0.2)))
+
+```
+
 ##常見連續機率分配
 ```{R}
 #uniform distribution

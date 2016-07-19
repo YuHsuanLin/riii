@@ -80,7 +80,7 @@ ggplot(precounted,aes(x=Species,y=Freq))+ geom_bar(stat='identity')
 g_i =ggplot(iris,aes(x=Species,y=Sepal.Length))
 g_i + geom_boxplot()
 
-ggplot(iris,aes(x=Sepal.Length,fill=Species)) + geom_bar(position = 'identity', alpha=0.4)
+ggplot(iris,aes(x=Sepal.Length,fill=Species)) + geom_bar(position ='identity', alpha=0.4)
 
 ggplot(iris,aes(x=Sepal.Length,fill=Species)) + geom_density(position = 'identity', alpha=0.4)
 

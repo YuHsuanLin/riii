@@ -37,12 +37,13 @@ f4 = function(a,b){
 ```{R}
 grades =list(kevin = c(80,60,92), marry = c(56,75,64,84,56), QOO = c(10,20,3,4,10))
 
+lapply(grades, sum)
+
 unlist(grades[1])
 for (i in 1:length(grades)){
       print(sum(unlist(grades[i])));
 }
 
-lapply(grades, sum)
 lapply(grades, mean)
 lapply(grades, function(e){list(sum = sum(e), min = min(e))})
 
@@ -126,7 +127,7 @@ str(cdc)
 
 ##統計圖
 ```{R}
-#屬值資料: 長條圖、圓餅圖
+#屬貭資料: 長條圖、圓餅圖
 barplot(table(cdc$smoke100))
 ?barplot
 barplot(table(cdc$smoke100),xlab='有無吸菸',ylab='人數',main='title',col='blue')
@@ -184,7 +185,7 @@ mean(a)
 b = c(a, 10000)
 mean(b)
 
-a 
+a
 sort(a)
 median(a)
 
@@ -239,6 +240,8 @@ why ggplot2?
 ```{R}
 #basic syntax
 #ggplot(data,aes(x,y,group,...))+geom_object(...)
+install.packages('ggplot2')
+library('ggplot2')
 g <- ggplot(cdc,aes(x=height,y=weight))
 g+geom_point(aes(col=exerany))
 
@@ -255,6 +258,7 @@ g_bygrp <- ggplot(cdc,aes(x=exerany,fill=genhlth))
 g_bygrp + geom_bar()
 g_bygrp + geom_bar(position='stack')
 g_bygrp + geom_bar(position='dodge')
+g_bygrp + geom_bar(position='identity')
 
 precounted = as.data.frame(table(cdc$genhlth,dnn = c('genhlth')))
 precounted
@@ -289,58 +293,5 @@ flipping_coin_three_times = flipping_coin(100) + flipping_coin(100) + flipping_c
 flipping_coin_three_times
 table(flipping_coin_three_times)
 barplot(table(flipping_coin_three_times))
-
-```
-
-##常見間斷機率分配
-```{R}
-#binomial distribution (size=1 => bernoulli distribution) 
-#進行n次二項實驗成功的次數(成功;失敗)
-
-#產生n個該機率分配的樣本點
-rbinom(n = 5,size= 10,prob= 0.5)
-table(rbinom(n =10,size= 10,prob= 0.5))
-barplot(table(rbinom(n = 10,size= 10, prob= 0.5)))
-
-barplot(table(rbinom(100, 3, 0.5))) #連續投3次硬幣例子
-
-barplot(table(rbinom(100, 1, 0.5)))
-#機率分配的高度(間斷分配 =>　該事件發生機率；連續分配 => y軸高度，無特別意義)
-dbinom(x = 0,size = 3, prob= 0.5)
-dbinom(x = 1,size = 3, prob= 0.5)
-dbinom(x = 2,size = 3, prob= 0.5)
-dbinom(x = 3,size = 3, prob= 0.5)
-
-#累積機率
-pbinom(q = 0,size = 3,prob = 0.5)
-pbinom(q = 1,size = 3,prob = 0.5)
-pbinom(q = 2,size = 3,prob = 0.5)
-pbinom(q = 3,size = 3,prob = 0.5)
-
-#pbinom的反函數
-qbinom(p = 0,size = 3,prob = 0.5)
-qbinom(p = 0.125,size = 3,prob = 0.5)
-qbinom(p = 0.5,size = 3,prob = 0.5)
-qbinom(p = 0.875,size = 3,prob = 0.5)
-qbinom(p = 1,size = 3,prob = 0.5)
-
-#poisson distribution
-#一段時間內某事件發生的次數
-rpois(n = 10,lambda = 3)
-barplot(table(rpois(n = 10,lambda = 3)))
-barplot(table(rpois(n = 1000,lambda = 3)))
-
-dpois(x=3,lambda = 3)
-
-ppois(q=2,lambda = 3)
-ppois(q=3,lambda = 3)
-qpois(p=0.5,lambda = 3)
-
-#geometric distribution
-#進行某一實驗直到第一次成功所需失敗的次數
-rgeom(n=10,prob = 0.5)
-barplot(table(rgeom(n=10,prob = 0.5)))
-barplot(table(rgeom(n=1000,prob = 0.5)))
-barplot(table(rgeom(n=1000,prob = 0.2)))
 
 ```
