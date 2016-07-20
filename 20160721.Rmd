@@ -8,12 +8,12 @@ output: html_document
 ##常見間斷機率分配
 ```{R}
 #binomial distribution (size=1 => bernoulli distribution) 
-#進行n次二項實驗成功的次數(成功;失敗)
+#進行n次二項實驗(成功;失敗)成功的次數分佈
 
 #產生n個該機率分配的樣本點
-rbinom(n = 5,size= 10,prob= 0.5)
-table(rbinom(n =10,size= 10,prob= 0.5))
-barplot(table(rbinom(n = 10,size= 10, prob= 0.5)))
+b = rbinom(n = 10,size= 10,prob= 0.5)
+table(b)
+barplot(table(b))
 
 barplot(table(rbinom(100, 3, 0.5))) #連續投3次硬幣例子
 
@@ -38,7 +38,9 @@ qbinom(p = 0.875,size = 3,prob = 0.5)
 qbinom(p = 1,size = 3,prob = 0.5)
 
 #poisson distribution
-#一段時間內某事件發生的次數
+#單位時間內某事件發生次數的機率分佈
+#參數λ 是單位時間內隨機事件的平均發生率
+#eg: 車站的候客人數、機器出現的故障次數、自然災害發生的次數
 rpois(n = 10,lambda = 3)
 barplot(table(rpois(n = 10,lambda = 3)))
 barplot(table(rpois(n = 1000,lambda = 3)))
@@ -50,17 +52,25 @@ ppois(q=3,lambda = 3)
 qpois(p=0.5,lambda = 3)
 
 #geometric distribution
-#進行某一實驗直到第一次成功所需失敗的次數
+#在某一實驗中，得到一次成功所需要的試驗次數X。X的值域是{ 1, 2, 3, ... }
+#在得到第一次成功之前所經歷的失敗次數Y = X − 1。Y的值域是{ 0, 1, 2, 3, ... }
+
 rgeom(n=10,prob = 0.5)
 barplot(table(rgeom(n=10,prob = 0.5)))
 barplot(table(rgeom(n=1000,prob = 0.5)))
 barplot(table(rgeom(n=1000,prob = 0.2)))
 
+dgeom(x=1,prob = 0.4)
+pgeom(q=1,prob = 0.4)
+pgeom(q=2,prob = 0.4)
+
+qgeom(p=0.5,prob = 0.4)
 ```
 
 ##常見連續機率分配
 ```{R}
 #uniform distribution
+#用於蒙地卡羅模擬中產生隨機數值
 runif(n = 10,min = 0,max = 1)
 hist(runif(10000,min = 0,max = 1))
 curve(dunif(x,min=0,max=2),0,2)
@@ -139,28 +149,36 @@ hist(sample_means50, breaks = 20, xlim = xlimits)
 hist(sample_means100, breaks = 20, xlim = xlimits)
 
 pop_mean = mean(area)
+pop_var = var(area)
+sample_mean = mean(sample_means50)
+sample_var = var(sample_means50)
 pop_mean
+sample_mean
+
+pop_var
+sample_var
+pop_var / sample_var
+
 
 # 各種機率分配的中央極限定裡
 CLT = function(x) {
   op<-par(mfrow=c(2,2)) # 設為 2*2 的四格繪圖版
-  hist(x, nclass=50)     # 繪製 x 序列的直方圖 (histogram)。
+  hist(x, breaks=50)     # 繪製 x 序列的直方圖 (histogram)。
   m2 <- matrix(x, nrow=2 )  # 將 x 序列分為 2*k 兩個一組的矩陣 m2。
   xbar2 <- apply(m2, 2, mean)   # 取每兩個一組的平均值 (x1+x2)/2 放入 xbar2 中。
-  hist(xbar2, nclass=50)     # 繪製 xbar2 序列的直方圖 (histogram)。
+  hist(xbar2, breaks=50)     # 繪製 xbar2 序列的直方圖 (histogram)。
   m10 <- matrix(x, nrow=10 )   # 將 x 序列分為 10*k 兩個一組的矩陣 m10。
   xbar10 <- apply(m10, 2, mean) # 取每10個一組的平均值 (x1+..+x10)/10 放入 xbar10 中。
-  hist(xbar10, nclass=50)    # 繪製 xbar10 序列的直方圖 (histogram)。
+  hist(xbar10, breaks=50)    # 繪製 xbar10 序列的直方圖 (histogram)。
   m20 <- matrix(x, nrow=20 )   # 將 x 序列分為 25*k 兩個一組的矩陣 m25。
   xbar20 <- apply(m20, 2, mean) # 取每20個一組的平均值 (x1+..+x20)/20 放入 xbar20 中。
-  hist(xbar20, nclass=50)    # 繪製 xbar20 序列的直方圖 (histogram)。
+  hist(xbar20, breaks=50)    # 繪製 xbar20 序列的直方圖 (histogram)。
 }
 
-CLT(rbinom(n=100000, size = 20, prob = 0.5)) # 用參數為 n=20, p=0.5 的二項分布驗證中央極限定理。
+CLT(rbinom(n=100000, size = 20, prob = 0.1)) # 用參數為 n=20, p=0.5 的二項分布驗證中央極限定理。
 CLT(runif(n=100000,min = 0,max = 1)) # 用參數為 a=0, b=1 的均等分布驗證中央極限定理。
 CLT(rpois(n=100000, lambda = 4)) # 用參數為 lambda=4 的布瓦松分布驗證中央極限定理。
-CLT(rgeom(n=100000, prob = 0.5)) # 用參數為 p=0.5 的幾何分布驗證中央極限定理。
-CLT(rnorm(n=100000,mean = 0,sd = 1)) # 用參數為 mean=0, sd=1 的標準常態分布驗證中央極限定理。
+CLT(rgeom(n=100000, prob = 0.7)) # 用參數為 p=0.5 的幾何分布驗證中央極限定理。
 
 ```
 
