@@ -5,6 +5,28 @@ date: "2016年5月29日"
 output: html_document
 ---
 
+## linear regression
+```{R}
+data(iris)
+str(iris)
+plot(iris)
+fit = lm(Sepal.Length ~ .,data=iris)
+summary(fit)
+
+cor(iris[1:4])
+vif(fit)
+
+fit2 = lm(Sepal.Length ~ Sepal.Width + Petal.Length + Species,data=iris)
+summary(fit2)
+vif(fit2)
+
+fit3 = lm(Sepal.Length ~ Sepal.Width + Petal.Length,data=iris)
+summary(fit3)
+#檢查膨脹係數因子
+vif(fit3)
+plot(fit3)
+```
+
 ##Iris Classfication with rpart
 ```{R}
 #install.packages("rpart")

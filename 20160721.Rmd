@@ -11,7 +11,7 @@ output: html_document
 #進行n次二項實驗(成功;失敗)成功的次數分佈
 
 #產生n個該機率分配的樣本點
-b = rbinom(n = 10,size= 10,prob= 0.5)
+b = rbinom(n = 20,size= 10,prob= 0.5)
 table(b)
 barplot(table(b))
 
@@ -43,7 +43,9 @@ qbinom(p = 1,size = 3,prob = 0.5)
 #eg: 車站的候客人數、機器出現的故障次數、自然災害發生的次數
 rpois(n = 10,lambda = 3)
 barplot(table(rpois(n = 10,lambda = 3)))
+par(mfrow=c(2,1))
 barplot(table(rpois(n = 1000,lambda = 3)))
+barplot(table(rpois(n = 1000,lambda = 6)))
 
 dpois(x=3,lambda = 3)
 
@@ -79,7 +81,7 @@ punif(q=0.5,min = 0,max = 1)
 qunif(p=0.3,min = 0,max = 1)
 
 #normal distribution(標準常態分佈=> mean=0 , sd=1)
-rnorm(1000,mean = 3,sd = 2)
+rnorm(n=1000,mean = 3,sd = 2)
 hist(rnorm(1000,mean = 3,sd = 2))
 
 par(mfrow=c(3,1))
@@ -92,7 +94,7 @@ hist(rnorm(10000,mean = 0,sd = 1),xlim=xlimits)
 hist(rnorm(10000,mean = 3,sd = 1),xlim=xlimits)
 hist(rnorm(10000,mean = 6,sd = 1),xlim=xlimits)
 par(mfrow=c(1,1))
-curve(dnorm,-3,3)
+curve(dnorm(x,mean=2,sd=1),-5,5)
 
 pnorm(1)
 
@@ -210,6 +212,8 @@ pop_sd <- 10
 coke = c(278,289,291,291,291,285,295,278,304,287,291,287,288,300,309,280,294,283,292,306)
 
 sde <- pop_sd / sqrt(length(coke))
+#sde = sd(coke)
+
 z   <- (mean(coke) - pop_mean) / sde
 z
 curve(dnorm(x), -3,3)
@@ -220,7 +224,7 @@ p2 <- pnorm(z)
 p2
 #p2 < alpha / 2 = 0.025 => reject H0
 
-
+load("Statistics/cdc.Rdata")
 names(cdc)
 hist(cdc$height)
 boxplot(cdc$height)
@@ -231,10 +235,10 @@ pop_sd = sd(cdc$height)
 
 set.seed(123)
 samp1 = sample(cdc[cdc$gender == 'm',]$height, 20)
-boxplot(samp)
+boxplot(samp1)
 abline(h = pop_mean, col= "red")
-sde <- pop_sd / sqrt(length(samp))
-z   <- (mean(samp) - pop_mean) / sde
+sde <- pop_sd / sqrt(length(samp1))
+z   <- (mean(samp1) - pop_mean) / sde
 
 # two sample means are equal
 p   <- (1 - pnorm(abs(z))) * 2
@@ -307,120 +311,3 @@ gdp$GDP = as.numeric(sub(",", "", gdp$GDP))
 gdp$Export = as.numeric(sub(",", "", gdp$Export))
 cor(gdp$Export, gdp$GDP)
 ```
-
-##Linear Regression
-hypothesis
-- 變數之間是線性關係
-- 殘差為常態分佈
-- 殘差具有隨機性
-- 殘差具有變異數齊一性
-```{R}
-load("Statistics/mlb11.Rdata")
-correlation = cor(mlb11$runs, mlb11$at_bats)
-correlation
-
-plot(mlb11$at_bats, mlb11$runs)
-m1 = lm(runs ~ at_bats, data = mlb11)
-m1
-abline(m1,col='red')
-summary(m1)
-
-#殘差分析
-par(mfrow=c(2,2))
-plot(m1)
-#檢定殘差是否為常態分配
-#H0:殘差為常態分配
-library(car)
-durbinWatsonTest(m1)
-#檢定各殘差變異數是否相等
-#H0:各殘差變異數相等
-ncvTest(m1)
-
-data(iris)
-str(iris)
-plot(iris)
-fit = lm(Sepal.Length ~ .,data=iris)
-summary(fit)
-
-cor(iris[1:4])
-vif(fit)
-
-fit2 = lm(Sepal.Length ~ Sepal.Width + Petal.Length + Species,data=iris)
-summary(fit2)
-vif(fit2)
-
-fit3 = lm(Sepal.Length ~ Sepal.Width + Petal.Length,data=iris)
-summary(fit3)
-#檢查膨脹係數因子
-vif(fit3)
-
-plot(fit3)
-
-```
-##package dplyr
-- 類SQL語法,select,filter,arrange,mutate...
-- Chaining %>%, debug方便
-
-```{R}
-install.packages('dplyr')
-library(dplyr)
-data("Titanic")
-titanic = data.frame(Titanic)
-str(titanic)
-
-#原始R選取欄位方式
-titanic[,c("Sex","Age")]
-#dplyr選取資料
-select(titanic,Sex,Age)
-select(titanic,Sex:Survived)
-
-#原始R篩選欄位方式
-titanic[titanic$Sex=="Male" & titanic$Age=="Adult",]
-#dplyr篩選資料
-filter(titanic,Sex=="Male",Age=="Adult")
-filter(titanic,Sex=="Male" | Class=="Crew")
-filter(titanic,Sex=="Male" & Class=="Crew")
-#從某變數中抓出某特性的資料
-filter(titanic,Class %in% c('1st','Crew'))
-
-filter(select(titanic,Sex,Class,Age),Age=="Child")
-
-#Chaining
-1:10 %>%
-  sum() %>%
-  sqrt()
-
-titanic %>%
-  select(Sex,Class,Age) %>%
-  filter(Age == 'Child')
-
-#dplyr排序資料
-titanic %>%
-  select(Sex,Class,Freq,Age) %>%
-  filter(Age == 'Child') %>%
-  arrange(desc(Freq))
-
-#dplyr新增資料
-freqsum = titanic %>%
-  select(Freq) %>%
-  sum()
-
-titanic1 = titanic %>%
-  select(Sex,Age,Freq) %>%
-  mutate(portion=round(Freq/freqsum*100,2))
-
-#dplyr分組計算
-sexstat = titanic %>%
-  group_by(Sex) %>%
-  summarise(Sexsum = sum(Freq,na.rm=T))
-
-barplot(sexstat$Sexsum,names.arg = sexstat$Sex)
-
-titanic %>%
-  group_by(Class) %>%
-  summarise_each(funs(min(.,na.rm=T),max(.,na.rm=T)), matches("Freq"))
-
-```
-
-##Learning map
-- http://scikit-learn.org/stable/_static/ml_map.png

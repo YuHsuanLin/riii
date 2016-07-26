@@ -1,7 +1,7 @@
 ---
-title: "R_0605"
+title: "R_0728"
 author: "York Lin"
-date: "2016年6月3日"
+date: "2016年7月28日"
 output: html_document
 ---
 
@@ -273,5 +273,70 @@ y[3,] = c(1,1)
 y
 
 predict(ds, p$x, y)
+
+```
+
+##package dplyr
+- 類SQL語法,select,filter,arrange,mutate...
+- Chaining %>%, debug方便
+
+```{R}
+install.packages('dplyr')
+library(dplyr)
+data("Titanic")
+titanic = data.frame(Titanic)
+str(titanic)
+
+#原始R選取欄位方式
+titanic[,c("Sex","Age")]
+#dplyr選取資料
+select(titanic,Sex,Age)
+select(titanic,Sex:Survived)
+
+#原始R篩選欄位方式
+titanic[titanic$Sex=="Male" & titanic$Age=="Adult",]
+#dplyr篩選資料
+filter(titanic,Sex=="Male",Age=="Adult")
+filter(titanic,Sex=="Male" | Class=="Crew")
+filter(titanic,Sex=="Male" & Class=="Crew")
+#從某變數中抓出某特性的資料
+filter(titanic,Class %in% c('1st','Crew'))
+
+filter(select(titanic,Sex,Class,Age),Age=="Child")
+
+#Chaining
+1:10 %>%
+  sum() %>%
+  sqrt()
+
+titanic %>%
+  select(Sex,Class,Age) %>%
+  filter(Age == 'Child')
+
+#dplyr排序資料
+titanic %>%
+  select(Sex,Class,Freq,Age) %>%
+  filter(Age == 'Child') %>%
+  arrange(desc(Freq))
+
+#dplyr新增資料
+freqsum = titanic %>%
+  select(Freq) %>%
+  sum()
+
+titanic1 = titanic %>%
+  select(Sex,Age,Freq) %>%
+  mutate(portion=round(Freq/freqsum*100,2))
+
+#dplyr分組計算
+sexstat = titanic %>%
+  group_by(Sex) %>%
+  summarise(Sexsum = sum(Freq,na.rm=T))
+
+barplot(sexstat$Sexsum,names.arg = sexstat$Sex)
+
+titanic %>%
+  group_by(Class) %>%
+  summarise_each(funs(min(.,na.rm=T),max(.,na.rm=T)), matches("Freq"))
 
 ```
