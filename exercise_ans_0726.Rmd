@@ -44,8 +44,9 @@ plot(fit, margin=0.1)
 text(fit)
 
 plot(iris.train$Petal.Length, iris.train$Petal.Width, col=iris.train$Species)
-abline(v = 2.45, col ="blue")
-abline(h = 1.75, col ="orange")
+abline(v = 2.6, col ="blue")
+abline(h = 1.7, col ="orange")
+
 predict_one = predict(fit, iris.test[1,], type="class")
 predict_one
 

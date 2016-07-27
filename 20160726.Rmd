@@ -79,7 +79,7 @@ data(churn)
 str(churnTrain)
 
 names(churnTrain) %in% c("state", "area_code", "account_length")
-! names(churnTrain) %in% c("state", "area_code", "account_length")
+!names(churnTrain) %in% c("state", "area_code", "account_length")
 #選擇建模變數
 variable.list = !names(churnTrain) %in% c('state','area_code','account_length')
 churnTrain=churnTrain[,variable.list]
@@ -267,14 +267,13 @@ ind
 
 accuracies = c()
 for (i in 1:10) {
-  fit = svm(churn ~., churnTrain[ind != i,])
+  fit = rpart(churn ~., churnTrain[ind != i,])
   predictions = predict(fit, churnTrain[ind == i, ! names(churnTrain) %in% c("churn")], type="class")
   correct_count = sum(predictions == churnTrain[ind == i,c("churn")])
   accuracies = append(correct_count / nrow(churnTrain[ind == i,]), accuracies)
 }
 accuracies
 mean(accuracies)
-
 
 ```
 
@@ -303,7 +302,7 @@ plot(importance)
 install.packages("rminer")
 library(rminer)
 model=fit(churn~.,trainset,model="rpart")
-VariableImportance=Importance(model,trainset,method="sensv")
+VariableImportance=Importance(model,trainset)
 
 L=list(runs=1,sen=t(VariableImportance$imp),sresponses=VariableImportance$sresponses)
 mgraph(L,graph="IMP",leg=names(trainset),col="gray",Grid=10)
@@ -328,6 +327,8 @@ for(i in seq(0,1,0.1)){
   xary = c(xary, x)
   yary = c(yary, y)
 }
+
+plot(xary,yary)
 ```
 
 ```{R}

@@ -30,7 +30,37 @@ predictions <-predict(churn.rp, testset, type="class")
 table(testset$churn, predictions)
 confusionMatrix(table(predictions, testset$churn))
 
+#ctree
+#install.packages("party")
+library('party')
+ctree.model = ctree(churn ~ . , data = trainset)
+plot(ctree.model, margin=0.1)
 
+daycharge.model = ctree(churn ~ total_day_charge, data = trainset)
+plot(daycharge.model)
+
+ctree.predict = predict(ctree.model ,testset)
+table(ctree.predict, testset$churn)
+
+confusionMatrix(table(ctree.predict, testset$churn))
+
+#C5.0
+c50.model = C5.0(churn ~., data=trainset)
+
+?C5.0Control
+
+c=C5.0Control(minCases = 20)
+c50.model = C5.0(churn ~., data=trainset,control = c)
+
+summary(c50.model)
+plot(c50.model)
+
+c50.predict = predict(c50.model,testset)
+table(c50.predict, testset$churn)
+
+confusionMatrix(table(c50.predict, testset$churn))
+
+#ROC
 predictions <-predict(churn.rp, testset)
 predictions
 
@@ -47,6 +77,7 @@ for(i in seq(0,1,0.1)){
   yary = c(yary, y)
 }
 
+plot(xary,yary)
 
 install.packages("ROCR")
 library(ROCR)
@@ -56,11 +87,28 @@ pred.to.roc<-predictions[, 1]
 head(pred.to.roc)
 pred.rocr<-prediction(pred.to.roc, testset$churn)
 pred.rocr
-perf.rocr<-performance(pred.rocr, measure ="auc", x.measure="cutoff")
 perf.tpr.rocr<-performance(pred.rocr, "tpr","fpr")
+perf.rocr<-performance(pred.rocr, measure ="auc", x.measure="cutoff")
 plot(perf.tpr.rocr,colorize=T,main=paste("AUC:",(perf.rocr@y.values)))
 
 ```
+
+#model comparison
+```{R}
+rp.predict.prob = predict(churn.rp, testset,type='prob')
+c50.predict.prob = predict(c50.model,testset,type='prob')
+ctree.predict.prob = sapply(predict(churn.ctree ,testset,type='prob'),function(e){unlist(e)[1]})
+rp.prediction = prediction(rp.predict.prob[,1],testset$churn)
+c50.prediction = prediction(c50.predict.prob[,1],testset$churn)
+ctree.prediction = prediction(ctree.predict.prob,testset$churn)
+rp.performance = performance(rp.prediction, "tpr","fpr")
+c50.performance = performance(c50.prediction, "tpr","fpr")
+ctree.performance = performance(ctree.prediction, "tpr","fpr")
+plot(rp.performance,col='red')
+plot(c50.performance, add=T,col='green')
+plot(ctree.performance, add=T,col='blue')
+```
+
 
 ##距離計算
 ```{R}
@@ -149,9 +197,7 @@ clusplot(customer, fit$cluster, color=TRUE, shade=TRUE)
 par(mfrow= c(1,2))
 clusplot(customer, fit$cluster, color=TRUE, shade=TRUE)
 rect(-0.7,-1.7, 2.2,-1.2, border = "orange", lwd=2)
-clusplot(customer, fit$cluster, color = TRUE, xlim = c(-
-0.7,2.2), ylim = c(-1.7,-1.2))
-
+clusplot(customer, fit$cluster, color = TRUE, xlim = c(-0.7,2.2), ylim = c(-1.7,-1.2))
 
 ```
 
@@ -246,6 +292,85 @@ plot(data$Sepal.Length, data$Sepal.Width,col=results$cluster)
 plot(data$Sepal.Length, data$Sepal.Width,col=class)
 ```
 
+##其他分類方法
+
+
+##support vector machine
+
+- https://c3h3notes.wordpress.com/2010/10/25/r%E4%B8%8A%E7%9A%84libsvm-package-e1071-%E5%8F%83%E6%95%B8%E7%AF%87/
+- https://www.zhihu.com/question/21883548
+
+```{R}
+install.packages('e1071')
+library('e1071')
+model  = svm(churn~., data = trainset, kernel="radial", cost=1, gamma = 1/ncol(trainset))
+
+summary(model)
+
+svm.pred = predict(model, testset[, !names(testset) %in% c("churn")])
+
+svm.table=table(svm.pred, testset$churn)
+svm.table
+
+confusionMatrix(svm.table)
+
+tuned = tune.svm(churn~., data = trainset, gamma = 10^(-6:-1), cost = 10^(1:2))
+
+summary(tuned)
+
+model.tuned = svm(churn~., data = trainset, gamma = tuned$best.parameters$gamma, cost = tuned$best.parameters$cost)
+
+summary(model.tuned)
+
+svm.tuned.pred = predict(model.tuned, testset[, !names(testset) %in% c("churn")])
+
+svm.tuned.table=table(svm.tuned.pred, testset$churn)
+svm.tuned.table
+
+confusionMatrix(svm.tuned.table)
+```
+
+##k-nearest neighbor classifer
+- https://www.youtube.com/watch?v=UqYde-LULfs
+
+```{R}
+install.packages("class")
+library(class)
+head(trainset)
+levels(trainset$international_plan) = list("0"="no", "1"="yes")
+levels(trainset$voice_mail_plan) = list("0"="no", "1"="yes")
+levels(testset$international_plan) = list("0"="no", "1"="yes")
+levels(testset$voice_mail_plan) = list("0"="no", "1"="yes")
+head(trainset)
+
+churn.knn  = knn(trainset[,! names(trainset) %in% c("churn")], testset[,! names(testset) %in% c("churn")], trainset$churn, k=3)
+
+summary(churn.knn)
+
+table(testset$churn, churn.knn)
+
+confusionMatrix(table(testset$churn, churn.knn))
+```
+
+##naive bayes
+example
+- https://www.youtube.com/watch?v=ZAfarappAO0
+```{R}
+
+library(e1071) 
+classifier=naiveBayes(trainset[, !names(trainset) %in% c("churn")], trainset$churn)
+
+classifier
+
+bayes.table = table(predict(classifier, testset[,!names(testset) %in% c("churn")]), testset$churn)
+
+bayes.table
+
+confusionMatrix(bayes.table)
+```
+
+
+## 其他補充
 ##density-based method-DBSCAN
 - http://123android.blogspot.tw/2012/01/28dec11-data-mining.html
 ```{R}
