@@ -97,7 +97,7 @@ plot(perf.tpr.rocr,colorize=T,main=paste("AUC:",(perf.rocr@y.values)))
 ```{R}
 rp.predict.prob = predict(churn.rp, testset,type='prob')
 c50.predict.prob = predict(c50.model,testset,type='prob')
-ctree.predict.prob = sapply(predict(churn.ctree ,testset,type='prob'),function(e){unlist(e)[1]})
+ctree.predict.prob = sapply(predict(ctree.model ,testset,type='prob'),function(e){unlist(e)[1]})
 rp.prediction = prediction(rp.predict.prob[,1],testset$churn)
 c50.prediction = prediction(c50.predict.prob[,1],testset$churn)
 ctree.prediction = prediction(ctree.predict.prob,testset$churn)
