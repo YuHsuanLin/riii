@@ -7,7 +7,7 @@ Password:
 riii
 
 ## Download R
-- http://cran.csie.ntu.edu.tw/bin/windows/base/old/3.2.2/R-3.2.2-win.exe
+- http://cran.csie.ntu.edu.tw/bin/windows/base/R-3.3.1-win.exe 
 - http://course.largitdata.com/course/33
 
 ## Download RStudio
