@@ -1,5 +1,5 @@
 ---
-title: "R_0711"
+title: "R_0913"
 author: "York Lin"
 date: "2016年7月11日"
 output: html_document
@@ -103,6 +103,7 @@ help(package="base")
 ?base:sum
 ?sum
 help.search("sum")
+??sum
 
 #範例演釋
 demo()
@@ -153,6 +154,7 @@ T == TRUE
 ```{R}
 a = 3
 a <- 5 # ( alt + - )
+assign("a",3)
 
 a / 2
 a = a / 2
@@ -187,6 +189,7 @@ c(2,T,3)
 c(c(1,2,3,4),c(5))
 
 x = c(1,2,3,4,NA)
+is.na(x)
 sum(x)
 sum(x, na.rm=T)
 
@@ -202,9 +205,10 @@ height_vec / 100
 height_vec > 175 | height_vec < 170
 height_vec < 175 & height_vec > 170
 
-height_vec[1]
-height_vec['Brian']
-height_vec[height_vec > 175]
+#R 的index從1開始
+height_vec[1] #index
+height_vec['Brian'] #variable name
+height_vec[height_vec > 175] #condition (boolean vector)
 
 ```
 
