@@ -303,7 +303,6 @@ cov(mtcars)
 cor(mtcars)
 cov(mtcars[1:3])
 
-
 gdp = read.csv("data/gdp.csv",header=TRUE)
 
 gdp = gdp[1:15,]

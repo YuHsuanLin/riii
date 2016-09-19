@@ -51,22 +51,3 @@ ordered_stock[nrow(ordered_stock),]
 ordered_stock[1,"Close"] - ordered_stock[nrow(ordered_stock),"Close"]
 
 ```
-##page72
-```{R}
-nine_nine = function(){
-  mat = matrix(rep(1,9^2),nrow = 9)
-  for(i in 1:9){
-    for(j in 1:9){
-      mat[i,j] = i * j;
-    }
-  }
-  mat
-}
-
-nine_nine2 = function(){
-  mat1 = matrix(1:9, nrow = 9);
-  mat2 = matrix(1:9, nrow = 1);
-  mat = mat1 %*% mat2;
-  mat
-}
-```

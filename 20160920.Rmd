@@ -1,9 +1,77 @@
 ---
-title: "R_0719"
+title: "R_0920"
 author: "York Lin"
 date: "2016年7月16日"
 output: html_document
 ---
+
+##List
+```{R}
+item = list(thing="hat", size=8.25)
+item
+
+test = list(name="Toby", score = c(87,57,72))
+test$score
+test$score[2]
+
+flower= list(title="iris dataset", data= iris)
+class(flower)
+class(flower$data)
+flower$data[1,"Sepal.Width"]
+```
+
+##Flow Control
+```{R}
+
+x=5;
+if(x>3){
+  print
+  ("x > 3");
+}else{
+  print
+  ("x <= 3");
+}
+
+if(x>3) print("x>3") else print("x<=3")
+
+test = ifelse(x>3,"x > 3","x <= 3")
+test
+
+x=5;
+if(x>3){
+  print ("x > 3");
+} else if (x ==3){
+  print ("x == 3");
+}else{
+  print
+  ("x <= 3");
+}
+
+switch(2,print("aaa"),print("bbb"),print("ccc"))
+switch("third",first=print("aaa"),second=print("bbb"),third=print("ccc"))
+
+for(i in 1:10){
+  print(i);
+}
+
+sum=0
+for(i in 1:100){
+  sum= sum+ i;
+}
+sum
+
+sum(1:100)
+
+
+sum = 0;
+cnt = 0;
+while(cnt <= 100){
+  sum = sum + cnt;
+  cnt = cnt + 1;
+}
+sum
+```
+
 
 ##Function
 ```{R}
@@ -29,7 +97,7 @@ f4 = function(a,b){
     if(a > 3){
        a = 100;
     }
-    a + b;
+    return(a + b);
 }
 ```
 
@@ -40,6 +108,7 @@ grades =list(kevin = c(80,60,92), marry = c(56,75,64,84,56), QOO = c(10,20,3,4,1
 lapply(grades, sum)
 
 unlist(grades[1])
+
 for (i in 1:length(grades)){
       print(sum(unlist(grades[i])));
 }
@@ -47,13 +116,11 @@ for (i in 1:length(grades)){
 lapply(grades, mean)
 lapply(grades, function(e){list(sum = sum(e), min = min(e))})
 
-lapply(c(1,2,3,4,5),  function(e){paste(as.character(e), "hello")})
 m1 = matrix(1:4, byrow=TRUE, nrow=2)
 m2 = matrix(5:8, byrow=TRUE, nrow=2)
 
 li = list(m1, m2)
 lapply(li, mean)
-
 
 class(lapply(grades, sum))
 sapply(grades, sum)

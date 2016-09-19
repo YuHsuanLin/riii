@@ -394,6 +394,7 @@ boxplot(Petal.Width ~ Species, data = iris)
 plot(x=iris$Petal.Length, y=iris$Petal.Width, col=iris$Species)
 
 ```
+
 ##File read and write
 ```{R}
 getwd()
@@ -407,90 +408,4 @@ write.table(test.data, file = "data/test.txt" , sep = " ")
 #csv
 write.csv(test.data, file = "data/test.csv")
 
-```
-
-##List
-```{R}
-item = list(thing="hat", size=8.25)
-item
-
-test = list(name="Toby", score = c(87,57,72))
-test$score
-test$score[2]
-
-flower= list(title="iris dataset", data= iris)
-class(flower)
-class(flower$data)
-flower$data[1,"Sepal.Width"]
-```
-
-##Flow Control
-```{R}
-x=5;
-if(x>3){
-  print
-  ("x > 3");
-}else{
-  print
-  ("x <= 3");
-}
-
-if(x>3) print("x>3") else print("x<=3")
-
-x=5;
-if(x>3){
-  print ("x > 3");
-} else if (x ==3){
-  print ("x == 3");
-}else{
-  print
-  ("x <= 3");
-}
-
-x=5;
-if(x>5){
-  print ("aaa");
-} else if (x <= 5 & x > 3 ){
-  print ("bbb");
-}else{
-  print
-  ("ccc");
-}
-
-switch(2,print("aaa"),print("bbb"),print("ccc"))
-switch("third",first=print("aaa"),second=print("bbb"),third=print("ccc"))
-
-for(i in 1:10){
-  print(i);
-}
-
-sum=0
-for(i in 1:100){
-  sum= sum+ i;
-}
-sum
-
-sum(1:100)
-
-
-ary = rep(NA, 100)
-for(i in 1:100){
-  ary[i]= i;
-}
-ary
-
-
-ary2 =c()
-for(i in 1:100){
-  ary2 = c(ary2, i);
-}
-ary2
-
-sum = 0;
-cnt = 0;
-while(cnt <= 100){
-  sum = sum + cnt;
-  cnt = cnt + 1;
-}
-sum
 ```

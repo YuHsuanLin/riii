@@ -5,6 +5,26 @@ date: "2016年5月16日"
 output: html_document
 ---
 
+##page72
+```{R}
+nine_nine = function(){
+  mat = matrix(rep(1,9^2),nrow = 9)
+  for(i in 1:9){
+    for(j in 1:9){
+      mat[i,j] = i * j;
+    }
+  }
+  mat
+}
+
+nine_nine2 = function(){
+  mat1 = matrix(1:9, nrow = 9);
+  mat2 = matrix(1:9, nrow = 1);
+  mat = mat1 %*% mat2;
+  mat
+}
+```
+
 ##p76
 ```{R}
 match_func = function(filename= "data/match.txt"){
