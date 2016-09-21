@@ -11,7 +11,8 @@ nine_nine = function(){
   mat = matrix(rep(1,9^2),nrow = 9)
   for(i in 1:9){
     for(j in 1:9){
-      mat[i,j] = i * j;
+      #mat[i,j] = i * j;
+      mat[i,j] = paste(i,"*",j,"= ",i*j)
     }
   }
   mat
@@ -28,7 +29,7 @@ nine_nine2 = function(){
 ##p76
 ```{R}
 match_func = function(filename= "data/match.txt"){
-  mat = matrix(-1, nrow=5, ncol = 5)
+  mat = matrix(rep(-1,25), nrow=5, ncol = 5)
   rownames(mat) = c("A","B","C","D","E")
   colnames(mat) = c("A","B","C","D","E")
   
@@ -80,47 +81,4 @@ plot(iris,col=iris$Species)
 
 summary(iris)
 
-```
-
-##ggplot2
-```{R}
-data(iris)
-install.packages('ggplot2')
-library(ggplot2)
-
-ggplot(data=iris,aes(x=Petal.Length,y=Petal.Width)) + geom_point(aes(col=Species))
-
-ggp <- ggplot(iris,aes(x=Species))
-ggp + geom_bar()
-
-precounted = as.data.frame(table(iris$Species,dnn=c('Species')))
-precounted
-ggplot(precounted,aes(x=Species,y=Freq))+ geom_bar(stat='identity')
-
-g_i =ggplot(iris,aes(x=Species,y=Sepal.Length))
-g_i + geom_boxplot()
-
-ggplot(iris,aes(x=Sepal.Length,fill=Species)) + geom_bar(position ='identity', alpha=0.4)
-
-ggplot(iris,aes(x=Sepal.Length,fill=Species)) + geom_density(position = 'identity', alpha=0.4)
-
-ggplot(iris,aes(x=Sepal.Length,fill=Species)) + geom_bar(position = 'identity', alpha=0.4)+ geom_density(position = 'identity', alpha=0.4)
-
-ggplot(iris,aes(x=Sepal.Length,y=..density..,fill=Species)) + geom_bar(position = 'identity', alpha=0.4)+ geom_density(position = 'identity', alpha=0.4)
-
-g1 <- ggplot(data=iris,aes(x=Sepal.Length,y=Sepal.Width)) + geom_point(shape=7,size=2)
-g1
-
-ggsave(filename='iris_scatter_plot.png',plot = g1)
-```
-
-##兩骰子和的機率分配
-```{R}
-rolling_dice = function(n){sample(1:6,n,rep=T)}
-rolling_dice(100)
-sum_of_two_dice = rolling_dice(10000) + rolling_dice(10000)
-sum_of_two_dice
-table(sum_of_two_dice)
-barplot(table(sum_of_two_dice))
-table(sum_of_two_dice) / length(sum_of_two_dice)
 ```

@@ -1,9 +1,85 @@
 ---
-title: "R_0721"
+title: "R_0922"
 author: "York Lin"
 date: "2016年7月16日"
 output: html_document
 ---
+
+##package:ggplot2
+documentation
+- http://docs.ggplot2.org/current/
+
+cheat sheet
+- https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf
+
+why ggplot2?
+- fancy by default, good for demo and report 
+- consistent across all kinds of plot in syntax and behavior
+- strong support community(the mostly download package on CRAN)
+```{R}
+#basic syntax
+#ggplot(data,aes(x,y,group,...))+geom_object(...)
+install.packages('ggplot2')
+library('ggplot2')
+g <- ggplot(cdc,aes(x=height,y=weight))
+g+geom_point(aes(col=exerany))
+
+g <- ggplot(cdc,aes(x=genhlth))
+g+geom_bar()
+g+geom_bar() + ylab('Count') + ggtitle('cdc')
+#fill => 填滿顏色; color => 邊線顏色
+g+geom_bar(fill='snow',color='black')
+
+g <- ggplot(cdc,aes(x=genhlth,fill=gender))
+g+geom_bar()
+#g <- ggplot(cdc,aes(x=genhlth))
+#g+geom_bar(aes(fill=gender))
+
+g_bygrp <- ggplot(cdc,aes(x=exerany,fill=genhlth))
+g_bygrp + geom_bar()
+par(mfrow=c(1,1))
+g_bygrp + geom_bar(position='stack')
+g_bygrp + geom_bar(position='dodge')
+g_bygrp + geom_bar(position='identity')
+
+precounted = as.data.frame(table(cdc$genhlth,dnn = c('genhlth')))
+precounted
+ggplot(precounted,aes(x=genhlth,y=Freq))+ geom_bar(stat='identity')
+
+g <- ggplot(cdc,aes(x=genhlth,y=height))
+g + geom_boxplot()
+
+#facet
+g <- ggplot(cdc,aes(x=weight))
+g+ geom_histogram()+facet_wrap(~genhlth)
+
+
+ggsave(filename='your_file_name.png',plot = g)
+```
+
+#Inferential Statistics
+
+##Probability
+```{R}
+sample(1:10)
+sample(1:10, size = 5)
+sample(c(0,1), size= 10, replace = T)
+sample.int(20, 12) # 兩個參數都要放整數，此例為取1:20中的12個不重複樣本
+
+coins = c("heads", "tails")
+fair_coin = sample(coins, size = 10000, replace = TRUE)
+table(fair_coin)
+
+#連續投擲硬幣3次
+flipping_coin = function(n){sample(0:1,size=n,rep=T)}
+flipping_coin(100)
+flipping_coin_three_times = flipping_coin(100) + flipping_coin(100) + flipping_coin(100)
+flipping_coin_three_times
+table(flipping_coin_three_times)
+barplot(table(flipping_coin_three_times))
+
+```
+
 
 ##常見間斷機率分配
 ```{R}
@@ -188,16 +264,22 @@ CLT(rgeom(n=100000, prob = 0.7)) # 用參數為 p=0.5 的幾何分布驗證中�
 ```{R}
 population = ames$Gr.Liv.Area
 mean(population)
+n=50
 
-samp = sample(population, 50)
+samp = sample(population, n)
 sample_mean = mean(samp)
 
-sde = sd(samp)/sqrt(50)
-
-qnorm(0.5)
+sde = sd(population)/sqrt(n)
 
 lower = sample_mean + qnorm(0.025) * sde
 upper = sample_mean + qnorm(0.975) * sde
+c(lower,upper)
+
+#如果母體變異數未知，以樣本變異數來估計母體變異數，並改用t檢定
+sde_t = sd(samp) / sqrt(n)
+lower_t = sample_mean + qt(p=0.025,df=n-1) * sde_t
+upper_t = sample_mean + qt(p=0.975,df=n-1) * sde_t
+c(lower_t,upper_t)
 
 #t distribution
 curve(dnorm(x), -5, 5, col="black")
@@ -214,15 +296,14 @@ coke = c(278,289,291,291,291,285,295,278,304,287,291,287,288,300,309,280,294,283
 sde <- pop_sd / sqrt(length(coke))
 #sde = sd(coke)
 
-z   <- (mean(coke) - pop_mean) / sde
+z <- (mean(coke) - pop_mean) / sde
 z
-curve(dnorm(x), -3,3)
-p   <- (1 - pnorm(abs(z))) * 2
+p <- (1 - pnorm(abs(z))) * 2
 p
-################
+
 p2 <- pnorm(z)
 p2
-#p2 < alpha / 2 = 0.025 => reject H0
+
 
 load("Statistics/cdc.Rdata")
 names(cdc)
@@ -268,6 +349,7 @@ help(package ="stats")
 
 #use asbio package
 install.packages('asbio')
+
 library(asbio)
 
 #testing
@@ -276,7 +358,7 @@ one.sample.z(data = samp,null.mu = pop_mean,sigma = pop_sd,alternative = 'greate
 #C.I
 ci.mu.z(data = samp,conf = 0.95,sigma = pop_sd,summarized = T,xbar = mean(samp),n = length(samp) )
 
-
+ci.mu.t(data = samp,conf = 0.95,sd = sde_t,summarized = T,xbar = mean(samp),n = length(samp) )
 ```
 
 ##Covariance & Correlation

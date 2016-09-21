@@ -84,7 +84,7 @@ f1 = function(a = 3) {
 }
 
 f2 = function(a, b = 2, c = NULL) {
-   a + b
+   return(b + 1)
 }
 
 b = 3
@@ -206,7 +206,7 @@ pie(table(cdc$genhlth),col = rainbow(5))
 #加上各分類比例
 pct = round(table(cdc$genhlth) / length(cdc$genhlth) *100,1)
 labels = paste(names(pct),pct,"%")
-pie(pct, labels = labels)
+pie(table(cdc$genhlth), labels = labels)
 
 gender_smokers = table(cdc$gender,cdc$smoke100)
 mosaicplot(gender_smokers)
@@ -220,7 +220,7 @@ hist(cdc$height,breaks = 30)
 hist(cdc$height,breaks = 50)
 
 stem(cdc$age)
-sample(cdc$age,100)
+tmp=sample(cdc$age,100)
 stem(sample(cdc$age,100))
 ?stem
 stem(sample(cdc$age,100),scale=2)
@@ -291,74 +291,4 @@ boxplot(b,horizontal = T)
 var(cdc$weight)
 sqrt(var(cdc$weight))
 sd(cdc$weight)
-```
-
-##package:ggplot2
-documentation
-- http://docs.ggplot2.org/current/
-
-cheat sheet
-- https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf
-
-why ggplot2?
-- fancy by default, good for demo and report 
-- consistent across all kinds of plot in syntax and behavior
-- strong support community(the mostly download package on CRAN)
-```{R}
-#basic syntax
-#ggplot(data,aes(x,y,group,...))+geom_object(...)
-install.packages('ggplot2')
-library('ggplot2')
-g <- ggplot(cdc,aes(x=height,y=weight))
-g+geom_point(aes(col=exerany))
-
-g <- ggplot(cdc,aes(x=genhlth))
-g+geom_bar()
-g+geom_bar() + ylab('Count') + ggtitle('cdc')
-#fill => 填滿顏色; color => 邊線顏色
-g+geom_bar(fill='snow',color='black')
-
-g <- ggplot(cdc,aes(x=genhlth,fill=gender))
-g+geom_bar()
-
-g_bygrp <- ggplot(cdc,aes(x=exerany,fill=genhlth))
-g_bygrp + geom_bar()
-g_bygrp + geom_bar(position='stack')
-g_bygrp + geom_bar(position='dodge')
-g_bygrp + geom_bar(position='identity')
-
-precounted = as.data.frame(table(cdc$genhlth,dnn = c('genhlth')))
-precounted
-ggplot(precounted,aes(x=genhlth,y=Freq))+ geom_bar(stat='identity')
-
-g <- ggplot(cdc,aes(x=genhlth,y=height))
-g + geom_boxplot()
-
-ggplot(cdc,aes(x=height,fill=genhlth)) + geom_bar(position = 'identity', alpha=0.7)
-
-ggplot(cdc,aes(x=height,fill=genhlth)) + geom_density(position = 'identity', alpha=0.4)
-
-ggsave(filename='your_file_name.png',plot = g)
-```
-
-#Inferential Statistics
-##Probability
-```{R}
-sample(1:10)
-sample(1:10, size = 5)
-sample(c(0,1), size= 10, replace = T)
-sample.int(20, 12) # 兩個參數都要放整數，此例為取1:20中的12個不重複樣本
-
-coins = c("heads", "tails")
-fair_coin = sample(coins, size = 10000, replace = TRUE)
-table(fair_coin)
-
-#連續投擲硬幣3次
-flipping_coin = function(n){sample(0:1,size=n,rep=T)}
-flipping_coin(100)
-flipping_coin_three_times = flipping_coin(100) + flipping_coin(100) + flipping_coin(100)
-flipping_coin_three_times
-table(flipping_coin_three_times)
-barplot(table(flipping_coin_three_times))
-
 ```
