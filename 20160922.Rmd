@@ -23,6 +23,7 @@ install.packages('ggplot2')
 library('ggplot2')
 g <- ggplot(cdc,aes(x=height,y=weight))
 g+geom_point(aes(col=exerany))
+g+geom_point(aes(col=exerany))
 
 g <- ggplot(cdc,aes(x=genhlth))
 g+geom_bar()
@@ -80,7 +81,6 @@ barplot(table(flipping_coin_three_times))
 
 ```
 
-
 ##常見間斷機率分配
 ```{R}
 #binomial distribution (size=1 => bernoulli distribution) 
@@ -91,7 +91,7 @@ b = rbinom(n = 20,size= 10,prob= 0.5)
 table(b)
 barplot(table(b))
 
-barplot(table(rbinom(100, 3, 0.5))) #連續投3次硬幣例子
+barplot(table(rbinom(n=100, size=3, prob=0.5))) #連續投3次硬幣例子
 
 barplot(table(rbinom(100, 1, 0.5)))
 #機率分配的高度(間斷分配 =>　該事件發生機率；連續分配 => y軸高度，無特別意義)
@@ -115,7 +115,7 @@ qbinom(p = 1,size = 3,prob = 0.5)
 
 #poisson distribution
 #單位時間內某事件發生次數的機率分佈
-#參數λ 是單位時間內隨機事件的平均發生率
+#參數λ 是單位時間內隨機事件的平均發生次數
 #eg: 車站的候客人數、機器出現的故障次數、自然災害發生的次數
 rpois(n = 10,lambda = 3)
 barplot(table(rpois(n = 10,lambda = 3)))
@@ -158,7 +158,7 @@ qunif(p=0.3,min = 0,max = 1)
 
 #normal distribution(標準常態分佈=> mean=0 , sd=1)
 rnorm(n=1000,mean = 3,sd = 2)
-hist(rnorm(1000,mean = 3,sd = 2))
+hist(rnorm(100000,mean = 3,sd = 2))
 
 par(mfrow=c(3,1))
 xlimits = range(-10,10)
@@ -172,7 +172,7 @@ hist(rnorm(10000,mean = 6,sd = 1),xlim=xlimits)
 par(mfrow=c(1,1))
 curve(dnorm(x,mean=2,sd=1),-5,5)
 
-pnorm(1)
+pnorm(1) - pnorm(-1)
 
 curve(dnorm, -3,3)
 pnorm(2) - pnorm(-2)
@@ -195,6 +195,7 @@ polygon(x,y, col = "red")
 load('Statistics/ames.Rdata')
 area = ames$Gr.Liv.Area
 hist(area)
+
 qqnorm(area)
 qqline(area,col='red')
 shapiro.test(area) # 檢查是否符合常態分配，p值<0.05拒絕假設其為常態分配的虛無假設
@@ -203,6 +204,8 @@ a = rnorm(1000)
 qqnorm(a)
 qqline(a,col='red')
 shapiro.test(a)
+
+
 b = rpois(1000, lambda = 3)
 hist(b)
 shapiro.test(b)
@@ -228,6 +231,7 @@ hist(sample_means100, breaks = 20, xlim = xlimits)
 
 pop_mean = mean(area)
 pop_var = var(area)
+
 sample_mean = mean(sample_means50)
 sample_var = var(sample_means50)
 pop_mean
@@ -258,137 +262,4 @@ CLT(runif(n=100000,min = 0,max = 1)) # 用參數為 a=0, b=1 的均等分布驗�
 CLT(rpois(n=100000, lambda = 4)) # 用參數為 lambda=4 的布瓦松分布驗證中央極限定理。
 CLT(rgeom(n=100000, prob = 0.7)) # 用參數為 p=0.5 的幾何分布驗證中央極限定理。
 
-```
-
-##Confidence Interval
-```{R}
-population = ames$Gr.Liv.Area
-mean(population)
-n=50
-
-samp = sample(population, n)
-sample_mean = mean(samp)
-
-sde = sd(population)/sqrt(n)
-
-lower = sample_mean + qnorm(0.025) * sde
-upper = sample_mean + qnorm(0.975) * sde
-c(lower,upper)
-
-#如果母體變異數未知，以樣本變異數來估計母體變異數，並改用t檢定
-sde_t = sd(samp) / sqrt(n)
-lower_t = sample_mean + qt(p=0.025,df=n-1) * sde_t
-upper_t = sample_mean + qt(p=0.975,df=n-1) * sde_t
-c(lower_t,upper_t)
-
-#t distribution
-curve(dnorm(x), -5, 5, col="black")
-#curve(dt(x, df=10), -5, 5, col="green", add=T)
-curve(dt(x, df=2), -5, 5, col="red", add=T)
-```
-
-##Testing hypothesis
-```{R}
-pop_mean <- 300
-pop_sd <- 10
-coke = c(278,289,291,291,291,285,295,278,304,287,291,287,288,300,309,280,294,283,292,306)
-
-sde <- pop_sd / sqrt(length(coke))
-#sde = sd(coke)
-
-z <- (mean(coke) - pop_mean) / sde
-z
-p <- (1 - pnorm(abs(z))) * 2
-p
-
-p2 <- pnorm(z)
-p2
-
-
-load("Statistics/cdc.Rdata")
-names(cdc)
-hist(cdc$height)
-boxplot(cdc$height)
-boxplot(cdc$height~ cdc$gender)
-
-pop_mean = mean(cdc$height)
-pop_sd = sd(cdc$height)
-
-set.seed(123)
-samp1 = sample(cdc[cdc$gender == 'm',]$height, 20)
-boxplot(samp1)
-abline(h = pop_mean, col= "red")
-sde <- pop_sd / sqrt(length(samp1))
-z   <- (mean(samp1) - pop_mean) / sde
-
-# two sample means are equal
-p   <- (1 - pnorm(abs(z))) * 2
-
-# the mean height of the sample is taller than the mean height of the population
-p   <- 1- pnorm(z)
-
-z.test <- function(x, pop_mean, pop_sd, side="twoside"){
-  sde <- pop_sd / sqrt(length(x))
-  z   <- (mean(x) - pop_mean) / sde
-
-  switch(side, 
-         twoside={
-           p   <- (1 - pnorm(abs(z))) * 2
-         },
-         less={
-           p   <- pnorm(z)
-         },
-         greater={
-           p   <- 1- pnorm(z)
-         }
-  )
-  return(list(z = z , p = p))
-}
-
-help(package ="stats")
-
-#use asbio package
-install.packages('asbio')
-
-library(asbio)
-
-#testing
-one.sample.z(data = samp,null.mu = pop_mean,sigma = pop_sd,alternative = 'greater')
-
-#C.I
-ci.mu.z(data = samp,conf = 0.95,sigma = pop_sd,summarized = T,xbar = mean(samp),n = length(samp) )
-
-ci.mu.t(data = samp,conf = 0.95,sd = sde_t,summarized = T,xbar = mean(samp),n = length(samp) )
-```
-
-##Covariance & Correlation
-```{R}
-x = c(160,170,180)
-y = c(64, 68, 72)
-
-cov_xy = sum((x - mean(x)) * (y - mean(y))) / 2
-cov_xy
-
-cov(x,y)
-
-cor_xy = cov(x,y) / (sd(x) * sd(y))  
-cor_xy
-
-cor(x,y)
-
-plot(x,y)
-
-data(mtcars)
-mtcars
-
-cov(mtcars)
-cor(mtcars)
-cov(mtcars[1:3])
-
-gdp = read.csv("data/gdp.csv",header=TRUE)
-
-gdp = gdp[1:15,]
-gdp$GDP = as.numeric(sub(",", "", gdp$GDP))
-gdp$Export = as.numeric(sub(",", "", gdp$Export))
-cor(gdp$Export, gdp$GDP)
 ```

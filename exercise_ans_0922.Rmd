@@ -41,7 +41,7 @@ ggsave(filename='iris_scatter_plot.png',plot = g1)
 
 ##兩骰子和的機率分配
 ```{R}
-rolling_dice = function(n){sample(1:6,n,rep=T)}
+rolling_dice = function(n){sample(1:6,size=n,rep=T)}
 rolling_dice(100)
 sum_of_two_dice = rolling_dice(10000) + rolling_dice(10000)
 sum_of_two_dice
