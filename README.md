@@ -11,5 +11,5 @@ riii
 - http://course.largitdata.com/course/33
 
 ## Download RStudio
-- https://download1.rstudio.org/RStudio-0.99.484.exe
+- https://download1.rstudio.org/RStudio-1.0.44.exe 
 - http://course.largitdata.com/course/34
