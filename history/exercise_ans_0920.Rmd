@@ -1,0 +1,84 @@
+---
+title: "exercise_ans_0517"
+author: "York Lin"
+date: "2016年5月16日"
+output: html_document
+---
+
+##page72
+```{R}
+nine_nine = function(){
+  mat = matrix(rep(1,9^2),nrow = 9)
+  for(i in 1:9){
+    for(j in 1:9){
+      #mat[i,j] = i * j;
+      mat[i,j] = paste(i,"*",j,"= ",i*j)
+    }
+  }
+  mat
+}
+
+nine_nine2 = function(){
+  mat1 = matrix(1:9, nrow = 9);
+  mat2 = matrix(1:9, nrow = 1);
+  mat = mat1 %*% mat2;
+  mat
+}
+```
+
+##p76
+```{R}
+match_func = function(filename= "data/match.txt"){
+  mat = matrix(rep(-1,25), nrow=5, ncol = 5)
+  rownames(mat) = c("A","B","C","D","E")
+  colnames(mat) = c("A","B","C","D","E")
+  
+  match = read.table(filename, sep= "|")
+  for (i in 1:nrow(match)){
+    mat[match[i,1], match[i,2]] = match[i,3];
+  }
+  mat
+}
+```
+
+##p76-2
+```{R}
+match_func = function(filename){
+  t = read.table(filename,sep = '|');
+  mat = matrix(rep(-1,length(levels(t[,1]))^2), nrow = length(levels(t[,1])), dimnames = list(levels(t[,1]),levels(t[,2])));
+  for(i in 1:nrow(t)){
+    mat[t[i,1], t[i,2]] = t[i,3];
+  }
+  mat
+}
+```
+
+##iris 
+```{R}
+data(iris)
+str(iris)
+table(iris$Species)
+
+range(iris$Sepal.Width)
+cut(iris$Sepal.Width,seq(1.5,4.5,by=0.5))
+table(cut(iris$Sepal.Width,seq(1.5,4.5,by=0.5),right = F,labels = seq(1,length(seq(1.5,4.5,by=0.5))-1)))
+
+barplot(table(iris$Species))
+pie(table(iris$Species))
+pct = round(table(iris$Species) / length(iris$Species) *100,1)
+labels = paste(names(pct),pct,"%")
+pie(pct, labels = labels)
+
+hist(iris$Sepal.Width)
+stem(iris$Sepal.Length,scale = 0.5)
+boxplot(iris$Sepal.Width ~ iris$Species)
+boxplot(iris$Sepal.Length ~ iris$Species)
+
+plot(iris$Sepal.Width,iris$Sepal.Length)
+plot(iris$Petal.Length,iris$Petal.Width,col=iris$Species)
+plot(iris)
+plot(iris,col=iris$Species)
+
+summary(iris)
+
+```

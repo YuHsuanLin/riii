@@ -1,0 +1,411 @@
+---
+title: "R_0913"
+author: "York Lin"
+date: "2016年7月11日"
+output: html_document
+---
+what is R?
+- https://zh.wikipedia.org/wiki/R%E8%AF%AD%E8%A8%80
+
+R vs Python?
+- https://www.datacamp.com/community/tutorials/r-or-python-for-data-analysis
+
+most popular programming language for analytics
+- http://www.kdnuggets.com/2015/05/poll-r-rapidminer-python-big-data-spark.html
+- http://www.kdnuggets.com/polls/2015/r-vs-python.html
+
+Kaggle
+- https://www.kaggle.com/
+
+##R intro
+Functional Programming
+```{r, echo=TRUE}
+x=1:5
+sum(x) 
+mean(x)
+var(x)
+sqrt(var(x))
+
+y = 10/3
+ceiling(y)
+floor(y)
+round(y)
+trunc(y)
+pi
+log(3)
+log2(3)
+abs(-3)
+sqrt(16)
+```
+Object Oriented Language
+- http://rightthewaygeek.blogspot.tw/2013/10/r-oop1-class.html
+- http://blog.fens.me/r-class-s3/
+- http://stackoverflow.com/questions/27219132/creating-classes-in-r-s3-s4-r5-rc-or-r6
+```{r}
+#S4 class example
+setClass("BMI",
+  representation(
+    name = "character",
+    weight = "numeric",
+    height = "numeric"
+  )         
+)
+setMethod(f='show',"BMI",function(obj){
+            BMI <-obj@weight/((obj@height/100)^2)
+            cat(obj@name,"\n")
+            cat("BMI= ",BMI)
+          }
+)
+john <- new("BMI",name="JOHN",weight=70,height=182)
+
+```
+
+
+## RDemo
+```{r RDemo, echo=TRUE}
+#安裝car套件
+install.packages("car")
+#引用car套件
+library("car")
+#使用範例資料Quartet
+data(Quartet)
+#利用Quartet資料x和y1變數畫出點散佈圖
+plot(Quartet$x, Quartet$y1)
+#建立回歸模型並assign到fit變數中
+fit = lm(Quartet$y1 ~ Quartet$x)
+#在plot畫出的點散佈圖上加上迴歸線
+abline(fit, col="red")
+```
+
+##Basic type
+- num: 1,2,1.2
+- integer: 1L,2L,3L
+- chracter: "string"
+- logical: TRUE,FALSE
+- complex: 1+4i
+
+## Basic Objects
+atomic:
+(由相同資料型態組成)
+- vector
+- matrix
+- factor
+
+recursive:
+(可以有混合的資料型態)
+- dataframe
+- list
+
+##R basic command
+```{R}
+#文件查詢
+help(package="base")
+?base:sum
+?sum
+help.search("sum")
+??sum
+
+#範例演釋
+demo()
+
+#使用內建資料集
+data()
+
+#看現有變數
+ls()
+#移除變數
+rm()
+#查看資料型態
+# difference between class, typeof, and mode
+#http://stackoverflow.com/questions/6258004/r-types-and-classes-of-variables
+class()
+typeof()
+mode()
+
+class(1)
+typeof(1L)
+mode(1L)
+
+class(matrix(1:9))
+typeof(matrix(1:9))
+mode(matrix(1:9))
+
+#查看資料結構
+str()
+
+str(c(1,2,3))
+```
+
+##Basic computing
+```{R, echo=TRUE}
+3+8
+3-8
+3*8
+3/8
+1/0
+11%%2
+3<4
+2==5
+T == TRUE
+
+```
+
+##Assignment
+```{R}
+a = 3
+a <- 5 # ( alt + - )
+assign("a",3)
+
+a / 2
+a = a / 2
+
+fit = lm(y1 ~ x, data =Quartet)
+fit <- lm(y1 ~ x, data =Quartet)
+```
+
+##Vector
+- R語言最基本的物件
+```{R, echo=TRUE}
+character(5)  ## character vector of length 5
+numeric(5)
+logical(5)
+x = c(1,2,3,7)
+y= c(2,3,5,1)
+x+y
+x*y
+x - y
+x/y
+
+x + 10
+x + c(10)
+x + c(1,2)
+x + c(1,2,1,2)
+
+x == c(1,99,3,4)
+
+c(1,2,3)
+c(1, TRUE, "three")
+c(2,T,3)
+c(c(1,2,3,4),c(5))
+
+x = c(1,2,3,4,NA)
+is.na(x)
+sum(x)
+sum(x, na.rm=T)
+
+height_vec = c(180,169,173)
+height_vec
+names(height_vec) = c("Brian", "Toby", "Sherry")
+height_vec
+
+name_vec = c("Brian", "Toby", "Sherry")
+names(height_vec) = name_vec
+height_vec > 175
+height_vec / 100
+height_vec > 175 | height_vec < 170
+height_vec < 175 & height_vec > 170
+
+#R 的index從1開始
+height_vec[1] #index
+height_vec['Brian'] #variable name
+height_vec[height_vec > 175] #condition (boolean vector)
+
+```
+
+##seq() & rep() & paste()
+```{R, echo=TRUE}
+1:20
+seq(1,20)
+20:1
+?seq
+seq(1,20,by=2)
+seq(1,20,length=2)
+
+x <- seq(1, 20, by=0.1)
+y <- sin(x)
+#y <- cos(x)
+plot(x, y)
+
+rep(1,5)
+?rep
+rep(c(1,2), times=5)
+rep(c(1,2), times=c(1,2))
+rep(c(1,2), each=5)
+rep_len(c(1,2),5)
+
+paste("the","big","bang","theory")
+paste("big","bang",sep="")
+paste("big","bang",sep=";")
+paste(c("big","bang"),1:4)
+length(paste(c("big","bang"),1:4,collapse = "+" ))
+```
+
+##Matrix
+```{R}
+matrix(1:9, byrow=TRUE, nrow=3)
+matrix(1:9, nrow=3)
+kevin = c(85,73)
+marry = c(72,64)
+jerry = c(59,66)
+mat = matrix(c(kevin, marry, jerry), nrow=3, byrow= TRUE)
+colnames(mat) = c('first', 'second')
+rownames(mat) = c('kevin', 'marry', 'jerry')
+mat
+
+# basic
+dim(mat)
+nrow(mat)
+ncol(mat)
+t(mat) #transpose
+mat[1,]
+mat[,1]
+mat[1:2,]
+mat[c('kevin','jerry'),]
+mat[c('kevin','jerry'),'first']
+rowSums(mat)
+colSums(mat)
+
+# insert new value
+mat2 = rbind(mat, c(78,63))
+rownames(mat2)[nrow(mat2)] = 'sam'
+mat2
+
+mat3 = cbind(mat2,c(82,77,70,64))
+colnames(mat3)[ncol(mat3)] = 'third'
+mat3
+
+rowMeans(mat3)
+colMeans(mat3)
+
+
+# arithmetic
+m1 = matrix(1:4, byrow=TRUE, nrow=2)
+m2 = matrix(5:8, byrow=TRUE, nrow=2)
+
+m1 + m2
+m1 - m2
+m1 * m2
+m1 / m2
+
+m1 %*% m2
+
+```
+
+##Factor
+```{R}
+# syntax
+weather= c("sunny","rainy", "cloudy", "rainy", "cloudy")
+class(weather)
+weather_category = factor(weather)
+weather_category
+class(weather_category)
+# order
+temperature = c("Low", "High", "High", "Medium", "Low", "Medium")
+temperature_category = factor(temperature, order = TRUE, levels = c("Low", "Medium", "High"))
+temperature_category
+temperature_category[3] > temperature_category[1]
+temperature_category[4] > temperature_category[3]
+
+# change levels name
+weather= c("s","r", "c", "r", "c")
+weather_factor = factor(weather)
+levels(weather_factor) = c("cloudy","rainy","sunny")
+weather_factor
+```
+
+##Dataframe
+```{R}
+df = data.frame(a=c(1,2,3,4,5),b=c('2','3','4','5','6'))
+df
+class(df)
+str(df)
+
+name <- c("Joe", "Bob", "Vicky")
+age <- c("28", "26", "34")
+gender <- c("Male","Male","Female")
+data <- data.frame(name, age, gender)
+
+data(iris)
+head(iris)
+tail(iris)
+tail(iris, 10)
+str(iris)
+
+iris[1:3,]
+iris[1:3,1]
+iris[1:3,"Sepal.Length"]
+head(iris[,1:2])
+iris$"Sepal.Length"
+
+#取前五筆包含length 及 width 的資料
+Five.Sepal.iris = iris[1:5, c("Sepal.Length","Sepal.Width")]
+#可以用條件做篩選
+setosa.data = iris[iris$Species=="setosa",1:5]
+str(setosa.data)
+
+#使用which 做資料篩選
+which(iris$Species=="setosa")
+
+#attach() detach()
+attach(iris)
+Species
+setosa.data = iris[Species=="setosa",1:5]
+###注意attach只是目前資料集的快照(snapshot),若原始資料有更動,attach中的資料不會跟著變動
+iris[1,1]
+iris[1,1] = 5.5
+head(iris)
+Sepal.Length[1]
+detach()
+
+#merge進行資料合併
+flower.type = data.frame(Species = "setosa", Flower = "iris")
+merge(flower.type, iris[1:3,], by ="Species")
+
+df1 = data.frame(CustomerId = c(1:6), Product = c(rep("Toaster", 3), rep("Radio", 3)))
+df2 = data.frame(CustomerId = c(2, 4, 6), State = c(rep("Alabama", 2), rep("Ohio", 1)))
+
+#Inner join:
+merge(x = df1, y= df2, by="CustomerId")
+
+#Outer join: 
+merge(x = df1, y = df2, by = "CustomerId", all = TRUE)
+
+#Left outer: 
+merge(x = df1, y = df2, by = "CustomerId", all.x = TRUE)
+
+#Right outer: 
+merge(x = df1, y = df2, by = "CustomerId", all.y = TRUE)
+
+#Cross join: 
+merge(x = df1, y = df2, by = NULL)
+
+#用order做資料排序
+iris[order(iris$Sepal.Length, decreasing = TRUE),]
+
+#資料轉換
+iris$Species_new <- ifelse(iris$Species %in% c("setosa"), "IsSetosa","Notsetosa")
+
+#繪圖
+table.iris = table(iris$Species)
+pie(table.iris)
+hist(iris$Sepal.Length)
+
+boxplot(Petal.Width ~ Species, data = iris)
+plot(x=iris$Petal.Length, y=iris$Petal.Width, col=iris$Species)
+
+```
+
+##File read and write
+```{R}
+getwd()
+setwd("C:/Users/BigData/Desktop")
+tw2330 = read.csv("table.csv", header=TRUE)
+
+test.data = read.table("data/match.txt" ,header = TRUE, sep="|")
+
+#table
+write.table(test.data, file = "data/test.txt" , sep = " ")
+#csv
+write.csv(test.data, file = "data/test.csv")
+
+```

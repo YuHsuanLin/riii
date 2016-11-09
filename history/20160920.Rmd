@@ -1,0 +1,294 @@
+---
+title: "R_0920"
+author: "York Lin"
+date: "2016年7月16日"
+output: html_document
+---
+
+##List
+```{R}
+item = list(thing="hat", size=8.25)
+item
+
+test = list(name="Toby", score = c(87,57,72))
+test$score
+test$score[2]
+
+flower= list(title="iris dataset", data= iris)
+class(flower)
+class(flower$data)
+flower$data[1,"Sepal.Width"]
+```
+
+##Flow Control
+```{R}
+
+x=5;
+if(x>3){
+  print
+  ("x > 3");
+}else{
+  print
+  ("x <= 3");
+}
+
+if(x>3) print("x>3") else print("x<=3")
+
+test = ifelse(x>3,"x > 3","x <= 3")
+test
+
+x=5;
+if(x>3){
+  print ("x > 3");
+} else if (x ==3){
+  print ("x == 3");
+}else{
+  print
+  ("x <= 3");
+}
+
+switch(2,print("aaa"),print("bbb"),print("ccc"))
+switch("third",first=print("aaa"),second=print("bbb"),third=print("ccc"))
+
+for(i in 1:10){
+  print(i);
+}
+
+sum=0
+for(i in 1:100){
+  sum= sum+ i;
+}
+sum
+
+sum(1:100)
+
+
+sum = 0;
+cnt = 0;
+while(cnt <= 100){
+  sum = sum + cnt;
+  cnt = cnt + 1;
+}
+sum
+```
+
+
+##Function
+```{R}
+f = function(a){
+    print(a+3)
+}
+
+f1 = function(a = 3) {
+    a+3
+}
+
+f2 = function(a, b = 2, c = NULL) {
+   return(b + 1)
+}
+
+b = 3
+f3 = function(a) {
+    b = 2
+    b
+}
+
+f4 = function(a,b){
+    if(a > 3){
+       a = 100;
+    }
+    return(a + b);
+}
+```
+
+##lapply sapply apply tapply
+```{R}
+grades =list(kevin = c(80,60,92), marry = c(56,75,64,84,56), QOO = c(10,20,3,4,10))
+
+lapply(grades, sum)
+
+unlist(grades[1])
+
+for (i in 1:length(grades)){
+      print(sum(unlist(grades[i])));
+}
+
+lapply(grades, mean)
+lapply(grades, function(e){list(sum = sum(e), min = min(e))})
+
+m1 = matrix(1:4, byrow=TRUE, nrow=2)
+m2 = matrix(5:8, byrow=TRUE, nrow=2)
+
+li = list(m1, m2)
+lapply(li, mean)
+
+class(lapply(grades, sum))
+sapply(grades, sum)
+class(sapply(grades, sum))
+
+m1 = matrix(1:4, byrow=TRUE, nrow=2)
+m2 = matrix(5:8, byrow=TRUE, nrow=2)
+li = list(m1, m2)
+sapply(li, mean)
+sapply(li,function(e) e[1,])
+
+m = matrix(1:4, byrow=TRUE, nrow=2)
+apply(m, 1, sum) # rowsums
+apply(m, 2, sum) # colsums
+
+rowmeans = apply(m, 1, mean)
+colmeans = apply(m, 2, mean)
+
+x = c(80,70,59,88,72,57)
+t = c(1,1,2,1,1,2)
+tapply(x,t, mean)
+
+data(iris)
+
+tapply(iris$Sepal.Length, iris$Species, mean)
+
+```
+
+# Descriptive Statistics
+##表格
+```{R}
+#import data
+getwd()
+setwd("~/lecture/riii")
+load("Statistics/cdc.Rdata")
+str(cdc)
+head(cdc)
+names(cdc)
+
+#轉換資料類型
+cdc$exerany = as.factor(cdc$exerany)
+cdc$hlthplan = as.factor(cdc$hlthplan)
+cdc$smoke100 = as.factor(cdc$smoke100)
+
+str(cdc)
+
+#一維次數分配表
+table(cdc$exerany)
+
+#相對比例
+table(cdc$exerany) / length(cdc$exerany)
+
+#二維次數分配表
+table(cdc$gender,cdc$exerany)
+
+#連續型資料作表
+table(cdc$height)
+summary(cdc$height)
+cut(cdc$height,seq(45,95,by=5))
+
+#包含上界不包含下界
+table(cut(cdc$height,seq(45,95,by=5),right=T))
+
+#包含下界不包含上界
+table(cut(cdc$height,seq(45,95,by=5),right=F)) 
+table(cut(cdc$height,seq(45,95,by=5),right=F,labels=seq(1,length(seq(45,95,by=5))-1)))
+cdc$h_group = cut(cdc$height,seq(45,95,by=5),right=F)
+str(cdc)
+
+```
+
+##統計圖
+```{R}
+#屬貭資料: 長條圖、圓餅圖
+barplot(table(cdc$smoke100))
+?barplot
+barplot(table(cdc$smoke100),xlab='有無吸菸',ylab='人數',main='title',col='blue')
+
+pie(table(cdc$smoke100))
+pie(table(cdc$genhlth))
+pie(table(cdc$genhlth),col = rainbow(5))
+
+#加上各分類比例
+pct = round(table(cdc$genhlth) / length(cdc$genhlth) *100,1)
+labels = paste(names(pct),pct,"%")
+pie(table(cdc$genhlth), labels = labels)
+
+gender_smokers = table(cdc$gender,cdc$smoke100)
+mosaicplot(gender_smokers)
+
+#屬量資料: 直方圖、盒鬚圖、莖葉圖
+hist(cdc$age)
+
+par(mfrow=c(3,1))
+hist(cdc$height)
+hist(cdc$height,breaks = 30)
+hist(cdc$height,breaks = 50)
+
+stem(cdc$age)
+tmp=sample(cdc$age,100)
+stem(sample(cdc$age,100))
+?stem
+stem(sample(cdc$age,100),scale=2)
+
+boxplot(cdc$weight)
+boxplot(cdc$weight, horizontal=TRUE)
+par(mfrow=c(1,1))
+boxplot(cdc$weight ~ cdc$gender)
+boxplot(cdc$height ~ cdc$gender)
+
+bmi = (cdc$weight/cdc$height^2) * 703
+boxplot(bmi ~ cdc$genhlth)
+
+#觀察兩組資料間關係:點散布圖
+plot(cdc$weight, cdc$height)
+plot(cdc$weight, cdc$wtdesire)
+
+```
+
+##統計量
+```{R}
+#集中量數:mean median mode
+
+a = c(100,120,130,110,100,90,80,90,100,110)
+sum(a) / 10
+mean(a)
+
+#有極端值
+b = c(a, 10000)
+mean(b)
+
+a
+sort(a)
+median(a)
+
+sort(b)
+median(b)
+
+table(c(1,4,4,3))
+which.max(table(c(1,4,4,3)))
+names(which.max(table(c(1,4,4,3))))
+
+mean(cdc$weight)
+median(cdc$weight)
+names(which.max(table(cdc$h_group)))
+
+#離差量數:range IQR variance stardard deviation
+
+a = c(173,162,150,160,155,168,171,185,175,178,182)
+sort(a)
+range(a)
+
+quantile(a,0.5)
+quantile(a,0.25)
+quantile(a,0.75)
+quantile(a,0.75) - quantile(a,0.25)
+IQR(a)
+fivenum(a)
+
+boxplot(a,horizontal = T)
+
+b = c(a,226)
+range(b)
+IQR(b)
+boxplot(b,horizontal = T)
+
+
+var(cdc$weight)
+sqrt(var(cdc$weight))
+sd(cdc$weight)
+```
