@@ -1,25 +1,11 @@
 ---
-title: "R_1111"
-author: "York Lin"
-date: "2016年7月11日"
-output: html_document
+title: "161111_DEMO"
+output: html_notebook
 ---
-what is R?
-- https://zh.wikipedia.org/wiki/R%E8%AF%AD%E8%A8%80
-
-R vs Python?
-- https://www.datacamp.com/community/tutorials/r-or-python-for-data-analysis
-
-most popular programming language for analytics
-- http://www.kdnuggets.com/2015/05/poll-r-rapidminer-python-big-data-spark.html
-- http://www.kdnuggets.com/polls/2015/r-vs-python.html
-
-Kaggle
-- https://www.kaggle.com/
 
 ##R intro
 Functional Programming
-```{r, echo=TRUE}
+```{r}
 x=1:5
 sum(x) 
 mean(x)
@@ -31,33 +17,12 @@ ceiling(y)
 floor(y)
 round(y)
 trunc(y)
+
 pi
 log(3)
 log2(3)
 abs(-3)
 sqrt(16)
-```
-Object Oriented Language
-- http://rightthewaygeek.blogspot.tw/2013/10/r-oop1-class.html
-- http://blog.fens.me/r-class-s3/
-- http://stackoverflow.com/questions/27219132/creating-classes-in-r-s3-s4-r5-rc-or-r6
-```{r}
-#S4 class example
-setClass("BMI",
-  representation(
-    name = "character",
-    weight = "numeric",
-    height = "numeric"
-  )         
-)
-setMethod(f='show',"BMI",function(obj){
-            BMI <-obj@weight/((obj@height/100)^2)
-            cat(obj@name,"\n")
-            cat("BMI= ",BMI)
-          }
-)
-john <- new("BMI",name="JOHN",weight=70,height=182)
-
 ```
 
 ## RDemo
@@ -72,27 +37,7 @@ lmfit <- lm(y1~x1, data=anscombe)
 abline(lmfit, col="red")
 ```
 
-##Basic type
-- num: 1,2,1.2
-- integer: 1L,2L,3L
-- chracter: "string"
-- logical: TRUE,FALSE
-- complex: 1+4i
-
-## Basic Objects
-atomic:
-(由相同資料型態組成)
-- vector
-- matrix
-- factor
-
-recursive:
-(可以有混合的資料型態)
-- dataframe
-- list
-
-##R basic command
-```{R}
+```{r}
 #文件查詢
 help(package="base")
 ?base:sum
@@ -113,9 +58,6 @@ rm()
 #查看資料型態
 # difference between class, typeof, and mode
 #http://stackoverflow.com/questions/6258004/r-types-and-classes-of-variables
-class()
-typeof()
-mode()
 
 class(1)
 typeof(1L)
@@ -126,11 +68,8 @@ typeof(matrix(1:9))
 mode(matrix(1:9))
 
 #查看資料結構
-str()
-
 str(c(1,2,3))
 ```
-
 ##Basic computing
 ```{R, echo=TRUE}
 3+8
@@ -152,11 +91,9 @@ assign("a",3)
 
 a / 2
 a = a / 2
-
 ```
 
 ##Vector
-- R語言最基本的物件
 ```{R, echo=TRUE}
 character(5)  ## character vector of length 5
 numeric(5)
@@ -176,8 +113,8 @@ x + c(1,2,1,2)
 x == c(1,99,3,4)
 
 c(1,2,3)
-c(2,T,3+0i,"one")
-c(2,T,3+0i)
+c(1, TRUE, "three")
+c(2,T,3)
 c(c(1,2,3,4),c(5))
 
 x = c(1,2,3,4,NA)
@@ -198,7 +135,7 @@ height_vec > 175 | height_vec < 170
 height_vec < 175 & height_vec > 170
 
 #R 的index從1開始
-height_vec[c(1)] #index
+height_vec[1] #index
 height_vec['Brian'] #variable name
 height_vec[height_vec > 175] #condition (boolean vector)
 
@@ -307,13 +244,15 @@ weather_factor
 
 ##Dataframe
 ```{R}
-name <- c("Joe", "Bob", "Vicky")
-age <- c(28, 26, 34)
-gender <- c("Male","Male","Female")
-df <- data.frame(name, age, gender)
+df = data.frame(a=c(1,2,3,4,5),b=c('2','3','4','5','6'))
+df
 class(df)
 str(df)
 
+name <- c("Joe", "Bob", "Vicky")
+age <- c("28", "26", "34")
+gender <- c("Male","Male","Female")
+data <- data.frame(name, age, gender)
 
 data(iris)
 head(iris)
@@ -388,8 +327,8 @@ plot(x=iris$Petal.Length, y=iris$Petal.Width, col=iris$Species)
 ##File read and write
 ```{R}
 getwd()
-setwd("C:/Users/BigData/Desktop")
-tw2330 = read.csv("2330.csv", header=TRUE)
+#setwd("C:/Users/BigData/Desktop")
+tw2330 = read.csv("table.csv", header=TRUE)
 
 test.data = read.table("data/match.txt" ,header = TRUE, sep="|")
 
@@ -398,19 +337,4 @@ write.table(test.data, file = "data/test.txt" , sep = " ")
 #csv
 write.csv(test.data, file = "data/test.csv")
 
-```
-
-##List
-```{R}
-item = list(thing="hat", size=8.25)
-item
-
-test = list(name="Toby", score = c(87,57,72))
-test$score
-test$score[2]
-
-flower= list(title="iris dataset", data= iris)
-class(flower)
-class(flower$data)
-flower$data[1,"Sepal.Width"]
 ```

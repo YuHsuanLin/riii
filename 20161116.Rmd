@@ -1,25 +1,9 @@
 ---
-title: "R_0920"
+title: "R_1116"
 author: "York Lin"
-date: "2016年7月16日"
+date: "2016年11月16日"
 output: html_document
 ---
-
-##List
-```{R}
-item = list(thing="hat", size=8.25)
-item
-
-test = list(name="Toby", score = c(87,57,72))
-test$score
-test$score[2]
-
-flower= list(title="iris dataset", data= iris)
-class(flower)
-class(flower$data)
-flower$data[1,"Sepal.Width"]
-```
-
 ##Flow Control
 ```{R}
 
@@ -71,7 +55,6 @@ while(cnt <= 100){
 }
 sum
 ```
-
 
 ##Function
 ```{R}
