@@ -63,7 +63,7 @@ f = function(a){
 }
 
 f1 = function(a = 3) {
-    a+3
+    return(a+3)
 }
 
 f2 = function(a, b = 2, c = NULL) {
@@ -221,6 +221,11 @@ boxplot(bmi ~ cdc$genhlth)
 plot(cdc$weight, cdc$height)
 plot(cdc$weight, cdc$wtdesire)
 
+
+png(filename='test123.png')
+plot(cdc$weight, cdc$height)
+dev.off()
+
 ```
 
 ##統計量
@@ -269,7 +274,6 @@ b = c(a,226)
 range(b)
 IQR(b)
 boxplot(b,horizontal = T)
-
 
 var(cdc$weight)
 sqrt(var(cdc$weight))
@@ -323,8 +327,7 @@ g + geom_boxplot()
 
 #facet
 g <- ggplot(cdc,aes(x=weight))
-g+ geom_histogram()+facet_wrap(~genhlth)
+g2 = g+ geom_histogram()+facet_wrap(~genhlth)
 
-
-ggsave(filename='your_file_name.png',plot = g)
+ggsave(filename='your_file_name.png',plot = g2)
 ```

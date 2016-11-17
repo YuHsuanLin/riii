@@ -82,19 +82,6 @@ curve(dnorm(x,mean=2,sd=1),-5,5)
 
 pnorm(1) - pnorm(-1)
 
-curve(dnorm, -3,3)
-pnorm(2) - pnorm(-2)
-x = c(-1,seq(-1,1,0.1),1)
-y = c(0,dnorm(seq(-1,1,0.1)),0)
-polygon(x,y, col = "blue")
-
-pnorm(2) - pnorm(-2)
-pnorm(1.96) - pnorm(-1.96)
-
-curve(dnorm, -3,3)
-x = c(-1.96,seq(-1.96,1.96,0.1),1.96)
-y = c(0,dnorm(seq(-1.96,1.96,0.1)),0)
-polygon(x,y, col = "red")
 ```
 
 ##抽樣分配
@@ -195,7 +182,7 @@ c(lower_t,upper_t)
 
 #t distribution
 curve(dnorm(x), -5, 5, col="black")
-#curve(dt(x, df=10), -5, 5, col="green", add=T)
+curve(dt(x, df=2), -5, 5, col="green", add=T)
 curve(dt(x, df=200), -5, 5, col="red", add=T)
 ```
 
