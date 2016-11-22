@@ -17,6 +17,7 @@ sample.int(20, 12) # 兩個參數都要放整數，此例為取1:20中的12個�
 coins = c("heads", "tails")
 fair_coin = sample(coins, size = 10000, replace = TRUE)
 table(fair_coin)
+table(fair_coin) / length(fair_coin)
 
 #連續投擲硬幣3次
 flipping_coin = function(n){sample(0:1,size=n,rep=T)}
@@ -95,22 +96,23 @@ qqnorm(area)
 qqline(area,col='red')
 shapiro.test(area) # 檢查是否符合常態分配，p值<0.05拒絕假設其為常態分配的虛無假設
 
-a = rnorm(1000)
+a = rnorm(1000,mean=0,sd=1)
 qqnorm(a)
 qqline(a,col='red')
 shapiro.test(a)
 
 
-b = rpois(1000, lambda = 3)
+b = rbinom(1000, size=10, prob=0.2)
 hist(b)
 shapiro.test(b)
+
 
 sample_means10 = rep(NA, 5000)
 sample_means50 = rep(NA, 5000)
 sample_means100 = rep(NA, 5000)
 
 for (i in 1:5000){
-    samp = sample(area, 10)
+    samp = sample(area, 10,replace=F)
     sample_means10[i] = mean(samp)
     samp = sample(area, 50)
     sample_means50[i] = mean(samp)
@@ -170,8 +172,8 @@ sample_mean = mean(samp)
 
 sde = sd(population)/sqrt(n)
 
-lower = sample_mean + qnorm(0.025) * sde
-upper = sample_mean + qnorm(0.975) * sde
+lower = sample_mean + qnorm(0.05) * sde
+upper = sample_mean + qnorm(0.95) * sde
 c(lower,upper)
 
 #如果母體變異數未知，以樣本變異數來估計母體變異數，並改用t分配
@@ -183,7 +185,8 @@ c(lower_t,upper_t)
 #t distribution
 curve(dnorm(x), -5, 5, col="black")
 curve(dt(x, df=2), -5, 5, col="green", add=T)
-curve(dt(x, df=200), -5, 5, col="red", add=T)
+curve(dt(x, df=10), -5, 5, col="red", add=T)
+curve(dt(x, df=200), -5, 5, col="yellow", add=T)
 ```
 
 ##Testing hypothesis
@@ -207,41 +210,6 @@ p
 p2 <- pnorm(z)
 p2
 
-#若樣本數小且母體變異數未知，則改用t檢定
-t.test(coke,mu=300)
-
-#example2:
-#(1) 檢定男性平均身高是否和全體平均身高相同
-# H0: 男性平均身高是否和全體平均身高相同
-# H1: 男性平均身高是否和全體平均身高不相同
-
-load("Statistics/cdc.Rdata")
-names(cdc)
-hist(cdc$height)
-boxplot(cdc$height)
-boxplot(cdc$height~ cdc$gender)
-
-pop_mean = mean(cdc$height)
-pop_sd = sd(cdc$height)
-
-qqnorm(cdc$height)
-qqline(cdc$height,col='red')
-
-set.seed(123)
-samp1 = sample(cdc[cdc$gender == 'm',]$height, 20)
-
-boxplot(samp1)
-abline(h = pop_mean, col= "red")
-sde <- pop_sd / sqrt(length(samp1))
-z   <- (mean(samp1) - pop_mean) / sde
-
-# two sample means are equal (two-sided)
-p   <- (1 - pnorm(abs(z))) * 2
-
-# the mean height of the sample is taller than the mean height of the population (one-sided)
-p   <- 1- pnorm(z)
-
-
 z.test <- function(x, pop_mean, pop_sd, side="twoside"){
   sde <- pop_sd / sqrt(length(x))
   z   <- (mean(x) - pop_mean) / sde
@@ -260,11 +228,45 @@ z.test <- function(x, pop_mean, pop_sd, side="twoside"){
   return(list(z = z , p = p))
 }
 
+z.test(coke,pop_mean,pop_sd,side = "twoside")
+
+#若樣本數小且母體變異數未知，則改用t檢定
+t.test(coke,mu=300)
+
+#example2:
+#(1) 檢定男性平均身高是否和全體平均身高相同
+# H0: 男性平均身高是否和全體平均身高相同
+# H1: 男性平均身高是否和全體平均身高不相同
+
+load("Statistics/cdc.Rdata")
+names(cdc)
+hist(cdc$height)
+boxplot(cdc$height)
+boxplot(cdc$height~ cdc$gender)
+
+pop_mean = mean(cdc$height)
+pop_sd = sd(cdc$height)
+
+set.seed(123)
+samp1 = sample(cdc[cdc$gender == 'm',]$height, 20)
+
+boxplot(samp1)
+abline(h = pop_mean, col= "red")
+sde <- pop_sd / sqrt(length(samp1))
+z   <- (mean(samp1) - pop_mean) / sde
+
+# two sample means are equal (two-sided)
+p   <- (1 - pnorm(abs(z))) * 2
+
+# the mean height of the sample is taller than the mean height of the population (one-sided)
+p   <- 1- pnorm(z)
+
+#z-test
 z.test(samp1,pop_mean,pop_sd,side = "twoside")
 
 #t-test
 samp1 = sample(cdc[cdc$gender == 'm',]$height,20)
-t.test(samp1,mu=mean(cdc$height))
+t.test(samp1,mu=pop_mean)
 
 #two sample t-test
 sample_index = sample(1:nrow(cdc),60)
