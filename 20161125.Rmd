@@ -1,67 +1,59 @@
 ---
-title: "R_1004"
+title: "R_1125"
 author: "York Lin"
 date: "2016年7月28日"
 output: html_document
 ---
 
-##ctree
+
+##Review
 ```{R}
 library(C50)
 data(churn)
-str(churnTrain)
-
 variable.list = !names(churnTrain) %in% c('state','area_code','account_length')
 churnTrain=churnTrain[,variable.list]
+str(churnTrain)
 
-ind<-sample(1:2, nrow(churnTrain), replace=T, prob=c(0.7, 0.3))
+set.seed(2)
+#把資料分成training data 和 testing data
+ind<-sample(1:2, size=nrow(churnTrain), replace=T, prob=c(0.7, 0.3))
 trainset=churnTrain[ind==1,]
 testset=churnTrain[ind==2,]
 
-install.packages("party")
-library('party')
-ctree.model = ctree(churn ~ . , data = trainset)
-plot(ctree.model, margin=0.1)
+churn.rp<-rpart(churn ~., data=trainset)
+churn.rp
+summary(churn.rp)
 
-daycharge.model = ctree(churn ~ total_day_charge, data = trainset)
-plot(daycharge.model)
+par(mfrow=c(1,1))
+plot(churn.rp, uniform=TRUE,branch = 0.6, margin=0.1)
+text(churn.rp, all=TRUE, use.n=TRUE)
 
-ctree.predict = predict(ctree.model ,testset)
-table(ctree.predict, testset$churn)
+min(churn.rp$cptable[,"xerror"])
+which.min(churn.rp$cptable[,"xerror"])
+churn.cp = churn.rp$cptable[which.min(churn.rp$cptable[,"xerror"]), "CP"]
+prune.tree=prune(churn.rp, cp=churn.cp)
+
+plot(prune.tree, margin=0.1)
+text(prune.tree, all=TRUE, use.n=TRUE, cex=0.7)
+
+predictions <-predict(prune.tree, testset,type = "class")
+table(testset$churn, predictions)
 
 library(caret)
-confusionMatrix(table(ctree.predict, testset$churn))
-```
-
-##C5.0
-```{R}
-library(C50)
-c50.model = C5.0(churn ~., data=trainset)
-
-?C5.0Control
-
-c=C5.0Control(minCases = 20)
-c50.model = C5.0(churn ~., data=trainset,control = c)
-
-summary(c50.model)
-plot(c50.model)
-
-c50.predict = predict(c50.model,testset)
-table(c50.predict, testset$churn)
-
-confusionMatrix(table(c50.predict, testset$churn))
+library(e1071)
+confusionMatrix(table(predictions, testset$churn))
 ```
 
 ##caret cross-validation
 ```{R}
 install.packages("caret")
 library(caret)
+
 control=trainControl(method="repeatedcv", number=10, repeats=3)
+#control=trainControl(method="repeatedcv", number=10, repeats=3,classProbs = TRUE,summaryFunction = twoClassSummary)
 model =train(churn~., data=trainset, method="rpart", trControl=control)
 model
-predictions = predict(model, testset)
 
-table(predictions,testset$churn)
 ```
 
 ##find importance variable
@@ -136,8 +128,10 @@ predictions <-predict(churn.rp, testset, type="prob")
 head(predictions)
 pred.to.roc<-predictions[, 1]
 head(pred.to.roc)
+?prediction
 pred.rocr<-prediction(pred.to.roc, testset$churn)
 pred.rocr
+?performance
 perf.tpr.rocr<-performance(pred.rocr, "tpr","fpr")
 perf.rocr<-performance(pred.rocr, measure ="auc", x.measure="cutoff")
 plot(perf.tpr.rocr,colorize=T,main=paste("AUC:",(perf.rocr@y.values)))
