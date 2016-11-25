@@ -5,7 +5,6 @@ date: "2016年7月28日"
 output: html_document
 ---
 
-
 ##Review
 ```{R}
 library(C50)
@@ -36,7 +35,7 @@ prune.tree=prune(churn.rp, cp=churn.cp)
 plot(prune.tree, margin=0.1)
 text(prune.tree, all=TRUE, use.n=TRUE, cex=0.7)
 
-predictions <-predict(prune.tree, testset,type = "class")
+predictions <-predict(prune.tree, testset)
 table(testset$churn, predictions)
 
 library(caret)
@@ -68,9 +67,13 @@ library(caret)
 
 control=trainControl(method="repeatedcv", number=10, repeats=3)
 #control=trainControl(method="repeatedcv", number=10, repeats=3,classProbs = TRUE,summaryFunction = twoClassSummary)
-model =train(churn~., data=trainset, method="rpart", trControl=control)
+model =train(churn~., data=trainset, method="nb", trControl=control)
 model
 
+predictions = predict(model, testset)
+
+table(predictions,testset$churn)
+confusionMatrix(table(predictions,testset$churn))
 ```
 
 ##find importance variable
@@ -149,7 +152,7 @@ head(pred.to.roc)
 pred.rocr<-prediction(pred.to.roc, testset$churn)
 pred.rocr
 ?performance
-perf.tpr.rocr<-performance(pred.rocr, "tpr","fpr")
+perf.tpr.rocr<-performance(pred.rocr, measure="tpr",x.measure="fpr")
 perf.rocr<-performance(pred.rocr, measure ="auc", x.measure="cutoff")
 plot(perf.tpr.rocr,colorize=T,main=paste("AUC:",(perf.rocr@y.values)))
 
@@ -213,8 +216,9 @@ hc3 =hclust(dist(customer), method="single")
 plot(hc3, hang =-0.01, cex=0.8)
 
 #分裂式階層式
+install.packages('cluster')
 library(cluster)
-#?diana
+?diana
 dv =diana(customer, metric ="euclidean")
 summary(dv)
 plot(dv)
@@ -405,6 +409,10 @@ summary(churn.knn)
 table(testset$churn, churn.knn)
 
 confusionMatrix(table(testset$churn, churn.knn))
+
+
+control=trainControl(method="repeatedcv", number=10, repeats=1)
+train(churn~., data=trainset, method="knn", trControl=control)
 ```
 
 ##naive bayes
@@ -422,6 +430,9 @@ bayes.table = table(predict(classifier, testset[,!names(testset) %in% c("churn")
 bayes.table
 
 confusionMatrix(bayes.table)
+
+control=trainControl(method="repeatedcv", number=10, repeats=1)
+train(churn~., data=trainset, method="nb", trControl=control)
 ```
 
 ##support vector machine
