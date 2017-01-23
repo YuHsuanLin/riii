@@ -229,6 +229,7 @@ dev.off()
 ```
 
 ##統計量
+mean or median? - https://udn.com/news/story/10560/2091550
 ```{R}
 #集中量數:mean median mode
 
