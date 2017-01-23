@@ -202,7 +202,7 @@ churn.rp<-rpart(churn ~., data=trainset,control = con)
 #畫出決策樹
 par(mfrow=c(1,1))
 plot(churn.rp, margin=0.1)
-plot(churn.rp, uniform=TRUE,branch=0.6, margin=0.1)
+plot(churn.rp, uniform=TRUE,branch = 0.6, margin=0.1)
 ?plot.rpart
 text(churn.rp)
 text(churn.rp, all=TRUE, use.n=TRUE)
@@ -222,11 +222,12 @@ churn.cp = churn.rp$cptable[which.min(churn.rp$cptable[,"xerror"]), "CP"]
 prune.tree=prune(churn.rp, cp=churn.cp)
 
 plot(prune.tree, margin=0.1)
-text(prune.tree, all=TRUE, use.n=TRUE)
+text(prune.tree, all=TRUE, use.n=TRUE, cex=0.7)
 
-predictions <-predict(churn.rp, testset,type = "class")
+predictions <-predict(prune.tree, testset,type = "class")
 table(testset$churn, predictions)
 
+install.packages('caret')
 library(caret)
 confusionMatrix(table(predictions, testset$churn))
 ?confusionMatrix
@@ -240,7 +241,7 @@ library('party')
 ctree.model = ctree(churn ~ . , data = trainset)
 plot(ctree.model, margin=0.1)
 
-daycharge.model = ctree(churn ~ total_day_charge, data = trainset)
+daycharge.model = ctree(churn ~ total_day_charge + international_plan, data = trainset)
 plot(daycharge.model)
 
 ctree.predict = predict(ctree.model ,testset)
@@ -251,6 +252,8 @@ confusionMatrix(table(ctree.predict, testset$churn))
 
 ##C5.0
 ```{R}
+install.packages("C50")
+library(C50)
 c50.model = C5.0(churn ~., data=trainset)
 
 ?C5.0Control

@@ -65,10 +65,9 @@ mean(accuracies)
 install.packages("caret")
 library(caret)
 
-control=trainControl(method="repeatedcv", number=10, repeats=3)
-#control=trainControl(method="repeatedcv", number=10, repeats=3,classProbs = TRUE,summaryFunction = twoClassSummary)
-model =train(churn~., data=trainset, method="nb", trControl=control)
-model
+#control=trainControl(method="repeatedcv", number=10, repeats=3)
+control=trainControl(method="repeatedcv", number=10, repeats=3,classProbs = TRUE,summaryFunction = twoClassSummary)
+model =train(churn~., data=trainset, method="nb", trControl=control)model
 
 predictions = predict(model, testset)
 
