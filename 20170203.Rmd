@@ -20,7 +20,7 @@ table(fair_coin)
 table(fair_coin) / length(fair_coin)
 
 #連續投擲硬幣3次
-flipping_coin = function(n){sample(0:1,size=n,rep=T)}
+flipping_coin = function(n){sample(0:1,size=n,replace=T)}
 flipping_coin(100)
 flipping_coin_three_times = flipping_coin(100) + flipping_coin(100) + flipping_coin(100)
 flipping_coin_three_times
@@ -172,11 +172,12 @@ sample_mean = mean(samp)
 
 sde = sd(population)/sqrt(n)
 
-lower = sample_mean + qnorm(0.05) * sde
-upper = sample_mean + qnorm(0.95) * sde
+lower = sample_mean + qnorm(0.025) * sde
+upper = sample_mean + qnorm(0.975) * sde
 c(lower,upper)
 
 #如果母體變異數未知，以樣本變異數來估計母體變異數，並改用t分配
+n=10
 sde_t = sd(samp) / sqrt(n)
 lower_t = sample_mean + qt(p=0.025,df=n-1) * sde_t
 upper_t = sample_mean + qt(p=0.975,df=n-1) * sde_t

@@ -117,7 +117,7 @@ class()
 typeof()
 mode()
 
-class(1)
+class(1L)
 typeof(1L)
 mode(1L)
 
