@@ -71,7 +71,7 @@ testset=churnTrain[ind==2,]
 
 table(sample(x = 1:2,size = 100, replace=T))
 
-set.seed(8)
+set.seed(1)
 table(sample(x = 1:2,size = 100, replace=T, prob=c(0.7,0.3)))
 
 a = c(1,2,3,4,5,6,7,8,9)
@@ -88,7 +88,7 @@ install.packages('rpart')
 library('rpart')
 #使用rpart(CART)建立決策樹模型
 
-churn.rp<-rpart(churn ~., data=trainset)
+churn.rp<-rpart(churn ~ ., data=trainset)
 churn.rp
 summary(churn.rp)
 
@@ -125,7 +125,9 @@ predictions <-predict(prune.tree, testset,type = "class")
 table(testset$churn, predictions)
 
 install.packages('caret')
-library(caret)
+install.packages('e1071')
+library('caret')
+library('e1071')
 confusionMatrix(table(predictions, testset$churn))
 ?confusionMatrix
 
@@ -174,7 +176,7 @@ ind
 
 accuracies = c()
 for (i in 1:10) {
-  fit = rpart(churn ~., churnTrain[ind != i,])
+  fit = rpart(formula=churn ~., data=churnTrain[ind != i,])
   predictions = predict(fit, churnTrain[ind == i, ! names(churnTrain) %in% c("churn")], type="class")
   correct_count = sum(predictions == churnTrain[ind == i,c("churn")])
   accuracies = append(correct_count / nrow(churnTrain[ind == i,]), accuracies)
@@ -191,7 +193,7 @@ library(caret)
 control=trainControl(method="repeatedcv", number=10, repeats=3)
 model =train(churn~., data=trainset, method="rpart", trControl=control)
 model
-predictions = predict(model, testset[-17])
+predictions = predict(model, testset)
 
 table(predictions,testset$churn)
 ```

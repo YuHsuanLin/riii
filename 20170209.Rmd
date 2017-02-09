@@ -1,7 +1,7 @@
 ---
-title: "R_1125"
+title: "R_0209"
 author: "York Lin"
-date: "2016年7月28日"
+date: "2017年2月9日"
 output: html_document
 ---
 
@@ -41,57 +41,17 @@ table(testset$churn, predictions)
 library(caret)
 library(e1071)
 confusionMatrix(table(predictions, testset$churn))
-```
 
-##Estimating model performance with k-fold cross-validation
-```{R}
-ind = cut(1:nrow(churnTrain), breaks=10, labels=F)
-ind
 
-accuracies = c()
-for (i in 1:10) {
-  fit = rpart(churn ~., churnTrain[ind != i,])
-  predictions = predict(fit, churnTrain[ind == i, ! names(churnTrain) %in% c("churn")], type="class")
-  correct_count = sum(predictions == churnTrain[ind == i,c("churn")])
-  accuracies = append(correct_count / nrow(churnTrain[ind == i,]), accuracies)
-}
-accuracies
-mean(accuracies)
-
-```
-
-##caret cross-validation
-```{R}
-install.packages("caret")
 library(caret)
-
-#control=trainControl(method="repeatedcv", number=10, repeats=3)
-control=trainControl(method="repeatedcv", number=10, repeats=3,classProbs = TRUE,summaryFunction = twoClassSummary)
-model =train(churn~., data=trainset, method="nb", trControl=control)model
+control=trainControl(method="repeatedcv", number=10, repeats=3)
+#control=trainControl(method="repeatedcv", number=10, repeats=3,classProbs = TRUE,summaryFunction = twoClassSummary)
+model =train(churn~., data=trainset, method="rpart", trControl=control)
 
 predictions = predict(model, testset)
 
 table(predictions,testset$churn)
 confusionMatrix(table(predictions,testset$churn))
-```
-
-##find importance variable
-```{R}
-library('caret')
-importance = varImp(model, scale=FALSE)
-importance
-plot(importance)
-
-```
-
-```{R}
-install.packages("rminer")
-library(rminer)
-model=fit(churn~.,trainset,model="rpart")
-VariableImportance=Importance(model,trainset)
-
-L=list(runs=1,sen=t(VariableImportance$imp),sresponses=VariableImportance$sresponses)
-mgraph(L,graph="IMP",leg=names(trainset),col="gray",Grid=10)
 ```
 
 ##ROC
