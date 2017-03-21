@@ -1,7 +1,7 @@
 ---
-title: "R_0209"
+title: "R_0411"
 author: "York Lin"
-date: "2017年2月9日"
+date: "2017年4月11日"
 output: html_document
 ---
 
@@ -132,7 +132,7 @@ head(customer)
 str(customer)
 
 #數值變數作正規化
-customer =scale(customer[,-1])
+customer_s =scale(customer[,-1])
 ?scale
 
 round(mean(customer[,2]),3)
@@ -173,9 +173,9 @@ rect.hclust(hc, k = 4 , which =4, border="red")
 
 ##k-means
 ```{R}
-str(customer)
+str(customer_s)
 set.seed(22)
-fit =kmeans(customer, 4)
+fit =kmeans(customer_s, centers=4)
 ?kmeans
 
 barplot(t(fit$centers), beside =TRUE,xlab="cluster", ylab="value")
@@ -188,19 +188,21 @@ plot(customer, col=fit$cluster)
 ```{R}
 install.packages("cluster")
 library(cluster)
-clusplot(customer, fit$cluster, color=TRUE, shade=TRUE)
+clusplot(customer_s, fit$cluster, color=TRUE, shade=TRUE)
 
 par(mfrow= c(1,2))
-clusplot(customer, fit$cluster, color=TRUE, shade=TRUE)
+clusplot(customer_s, fit$cluster, color=TRUE, shade=TRUE)
 rect(-0.7,-1.7, 2.2,-1.2, border = "orange", lwd=2)
-clusplot(customer, fit$cluster, color = TRUE, xlim = c(-0.7,2.2), ylim = c(-1.7,-1.2))
+clusplot(customer_s, fit$cluster, color = TRUE, xlim = c(-0.7,2.2), ylim = c(-1.7,-1.2))
 
 ```
 
 ##cluster iris by kmeans
 ```{R}
 set.seed(22)
-fit =kmeans(iris[,-5], 3)
+data(iris)
+iris_s = scale(iris[,-5])
+fit =kmeans(iris_s, 3)
 barplot(t(fit$centers), beside =TRUE,xlab="cluster", ylab="value")
 plot(iris, col=fit$cluster)
 
@@ -210,16 +212,18 @@ plot(iris$Petal.Length, iris$Petal.Width, col=fit$cluster)
 ##evaluate model
 ```{R}
 set.seed(22)
-km =kmeans(customer, 4)
-kms=silhouette(km$cluster,dist(customer))
+km =kmeans(customer_s, 4)
+kms=silhouette(km$cluster,dist(customer_s))
 summary(kms)
 plot(kms)
+
+sapply(nk, function(k){})
 ```
 
 ```{R}
 nk=2:10
 set.seed(22)
-WSS =sapply(nk, function(k){kmeans(customer, centers=k)$tot.withinss})
+WSS =sapply(nk, function(k){kmeans(customer_s, centers=k)$tot.withinss})
 WSS
 plot(x=nk, y=WSS, type="l", xlab="number of k", ylab="within sum of squares")
 ```
@@ -242,22 +246,22 @@ nk[which.max(SW)]
 
 ##model comparison
 ```{R}
-single_c=hclust(dist(customer), method="single")
-hc_single=cutree(single_c, k =4)
+single_c=hclust(dist(customer_s), method="single")
+hc_single=cutree(single_c, k =3)
 
-complete_c=hclust(dist(customer), method="complete")
-hc_complete=cutree(complete_c, k =4)
+complete_c=hclust(dist(customer_s), method="complete")
+hc_complete=cutree(complete_c, k =3)
 
 set.seed(22)
-km =kmeans(customer, 4)
+km =kmeans(customer_s, 3)
 
-cs=cluster.stats(dist(customer),km$cluster)
+cs=cluster.stats(dist(customer_s),km$cluster)
 cs[c("within.cluster.ss","avg.silwidth")]
 
 q =sapply(
   list(kmeans=km$cluster, 
        hc_single=hc_single, 
-       hc_complete=hc_complete), function(c)cluster.stats(dist(customer),c)[c("within.cluster.ss","avg.silwidth")])
+       hc_complete=hc_complete), function(c)cluster.stats(dist(customer_s),c)[c("within.cluster.ss","avg.silwidth")])
 q
 
 
