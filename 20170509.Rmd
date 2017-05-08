@@ -11,8 +11,8 @@ R vs Python?
 - https://www.datacamp.com/community/tutorials/r-or-python-for-data-analysis
 
 most popular programming language for analytics
-- http://www.kdnuggets.com/2015/05/poll-r-rapidminer-python-big-data-spark.html
 - http://www.kdnuggets.com/polls/2015/r-vs-python.html
+- http://www.kdnuggets.com/2016/06/r-python-top-analytics-data-mining-data-science-software.html
 
 Kaggle
 - https://www.kaggle.com/
