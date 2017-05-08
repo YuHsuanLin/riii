@@ -1,0 +1,327 @@
+---
+title: "R_0516"
+author: "York Lin"
+date: "2017年05月16日"
+output: html_document
+---
+
+#Inferential Statistics
+
+##Probability
+```{R}
+sample(1:10)
+sample(1:10, size = 5)
+sample(c(0,1), size= 10, replace = T)
+sample.int(20, 12) # 兩個參數都要放整數，此例為取1:20中的12個不重複樣本
+
+coins = c("heads", "tails")
+fair_coin = sample(coins, size = 10000, replace = TRUE)
+table(fair_coin)
+table(fair_coin) / length(fair_coin)
+
+#連續投擲硬幣3次
+flipping_coin = function(n){sample(0:1,size=n,replace=T)}
+flipping_coin(100)
+flipping_coin_three_times = flipping_coin(100) + flipping_coin(100) + flipping_coin(100)
+flipping_coin_three_times
+table(flipping_coin_three_times)
+barplot(table(flipping_coin_three_times))
+
+```
+
+##常見間斷機率分配
+```{R}
+#binomial distribution (size=1 => bernoulli distribution) 
+#進行n次二項實驗(成功;失敗)成功的次數分佈
+
+#產生n個該機率分配的樣本點
+b = rbinom(n = 20,size= 10,prob= 0.5)
+table(b)
+barplot(table(b))
+
+barplot(table(rbinom(n=100, size=3, prob=0.5))) #連續投3次硬幣例子
+
+barplot(table(rbinom(100, 1, 0.5)))
+#機率分配的高度(間斷分配 =>　該事件發生機率；連續分配 => y軸高度，無特別意義)
+dbinom(x = 0,size = 3, prob= 0.5)
+dbinom(x = 1,size = 3, prob= 0.5)
+dbinom(x = 2,size = 3, prob= 0.5)
+dbinom(x = 3,size = 3, prob= 0.5)
+
+#累積機率
+pbinom(q = 0,size = 3,prob = 0.5)
+pbinom(q = 1,size = 3,prob = 0.5)
+pbinom(q = 2,size = 3,prob = 0.5)
+pbinom(q = 3,size = 3,prob = 0.5)
+
+#pbinom的反函數
+qbinom(p = 0,size = 3,prob = 0.5)
+qbinom(p = 0.125,size = 3,prob = 0.5)
+qbinom(p = 0.5,size = 3,prob = 0.5)
+qbinom(p = 0.875,size = 3,prob = 0.5)
+qbinom(p = 1,size = 3,prob = 0.5)
+
+```
+
+##常見連續機率分配
+```{R}
+#normal distribution(標準常態分佈=> mean=0 , sd=1)
+rnorm(n=1000,mean = 3,sd = 2)
+hist(rnorm(100000,mean = 3,sd = 2))
+
+par(mfrow=c(3,1))
+xlimits = range(-10,10)
+hist(rnorm(10000,mean = 0,sd = 1),xlim=xlimits)
+hist(rnorm(10000,mean = 0,sd = 2),xlim=xlimits)
+hist(rnorm(10000,mean = 0,sd = 3),xlim=xlimits)
+
+hist(rnorm(10000,mean = 0,sd = 1),xlim=xlimits)
+hist(rnorm(10000,mean = 3,sd = 1),xlim=xlimits)
+hist(rnorm(10000,mean = 6,sd = 1),xlim=xlimits)
+par(mfrow=c(1,1))
+curve(dnorm(x,mean=2,sd=1),-5,5)
+
+pnorm(1) - pnorm(-1)
+
+```
+
+##抽樣分配
+```{R}
+
+load('Statistics/ames.Rdata')
+area = ames$Gr.Liv.Area
+hist(area)
+
+qqnorm(area)
+qqline(area,col='red')
+shapiro.test(area) # 檢查是否符合常態分配，p值<0.05拒絕假設其為常態分配的虛無假設
+
+a = rnorm(1000,mean=0,sd=1)
+qqnorm(a)
+qqline(a,col='red')
+shapiro.test(a)
+
+
+b = rbinom(1000, size=10, prob=0.2)
+hist(b)
+shapiro.test(b)
+
+
+sample_means10 = rep(NA, 5000)
+sample_means50 = rep(NA, 5000)
+sample_means100 = rep(NA, 5000)
+
+for (i in 1:5000){
+    samp = sample(area, 10,replace=F)
+    sample_means10[i] = mean(samp)
+    samp = sample(area, 50)
+    sample_means50[i] = mean(samp)
+    samp = sample(area, 100)
+    sample_means100[i] = mean(samp)
+}
+
+par(mfrow = c(3, 1))
+xlimits = range(sample_means10)
+hist(sample_means10, breaks = 20, xlim = xlimits)
+hist(sample_means50, breaks = 20, xlim = xlimits)
+hist(sample_means100, breaks = 20, xlim = xlimits)
+
+pop_mean = mean(area)
+pop_var = var(area)
+
+sample_mean = mean(sample_means50)
+sample_var = var(sample_means50)
+pop_mean
+sample_mean
+
+pop_var
+sample_var
+pop_var / sample_var
+
+
+# 各種機率分配的中央極限定裡
+CLT = function(x) {
+  op<-par(mfrow=c(2,2)) # 設為 2*2 的四格繪圖版
+  hist(x, breaks=50)     # 繪製 x 序列的直方圖 (histogram)。
+  m2 <- matrix(x, nrow=2 )  # 將 x 序列分為 2*k 兩個一組的矩陣 m2。
+  xbar2 <- apply(m2, 2, mean)   # 取每兩個一組的平均值 (x1+x2)/2 放入 xbar2 中。
+  hist(xbar2, breaks=50)     # 繪製 xbar2 序列的直方圖 (histogram)。
+  m10 <- matrix(x, nrow=10 )   # 將 x 序列分為 10*k 兩個一組的矩陣 m10。
+  xbar10 <- apply(m10, 2, mean) # 取每10個一組的平均值 (x1+..+x10)/10 放入 xbar10 中。
+  hist(xbar10, breaks=50)    # 繪製 xbar10 序列的直方圖 (histogram)。
+  m20 <- matrix(x, nrow=20 )   # 將 x 序列分為 25*k 兩個一組的矩陣 m25。
+  xbar20 <- apply(m20, 2, mean) # 取每20個一組的平均值 (x1+..+x20)/20 放入 xbar20 中。
+  hist(xbar20, breaks=50)    # 繪製 xbar20 序列的直方圖 (histogram)。
+}
+
+CLT(rbinom(n=100000, size = 20, prob = 0.1)) # 用參數為 n=20, p=0.5 的二項分布驗證中央極限定理。
+CLT(runif(n=100000,min = 0,max = 1)) # 用參數為 a=0, b=1 的均等分布驗證中央極限定理。
+CLT(rpois(n=100000, lambda = 4)) # 用參數為 lambda=4 的布瓦松分布驗證中央極限定理。
+CLT(rgeom(n=100000, prob = 0.7)) # 用參數為 p=0.5 的幾何分布驗證中央極限定理。
+
+```
+
+##Confidence Interval
+```{R}
+population = ames$Gr.Liv.Area
+mean(population)
+n=50
+
+samp = sample(population, n)
+sample_mean = mean(samp)
+
+sde = sd(population)/sqrt(n)
+
+lower = sample_mean + qnorm(0.025) * sde
+upper = sample_mean + qnorm(0.975) * sde
+c(lower,upper)
+
+#如果母體變異數未知，以樣本變異數來估計母體變異數，並改用t分配
+n=10
+sde_t = sd(samp) / sqrt(n)
+lower_t = sample_mean + qt(p=0.025,df=n-1) * sde_t
+upper_t = sample_mean + qt(p=0.975,df=n-1) * sde_t
+c(lower_t,upper_t)
+
+#t distribution
+curve(dnorm(x), -5, 5, col="black")
+curve(dt(x, df=2), -5, 5, col="green", add=T)
+curve(dt(x, df=10), -5, 5, col="red", add=T)
+curve(dt(x, df=200), -5, 5, col="yellow", add=T)
+```
+
+##Testing hypothesis
+```{R}
+
+#example1: 檢定可樂平均容量是否為300ml
+#H0: mu = 300
+#H1: mu =\= 300
+
+pop_mean <- 300
+pop_sd <- 10
+coke = c(278,289,291,291,291,285,295,278,304,287,291,287,288,300,309,280,294,283,292,306)
+
+sde <- pop_sd / sqrt(length(coke))
+
+z <- (mean(coke) - pop_mean) / sde
+z
+p <- (1 - pnorm(abs(z))) * 2
+p
+
+p2 <- pnorm(z)
+p2
+
+z.test <- function(x, pop_mean, pop_sd, side="twoside"){
+  sde <- pop_sd / sqrt(length(x))
+  z   <- (mean(x) - pop_mean) / sde
+
+  switch(side, 
+         twoside={
+           p   <- (1 - pnorm(abs(z))) * 2
+         },
+         less={
+           p   <- pnorm(z)
+         },
+         greater={
+           p   <- 1- pnorm(z)
+         }
+  )
+  return(list(z = z , p = p))
+}
+
+z.test(coke,pop_mean,pop_sd,side = "twoside")
+
+#若樣本數小且母體變異數未知，則改用t檢定
+t.test(coke,mu=300)
+
+#example2:
+#(1) 檢定男性平均身高是否和全體平均身高相同
+# H0: 男性平均身高是否和全體平均身高相同
+# H1: 男性平均身高是否和全體平均身高不相同
+
+load("Statistics/cdc.Rdata")
+names(cdc)
+hist(cdc$height)
+boxplot(cdc$height)
+boxplot(cdc$height~ cdc$gender)
+
+pop_mean = mean(cdc$height)
+pop_sd = sd(cdc$height)
+
+set.seed(123)
+samp1 = sample(cdc[cdc$gender == 'm',]$height, 20)
+
+boxplot(samp1)
+abline(h = pop_mean, col= "red")
+sde <- pop_sd / sqrt(length(samp1))
+z   <- (mean(samp1) - pop_mean) / sde
+
+# two sample means are equal (two-sided)
+p   <- (1 - pnorm(abs(z))) * 2
+
+# the mean height of the sample is taller than the mean height of the population (one-sided)
+p   <- 1- pnorm(z)
+
+#z-test
+z.test(samp1,pop_mean,pop_sd,side = "twoside")
+
+#t-test
+samp1 = sample(cdc[cdc$gender == 'm',]$height,20)
+t.test(samp1,mu=pop_mean)
+
+#two sample t-test
+sample_index = sample(1:nrow(cdc),60)
+samp2 = cdc[sample_index,c("height","gender")]
+
+t.test(samp2$height~samp2$gender)
+?t.test
+
+t1 = samp2[samp2$gender == 'm','height']
+t2 = samp2[samp2$gender == 'f','height']
+t.test(x=t1,y=t2)
+
+#use asbio package
+install.packages('asbio')
+library(asbio)
+
+#testing
+one.sample.z(data = samp,null.mu = pop_mean,sigma = pop_sd,alternative = 'greater')
+
+#C.I
+ci.mu.z(data = samp,conf = 0.95,sigma = pop_sd,summarized = T,xbar = mean(samp),n = length(samp) )
+
+ci.mu.t(data = samp,conf = 0.95,sd = sde_t,summarized = T,xbar = mean(samp),n = length(samp) )
+```
+
+##Covariance & Correlation
+```{R}
+x = c(160,170,180)
+y = c(64, 68, 72)
+
+#計算共變異數
+cov_xy = sum((x - mean(x)) * (y - mean(y))) / 2
+cov_xy
+
+cov(x,y)
+
+#計算相關係數
+cor_xy = cov(x,y) / (sd(x) * sd(y))  
+cor_xy
+
+cor(x,y)
+plot(x,y)
+
+#example1:
+data(mtcars)
+mtcars
+cov(mtcars)
+cor(mtcars)
+cov(mtcars[1:3])
+
+#example2:
+gdp = read.csv("data/gdp.csv",header=TRUE)
+gdp = gdp[1:15,]
+gdp$GDP = as.numeric(sub(",", "", gdp$GDP))
+gdp$Export = as.numeric(sub(",", "", gdp$Export))
+cor(gdp$Export, gdp$GDP)
+```

@@ -1,7 +1,7 @@
 ---
-title: "R_0328"
+title: "R_0511"
 author: "York Lin"
-date: "2017年03月28日"
+date: "2017年05月11日"
 output: html_document
 ---
 ##Flow Control
@@ -54,6 +54,13 @@ while(cnt <= 100){
   cnt = cnt + 1;
 }
 sum
+
+mat = matrix(1:9, byrow=TRUE, nrow=3) 
+for(i in seq_len(nrow(mat))) {
+  for(j in seq_len(ncol(mat))) { 
+    print(mat[i, j])
+  }
+}
 ```
 
 ##Function
@@ -73,7 +80,7 @@ f2 = function(a, b = 2, c = NULL) {
 b = 3
 f3 = function(a) {
     b = 2
-    b
+    return(b)
 }
 
 f4 = function(a,b){
@@ -89,13 +96,6 @@ f4 = function(a,b){
 grades =list(kevin = c(80,60,92), marry = c(56,75,64,84,56), QOO = c(10,20,3,4,10))
 
 lapply(grades, sum)
-
-unlist(grades[1])
-
-for (i in 1:length(grades)){
-      print(sum(unlist(grades[i])));
-}
-
 lapply(grades, mean)
 lapply(grades, function(e){list(sum = sum(e), min = min(e))})
 
@@ -192,6 +192,7 @@ labels = paste(names(pct),pct,"%")
 pie(table(cdc$genhlth), labels = labels)
 
 gender_smokers = table(cdc$gender,cdc$smoke100)
+
 mosaicplot(gender_smokers)
 
 #屬量資料: 直方圖、盒鬚圖、莖葉圖

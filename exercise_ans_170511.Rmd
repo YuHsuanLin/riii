@@ -43,8 +43,8 @@ match_func = function(filename= "data/match.txt"){
 
 ##p76-2
 ```{R}
-match_func = function(filename){
-  t = read.table(filename,header=F,sep = '|');
+match_func = function(filename,header,sep){
+  t = read.table(filename,header=header,sep = sep);
   mat = matrix(rep(-1,length(levels(t[,1]))^2), nrow = length(levels(t[,1])), dimnames = list(levels(t[,1]),levels(t[,2])));
   for(i in 1:nrow(t)){
     mat[t[i,1], t[i,2]] = t[i,3];

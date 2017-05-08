@@ -1,0 +1,255 @@
+---
+title: "R_0523"
+author: "York Lin"
+date: "2017年5月23日"
+output: html_document
+---
+
+##Covariance & Correlation
+```{R}
+x = c(160,170,180)
+y = c(64, 68, 72)
+
+#計算共變異數
+cov_xy = sum((x - mean(x)) * (y - mean(y))) / 2
+cov_xy
+
+cov(x,y)
+
+#計算相關係數
+cor_xy = cov(x,y) / (sd(x) * sd(y))  
+cor_xy
+
+cor(x,y)
+plot(x,y)
+
+#example1:
+data(mtcars)
+mtcars
+cov(mtcars)
+cor(mtcars)
+cov(mtcars[1:3])
+
+#example2:
+gdp = read.csv("data/gdp.csv",header=TRUE)
+gdp = gdp[1:15,]
+gdp$GDP = as.numeric(sub(",", "", gdp$GDP))
+gdp$Export = as.numeric(sub(",", "", gdp$Export))
+cor(gdp$Export, gdp$GDP)
+```
+
+##Learning map
+- http://scikit-learn.org/stable/_static/ml_map.png
+
+- http://www.r-bloggers.com/whats-the-difference-between-machine-learning-statistics-and-data-mining/
+
+- http://mp.weixin.qq.com/s?__biz=MjM5ODczNTkwMA==&mid=2650107069&idx=1&sn=44a2eab6c4858c56af236749fdd1d784#rd
+
+#Classification
+##Decision Tree - using churn data in C50 package
+```{R}
+install.packages("C50")
+library(C50)
+
+data(churn)
+str(churnTrain)
+
+names(churnTrain) %in% c("state", "area_code", "account_length")
+!names(churnTrain) %in% c("state", "area_code", "account_length")
+#選擇建模變數
+variable.list = !names(churnTrain) %in% c('state','area_code','account_length')
+churnTrain=churnTrain[,variable.list]
+
+str(churnTrain)
+..
+set.seed(2)
+#把資料分成training data 和 testing data
+ind<-sample(1:2, size=nrow(churnTrain), replace=T, prob=c(0.7, 0.3))
+trainset=churnTrain[ind==1,]
+testset=churnTrain[ind==2,]
+
+
+table(sample(x = 1:2,size = 100, replace=T))
+
+set.seed(1)
+table(sample(x = 1:2,size = 100, replace=T, prob=c(0.7,0.3)))
+
+a = c(1,2,3,4,5,6,7,8,9)
+ind = c(1,0,1,0,1,0,1,0,1)
+ind == 1
+a[ind == 1]
+a[ind == 0]
+
+```
+
+##rpart
+```{R}
+install.packages('rpart')
+library('rpart')
+#使用rpart(CART)建立決策樹模型
+
+churn.rp<-rpart(churn ~ ., data=trainset)
+churn.rp
+summary(churn.rp)
+
+con = rpart.control(cp=0.01)
+?rpart.control
+churn.rp<-rpart(churn ~., data=trainset,control = con)
+
+#畫出決策樹
+par(mfrow=c(1,1))
+plot(churn.rp, margin=0.1)
+plot(churn.rp, uniform=TRUE,branch = 0.6, margin=0.1)
+?plot.rpart
+text(churn.rp)
+text(churn.rp, all=TRUE, use.n=TRUE)
+
+printcp(churn.rp)
+plotcp(churn.rp)
+```
+
+##Prune
+
+```{R}
+#找出minimum cross-validation errors
+min(churn.rp$cptable[,"xerror"])
+which.min(churn.rp$cptable[,"xerror"])
+churn.cp = churn.rp$cptable[which.min(churn.rp$cptable[,"xerror"]), "CP"]
+#將churn.cp設為臨界值來修剪樹
+prune.tree=prune(churn.rp, cp=churn.cp)
+
+plot(prune.tree, margin=0.1)
+text(prune.tree, all=TRUE, use.n=TRUE, cex=0.7)
+
+predictions <-predict(prune.tree, testset,type = "class")
+table(testset$churn, predictions)
+
+install.packages('caret')
+install.packages('e1071')
+library('caret')
+library('e1071')
+confusionMatrix(table(predictions, testset$churn))
+?confusionMatrix
+
+```
+
+##ctree
+```{R}
+install.packages("party")
+library('party')
+ctree.model = ctree(churn ~ . , data = trainset)
+plot(ctree.model, margin=0.1)
+
+daycharge.model = ctree(churn ~ total_day_charge + international_plan, data = trainset)
+plot(daycharge.model)
+
+ctree.predict = predict(ctree.model ,testset)
+table(ctree.predict, testset$churn)
+
+confusionMatrix(table(ctree.predict, testset$churn))
+```
+
+##C5.0
+```{R}
+install.packages("C50")
+library(C50)
+c50.model = C5.0(churn ~., data=trainset)
+
+?C5.0Control
+
+c=C5.0Control(minCases = 20)
+c50.model = C5.0(churn ~., data=trainset,control = c)
+
+summary(c50.model)
+plot(c50.model)
+
+c50.predict = predict(c50.model,testset)
+table(c50.predict, testset$churn)
+
+confusionMatrix(table(c50.predict, testset$churn))
+```
+
+##Estimating model performance with k-fold cross-validation
+```{R}
+ind = cut(1:nrow(churnTrain), breaks=10, labels=F)
+ind
+
+accuracies = c()
+for (i in 1:10) {
+  fit = rpart(formula=churn ~., data=churnTrain[ind != i,])
+  predictions = predict(fit, churnTrain[ind == i, ! names(churnTrain) %in% c("churn")], type="class")
+  correct_count = sum(predictions == churnTrain[ind == i,c("churn")])
+  accuracies = append(correct_count / nrow(churnTrain[ind == i,]), accuracies)
+}
+accuracies
+mean(accuracies)
+
+```
+
+##caret cross-validation
+```{R}
+install.packages("caret")
+library(caret)
+control=trainControl(method="repeatedcv", number=10, repeats=3)
+model =train(churn~., data=trainset, method="rpart", trControl=control)
+model
+predictions = predict(model, testset)
+
+table(predictions,testset$churn)
+```
+
+##find importance variable
+```{R}
+library('caret')
+importance = varImp(model, scale=FALSE)
+importance
+plot(importance)
+
+```
+
+```{R}
+install.packages("rminer")
+library(rminer)
+model=fit(churn~.,trainset,model="rpart")
+VariableImportance=Importance(model,trainset)
+
+L=list(runs=1,sen=t(VariableImportance$imp),sresponses=VariableImportance$sresponses)
+mgraph(L,graph="IMP",leg=names(trainset),col="gray",Grid=10)
+```
+
+##ROC
+- https://www.youtube.com/watch?v=OAl6eAyP-yo
+- http://www.navan.name/roc/
+```{R}
+predictions <-predict(churn.rp, testset)
+predictions
+
+xary = c()
+yary = c()
+for(i in seq(0,1,0.1)){
+  f <- as.factor(ifelse(predictions[,1] > i, 0, 1))
+  levels(f) = c("yes", "no")
+  tb <- table(f, testset$churn )
+  cm <- confusionMatrix(tb)
+  y = cm$byClass[1]
+  x = 1- cm$byClass[2]
+  xary = c(xary, x)
+  yary = c(yary, y)
+}
+
+plot(xary,yary)
+```
+
+```{R}
+install.packages("ROCR")
+library(ROCR)
+predictions <-predict(churn.rp, testset, type="prob")
+head(predictions)
+pred.to.roc<-predictions[, 1]
+head(pred.to.roc)
+pred.rocr<-prediction(pred.to.roc, testset$churn)
+pred.rocr
+perf.rocr<-performance(pred.rocr, measure ="auc", x.measure="cutoff")
+perf.tpr.rocr<-performance(pred.rocr, "tpr","fpr")
+plot(perf.tpr.rocr,colorize=T,main=paste("AUC:",(perf.rocr@y.values)))
+```

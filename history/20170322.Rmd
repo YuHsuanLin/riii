@@ -73,9 +73,9 @@ abline(lmfit, col="red")
 ```
 
 ##Basic type
-- num: 1,2,1.2
+- numeric: 1,2,1.2
 - integer: 1L,2L,3L
-- chracter: "string"
+- character: "string"
 - logical: TRUE,FALSE,T,F
 - complex: 1+4i
 

@@ -1,7 +1,7 @@
 ---
-title: "R_0411"
+title: "R_0525"
 author: "York Lin"
-date: "2017年4月11日"
+date: "2017年5月25日"
 output: html_document
 ---
 
@@ -36,7 +36,7 @@ plot(prune.tree, margin=0.1)
 text(prune.tree, all=TRUE, use.n=TRUE, cex=0.7)
 
 predictions <-predict(prune.tree, testset)
-table(testset$churn, predictions)
+table(predictions,testset$churn)
 
 library(caret)
 library(e1071)
@@ -135,13 +135,13 @@ str(customer)
 customer_s =scale(customer[,-1])
 ?scale
 
-round(mean(customer[,2]),3)
-round(sd(customer[,2]),3)
+round(mean(customer_s[,2]),3)
+round(sd(customer_s[,2]),3)
 
 #聚合式
 ?hclust
-hc=hclust(dist(customer, method="euclidean"), method="ward.D2")
-plot(hc, hang =-0.01, cex=0.7)
+hc=hclust(dist(customer_s, method="euclidean"), method="ward.D2")
+plot(hc,hang =-0.01, cex=0.7)
 
 hc3 =hclust(dist(customer), method="single")
 plot(hc3, hang =-0.01, cex=0.8)
@@ -150,7 +150,7 @@ plot(hc3, hang =-0.01, cex=0.8)
 install.packages('cluster')
 library(cluster)
 ?diana
-dv =diana(customer, metric ="euclidean")
+dv =diana(customer_s, metric ="euclidean")
 summary(dv)
 plot(dv)
 
@@ -237,7 +237,7 @@ SW =sapply(nk, function(k){set.seed(22);cluster.stats(dist(customer), kmeans(cus
 
 kmeans(customer, centers=2)
 ?cluster.stats
-cluster.stats(dist(customer), kmeans(customer, centers=2)$cluster)
+cluster.stats(dist(customer_s), kmeans(customer_s, centers=2)$cluster)
 
 plot(x=nk, y=SW, type="l", xlab="number of clusers", ylab="average silhouette width")
 
@@ -378,7 +378,7 @@ train(churn~., data=trainset, method="nb", trControl=control)
 ```{R}
 install.packages('e1071')
 library('e1071')
-model  = svm(churn~., data = trainset, kernel="radial", cost=1, gamma = 1/ncol(trainset))
+model  = svm(churn~., data = trainset, kernel="linear", cost=1, gamma = 1/ncol(trainset))
 
 summary(model)
 

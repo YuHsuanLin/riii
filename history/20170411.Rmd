@@ -1,0 +1,532 @@
+---
+title: "R_0411"
+author: "York Lin"
+date: "2017年4月11日"
+output: html_document
+---
+
+##Review
+```{R}
+library(C50)
+data(churn)
+variable.list = !names(churnTrain) %in% c('state','area_code','account_length')
+churnTrain=churnTrain[,variable.list]
+str(churnTrain)
+
+set.seed(2)
+#把資料分成training data 和 testing data
+ind<-sample(1:2, size=nrow(churnTrain), replace=T, prob=c(0.7, 0.3))
+trainset=churnTrain[ind==1,]
+testset=churnTrain[ind==2,]
+
+churn.rp<-rpart(churn ~., data=trainset)
+churn.rp
+summary(churn.rp)
+
+par(mfrow=c(1,1))
+plot(churn.rp, uniform=TRUE,branch = 0.6, margin=0.1)
+text(churn.rp, all=TRUE, use.n=TRUE)
+
+min(churn.rp$cptable[,"xerror"])
+which.min(churn.rp$cptable[,"xerror"])
+churn.cp = churn.rp$cptable[which.min(churn.rp$cptable[,"xerror"]), "CP"]
+prune.tree=prune(churn.rp, cp=churn.cp)
+
+plot(prune.tree, margin=0.1)
+text(prune.tree, all=TRUE, use.n=TRUE, cex=0.7)
+
+predictions <-predict(prune.tree, testset)
+table(predictions,testset$churn)
+
+library(caret)
+library(e1071)
+confusionMatrix(table(predictions, testset$churn))
+
+
+library(caret)
+control=trainControl(method="repeatedcv", number=10, repeats=3)
+#control=trainControl(method="repeatedcv", number=10, repeats=3,classProbs = TRUE,summaryFunction = twoClassSummary)
+model =train(churn~., data=trainset, method="rpart", trControl=control)
+
+predictions = predict(model, testset)
+
+table(predictions,testset$churn)
+confusionMatrix(table(predictions,testset$churn))
+```
+
+##ROC
+- https://www.youtube.com/watch?v=OAl6eAyP-yo
+- http://www.navan.name/roc/
+
+```{R}
+#ROC
+install.packages("ROCR")
+library(ROCR)
+predictions <-predict(churn.rp, testset, type="prob")
+head(predictions)
+pred.to.roc<-predictions[, 1]
+head(pred.to.roc)
+?prediction
+pred.rocr<-prediction(pred.to.roc, testset$churn)
+pred.rocr
+?performance
+perf.tpr.rocr<-performance(pred.rocr, measure="tpr",x.measure="fpr")
+perf.rocr<-performance(pred.rocr, measure ="auc", x.measure="cutoff")
+plot(perf.tpr.rocr,colorize=T,main=paste("AUC:",(perf.rocr@y.values)))
+
+```
+
+#model comparison
+```{R}
+#rpart
+library('rpart')
+churn.rp<-rpart(churn ~., data=trainset)
+
+#ctree
+#install.packages("party")
+library('party')
+ctree.model = ctree(churn ~ . , data = trainset)
+
+#C5.0
+library(C50)
+c50.model = C5.0(churn ~., data=trainset)
+
+rp.predict.prob = predict(churn.rp, testset,type='prob')
+c50.predict.prob = predict(c50.model,testset,type='prob')
+ctree.predict.prob = sapply(predict(ctree.model ,testset,type='prob'),function(e){unlist(e)[1]})
+rp.prediction = prediction(rp.predict.prob[,1],testset$churn)
+c50.prediction = prediction(c50.predict.prob[,1],testset$churn)
+ctree.prediction = prediction(ctree.predict.prob,testset$churn)
+rp.performance = performance(rp.prediction, "tpr","fpr")
+c50.performance = performance(c50.prediction, "tpr","fpr")
+ctree.performance = performance(ctree.prediction, "tpr","fpr")
+plot(rp.performance,col='red')
+plot(c50.performance, add=T,col='green')
+plot(ctree.performance, add=T,col='blue')
+```
+
+##距離計算
+```{R}
+x =c(0, 0, 1, 1, 1, 1)
+y =c(1, 0, 1, 1, 0, 1)
+
+#euclidean
+?dist
+rbind(x,y)
+
+dist(rbind(x,y), method ="euclidean")
+sqrt(sum((x-y)^2))
+dist(rbind(x,y), method ="minkowski", p=2)
+
+#city block
+dist(rbind(x,y), method ="manhattan")
+sum(abs(x-y))
+dist(rbind(x,y), method ="minkowski", p=1)
+```
+
+##階層式分群
+```{R}
+# customer clustering
+customer=read.csv('data/customer.csv',header=TRUE)
+head(customer)
+str(customer)
+
+#數值變數作正規化
+customer_s =scale(customer[,-1])
+?scale
+
+round(mean(customer_s[,2]),3)
+round(sd(customer_s[,2]),3)
+
+#聚合式
+?hclust
+hc=hclust(dist(customer_s, method="euclidean"), method="ward.D2")
+plot(hc,hang =-0.01, cex=0.7)
+
+hc3 =hclust(dist(customer), method="single")
+plot(hc3, hang =-0.01, cex=0.8)
+
+#分裂式階層式
+install.packages('cluster')
+library(cluster)
+?diana
+dv =diana(customer_s, metric ="euclidean")
+summary(dv)
+plot(dv)
+
+# iris clustering
+data(iris)
+hc2=hclust(dist(iris[,-5], method="euclidean"), method="ward.D2")
+plot(hc2, hang =-0.01, cex=0.7)
+```
+
+##cutree
+```{R}
+fit =cutree(hc, k =4)
+fit
+table(fit)
+plot(hc)
+rect.hclust(hc, k =4, border="red")
+rect.hclust(hc, k =3, border="blue")
+rect.hclust(hc, k = 4 , which =4, border="red")
+```
+
+##k-means
+```{R}
+str(customer_s)
+set.seed(22)
+fit =kmeans(customer_s, centers=4)
+?kmeans
+
+barplot(t(fit$centers), beside =TRUE,xlab="cluster", ylab="value")
+?barplot
+fit$centers
+plot(customer, col=fit$cluster)
+```
+
+
+```{R}
+install.packages("cluster")
+library(cluster)
+clusplot(customer_s, fit$cluster, color=TRUE, shade=TRUE)
+
+par(mfrow= c(1,2))
+clusplot(customer_s, fit$cluster, color=TRUE, shade=TRUE)
+rect(-0.7,-1.7, 2.2,-1.2, border = "orange", lwd=2)
+clusplot(customer_s, fit$cluster, color = TRUE, xlim = c(-0.7,2.2), ylim = c(-1.7,-1.2))
+
+```
+
+##cluster iris by kmeans
+```{R}
+set.seed(22)
+data(iris)
+iris_s = scale(iris[,-5])
+fit =kmeans(iris_s, 3)
+barplot(t(fit$centers), beside =TRUE,xlab="cluster", ylab="value")
+plot(iris, col=fit$cluster)
+
+plot(iris$Petal.Length, iris$Petal.Width, col=fit$cluster)
+```
+
+##evaluate model
+```{R}
+set.seed(22)
+km =kmeans(customer_s, 4)
+kms=silhouette(km$cluster,dist(customer_s))
+summary(kms)
+plot(kms)
+
+sapply(nk, function(k){})
+```
+
+```{R}
+nk=2:10
+set.seed(22)
+WSS =sapply(nk, function(k){kmeans(customer_s, centers=k)$tot.withinss})
+WSS
+plot(x=nk, y=WSS, type="l", xlab="number of k", ylab="within sum of squares")
+```
+
+```{R}
+install.packages("fpc")
+library(fpc)
+#install.packages("robustbase", repos="http://R-Forge.R-project.org")
+nk=2:10
+SW =sapply(nk, function(k){set.seed(22);cluster.stats(dist(customer), kmeans(customer, centers=k)$cluster)$avg.silwidth})
+
+kmeans(customer, centers=2)
+?cluster.stats
+cluster.stats(dist(customer_s), kmeans(customer_s, centers=2)$cluster)
+
+plot(x=nk, y=SW, type="l", xlab="number of clusers", ylab="average silhouette width")
+
+nk[which.max(SW)]
+```
+
+##model comparison
+```{R}
+single_c=hclust(dist(customer_s), method="single")
+hc_single=cutree(single_c, k =3)
+
+complete_c=hclust(dist(customer_s), method="complete")
+hc_complete=cutree(complete_c, k =3)
+
+set.seed(22)
+km =kmeans(customer_s, 3)
+
+cs=cluster.stats(dist(customer_s),km$cluster)
+cs[c("within.cluster.ss","avg.silwidth")]
+
+q =sapply(
+  list(kmeans=km$cluster, 
+       hc_single=hc_single, 
+       hc_complete=hc_complete), function(c)cluster.stats(dist(customer_s),c)[c("within.cluster.ss","avg.silwidth")])
+q
+
+
+plot(q[1,],q[2,],xlab=rownames(q)[1],ylab=rownames(q)[2])
+
+
+set.seed(22)
+km = kmeans(customer, 4)
+km$withinss
+```
+
+##iris data
+```{R}
+data(iris)
+data<-iris[,-5]
+class<-iris[,5]
+
+results <-kmeans(data,3)
+results
+results$size
+results$cluster
+
+table(class,results$cluster)
+par(mfrow=c(2, 2))
+plot(data$Petal.Length, data$Petal.Width,col=results$cluster)
+plot(data$Petal.Length, data$Petal.Width,col=class)
+plot(data$Sepal.Length, data$Sepal.Width,col=results$cluster)
+plot(data$Sepal.Length, data$Sepal.Width,col=class)
+```
+
+##density-based method-DBSCAN
+- http://123android.blogspot.tw/2012/01/28dec11-data-mining.html
+```{R}
+install.packages("mlbench")
+# mlbench package provides many methods to generate simulated data with different shapes and sizes.
+#In this example, we generate a Cassini problem graph
+library(mlbench)
+#install.packages("fpc")
+library(fpc)
+set.seed(2)
+p = mlbench.cassini(500)
+plot(p$x)
+
+?mlbench.cassini
+
+ds = dbscan(data = dist(p$x),eps= 0.2, MinPts = 2, method="dist")
+ds
+plot(ds, p$x)
+
+
+y = matrix(0,nrow=3,ncol=2)
+y[1,] = c(0,0)
+y[2,] = c(0,-1.5)
+y[3,] = c(1,1)
+y
+
+predict(ds, p$x, y)
+
+```
+
+##其他分類方法
+
+##k-nearest neighbor classifer
+- https://www.youtube.com/watch?v=UqYde-LULfs
+
+```{R}
+install.packages("class")
+library(class)
+head(trainset)
+levels(trainset$international_plan) = list("0"="no", "1"="yes")
+levels(trainset$voice_mail_plan) = list("0"="no", "1"="yes")
+levels(testset$international_plan) = list("0"="no", "1"="yes")
+levels(testset$voice_mail_plan) = list("0"="no", "1"="yes")
+head(trainset)
+
+churn.knn  = knn(trainset[,! names(trainset) %in% c("churn")], testset[,! names(testset) %in% c("churn")], trainset$churn, k=3)
+
+summary(churn.knn)
+
+table(testset$churn, churn.knn)
+
+confusionMatrix(table(testset$churn, churn.knn))
+
+
+control=trainControl(method="repeatedcv", number=10, repeats=1)
+train(churn~., data=trainset, method="knn", trControl=control)
+```
+
+##naive bayes
+example
+- https://www.youtube.com/watch?v=ZAfarappAO0
+```{R}
+
+library(e1071) 
+classifier=naiveBayes(trainset[, !names(trainset) %in% c("churn")], trainset$churn)
+
+classifier
+
+bayes.table = table(predict(classifier, testset[,!names(testset) %in% c("churn")]), testset$churn)
+
+bayes.table
+
+confusionMatrix(bayes.table)
+
+control=trainControl(method="repeatedcv", number=10, repeats=1)
+train(churn~., data=trainset, method="nb", trControl=control)
+```
+
+##support vector machine
+
+- https://c3h3notes.wordpress.com/2010/10/25/r%E4%B8%8A%E7%9A%84libsvm-package-e1071-%E5%8F%83%E6%95%B8%E7%AF%87/
+- https://www.zhihu.com/question/21883548
+
+```{R}
+install.packages('e1071')
+library('e1071')
+model  = svm(churn~., data = trainset, kernel="linear", cost=1, gamma = 1/ncol(trainset))
+
+summary(model)
+
+svm.pred = predict(model, testset[, !names(testset) %in% c("churn")])
+
+svm.table=table(svm.pred, testset$churn)
+svm.table
+
+confusionMatrix(svm.table)
+
+tuned = tune.svm(churn~., data = trainset, gamma = 10^(-6:-1), cost = 10^(1:2))
+
+summary(tuned)
+
+model.tuned = svm(churn~., data = trainset, gamma = tuned$best.parameters$gamma, cost = tuned$best.parameters$cost)
+
+summary(model.tuned)
+
+svm.tuned.pred = predict(model.tuned, testset[, !names(testset) %in% c("churn")])
+
+svm.tuned.table=table(svm.tuned.pred, testset$churn)
+svm.tuned.table
+
+confusionMatrix(svm.tuned.table)
+```
+
+
+## 其他補充
+
+##package dplyr
+- 類SQL語法,select,filter,arrange,mutate...
+- Chaining %>%, debug方便
+
+```{R}
+install.packages('dplyr')
+library(dplyr)
+data("Titanic")
+titanic = data.frame(Titanic)
+str(titanic)
+
+#原始R選取欄位方式
+titanic[,c("Sex","Age")]
+#dplyr選取資料
+select(titanic,Sex,Age)
+select(titanic,Sex:Survived)
+
+#原始R篩選欄位方式
+titanic[titanic$Sex=="Male" & titanic$Age=="Adult",]
+#dplyr篩選資料
+filter(titanic,Sex=="Male",Age=="Adult")
+filter(titanic,Sex=="Male" | Class=="Crew")
+filter(titanic,Sex=="Male" & Class=="Crew")
+#從某變數中抓出某特性的資料
+filter(titanic,Class %in% c('1st','Crew'))
+
+filter(select(titanic,Sex,Class,Age),Age=="Child")
+
+#Chaining
+1:10 %>%
+  sum() %>%
+  sqrt()
+
+titanic %>%
+  select(Sex,Class,Age) %>%
+  filter(Age == 'Child')
+
+#dplyr排序資料
+titanic %>%
+  select(Sex,Class,Freq,Age) %>%
+  filter(Age == 'Child') %>%
+  arrange(desc(Freq))
+
+#dplyr新增資料
+freqsum = titanic %>%
+  select(Freq) %>%
+  sum()
+
+titanic1 = titanic %>%
+  select(Sex,Age,Freq) %>%
+  mutate(portion=round(Freq/freqsum*100,2))
+
+#dplyr分組計算
+sexstat = titanic %>%
+  group_by(Sex) %>%
+  summarise(Sexsum = sum(Freq,na.rm=T))
+
+barplot(sexstat$Sexsum,names.arg = sexstat$Sex)
+
+titanic %>%
+  group_by(Class) %>%
+  summarise_each(funs(min(.,na.rm=T),max(.,na.rm=T)), matches("Freq"))
+
+```
+
+
+##Linear Regression
+hypothesis
+- 變數之間是線性關係
+- 殘差為常態分佈
+- 殘差具有隨機性
+- 殘差具有變異數齊一性
+```{R}
+
+load("Statistics/mlb11.Rdata")
+str(mlb11)
+
+#簡單線性回歸
+correlation = cor(mlb11$runs, mlb11$at_bats)
+correlation
+
+plot(mlb11$at_bats, mlb11$runs)
+m1 = lm(runs ~ at_bats, data = mlb11)
+abline(m1,col='red')
+summary(m1)
+
+#殘差分析
+par(mfrow=c(2,2))
+plot(m1)
+#檢定殘差是否為常態分配
+#H0:殘差為常態分配
+library(car)
+durbinWatsonTest(m1)
+#檢定各殘差變異數是否相等
+#H0:各殘差變異數相等
+ncvTest(m1)
+
+#predict
+p_data = data.frame(at_bats=c(4500,5000,5500))
+predict(m1, p_data, interval = "confidence", level = 0.95)
+
+
+#多元線性回歸
+var_list = !names(mlb11) %in% c("team","new_onbase","new_slug","new_obs")
+new_mlb = mlb11[,var_list]
+fit = lm(formula = wins ~ . , data = new_mlb)
+summary(fit)
+vif(fit)
+
+fit2 = lm(wins ~ runs + at_bats + homeruns + strikeouts + stolen_bases, data = new_mlb)
+summary(fit2)
+vif(fit2)
+
+fit3 = lm(wins ~ runs + at_bats + homeruns, data = new_mlb)
+summary(fit3)
+vif(fit3)
+
+plot(fit3)
+
+p_data = data.frame(runs=c(700),at_bats=c(5500),homeruns=c(300))
+predict(fit3, p_data, interval = "confidence", level = 0.95)
+```

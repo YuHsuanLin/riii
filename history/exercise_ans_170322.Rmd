@@ -1,0 +1,53 @@
+---
+title: "exercise answer"
+author: "York Lin"
+date: "2017年3月22日"
+output: html_document
+---
+
+##p33 example
+```{R, echo=TRUE}
+h = c(180,169,173)
+w = c(73,87,43)
+bmi = w / ((h/100)^2)
+names(bmi) = c("Brian", "Toby", "Sherry")
+bmi < 18.5 | bmi >= 24
+```
+
+##p44 example
+```{R}
+kevin = c(85,73)
+marry = c(72,64)
+jerry = c(59,66)
+mat = matrix(c(kevin, marry, jerry), nrow=3, byrow= TRUE)
+colnames(mat) = c('first', 'second')
+rownames(mat) = c('kevin', 'marry', 'jerry')
+
+final = mat %*% c(0.4,0.6)
+final
+
+cbind(mat,final)
+mat2 = cbind(mat,final)
+mat2
+colnames(mat2)[ncol(mat2)] = 'final'
+mat2
+
+```
+
+##p59 example
+```{R}
+tw2330 = read.csv("2330.csv", header=TRUE)
+str(tw2330)
+tw2330$Date = as.Date(tw2330$Date)
+max(tw2330$Close)
+stock2 = tw2330[(tw2330$Date >= '2014-03-01' & tw2330$Date < '2014-08-31'),]
+max(stock2$Close)
+
+summary(stock2$Close)
+
+ordered_stock = stock2[order(stock2$Close, decreasing = T),]
+ordered_stock[1,]
+ordered_stock[nrow(ordered_stock),]
+ordered_stock[1,"Close"] - ordered_stock[nrow(ordered_stock),"Close"]
+
+```
