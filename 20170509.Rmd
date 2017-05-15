@@ -171,7 +171,7 @@ height_vec < 175 & height_vec > 170
 
 #R 的index從1開始
 height_vec[c(1)] #index
-height_vec['Brian'] #variable name
+height_vec['Brian'] #element name
 height_vec[height_vec > 175] #condition (boolean vector)
 
 ```
@@ -197,6 +197,7 @@ paste("the","big","bang","theory")
 paste("big","bang",sep="")
 paste("big","bang",sep=";")
 paste(c("big","bang"),1:4)
+paste(c("big","bang"),1:4,collapse = "+" )
 length(paste(c("big","bang"),1:4,collapse = "+" ))
 ```
 
@@ -330,7 +331,7 @@ merge(x = df1, y = df2, by = NULL)
 iris[order(iris$Sepal.Length, decreasing = TRUE),]
 
 #資料轉換
-iris$Species_new <- ifelse(iris$Species %in% c("setosa"), "IsSetosa","Notsetosa")
+iris$Species_new = ifelse(iris$Species %in% c("setosa"), "IsSetosa","Notsetosa")
 
 ```
 
@@ -340,7 +341,7 @@ getwd()
 setwd("C:/Users/BigData/Desktop")
 tw2330 = read.csv("2330.csv", header=TRUE)
 
-test.data = read.table("data/match.txt" ,header = TRUE, sep="|")
+test.data = read.table("data/match.txt" ,header = FALSE, sep="|")
 
 #table
 write.table(test.data, file = "data/test.txt" , sep = " ")

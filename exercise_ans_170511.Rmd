@@ -15,7 +15,7 @@ nine_nine = function(){
       mat[i,j] = paste(i,"*",j,"= ",i*j)
     }
   }
-  mat
+  return(mat)
 }
 
 nine_nine2 = function(){

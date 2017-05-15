@@ -12,6 +12,7 @@ w = c(73,87,43)
 bmi = w / ((h/100)^2)
 names(bmi) = c("Brian", "Toby", "Sherry")
 bmi < 18.5 | bmi >= 24
+bmi[bmi < 18.5 | bmi >= 24]
 ```
 
 ##p44 example

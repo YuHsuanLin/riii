@@ -139,6 +139,8 @@ tapply(iris$Sepal.Length, iris$Species, mean)
 getwd()
 setwd("~/lecture/riii")
 load("Statistics/cdc.Rdata")
+save()
+
 str(cdc)
 head(cdc)
 names(cdc)
@@ -191,6 +193,7 @@ pct = round(table(cdc$genhlth) / length(cdc$genhlth) *100,1)
 labels = paste(names(pct),pct,"%")
 pie(table(cdc$genhlth), labels = labels)
 
+
 gender_smokers = table(cdc$gender,cdc$smoke100)
 
 mosaicplot(gender_smokers)
@@ -227,6 +230,7 @@ png(filename='test123.png')
 plot(cdc$weight, cdc$height)
 dev.off()
 
+Sys.setlocale("LC_ALL", "C")
 ```
 
 ##統計量
@@ -269,6 +273,7 @@ quantile(a,0.75)
 quantile(a,0.75) - quantile(a,0.25)
 IQR(a)
 fivenum(a)
+summary(a)
 
 boxplot(a,horizontal = T)
 
