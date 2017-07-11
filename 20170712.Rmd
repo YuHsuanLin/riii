@@ -1,7 +1,7 @@
 ---
-title: "R_0509"
+title: "R_0712"
 author: "York Lin"
-date: "2017年5月09日"
+date: "2017年7月12日"
 output: html_document
 ---
 what is R?
@@ -76,17 +76,15 @@ recursive:
 ```{R}
 #文件查詢
 help(package="base")
-?base:sum
+?base::sum
 ?sum
 help.search("sum")
 ??sum
 
 #範例演釋
 demo()
-
 #使用內建資料集
 data()
-
 #看現有變數
 ls()
 #移除變數
@@ -137,9 +135,10 @@ x = c(1,2,3,7)
 y= c(2,3,5,1)
 x+y
 x*y
-x - y
+x-y
 x/y
 
+x = c(1,2,3,7)
 x + 10
 x + c(10)
 x + c(1,2)
@@ -194,10 +193,13 @@ rep(c(1,2), each=5)
 rep_len(c(1,2),5)
 
 paste("the","big","bang","theory")
+paste("big","bang",sep="-")
+length(paste("the","big","bang","theory"))
+
 paste("big","bang",sep="")
 paste("big","bang",sep=";")
-paste(c("big","bang"),1:4)
-paste(c("big","bang"),1:4,collapse = "+" )
+paste(c("big","bang"),1:2)
+paste(c("big","bang"),1:2,collapse = "+" )
 length(paste(c("big","bang"),1:4,collapse = "+" ))
 ```
 
@@ -213,20 +215,37 @@ colnames(mat) = c('first', 'second')
 rownames(mat) = c('kevin', 'marry', 'jerry')
 mat
 
-# basic
+#取得矩陣維度
 dim(mat)
+#取得矩陣列數
 nrow(mat)
+#取得矩陣欄數
 ncol(mat)
-t(mat) #transpose
+#矩陣轉置(transpose)
+t(mat)
+
+#取第一列
 mat[1,]
+#取第一行
 mat[,1]
+#取第一、二列
 mat[1:2,]
+
+#取kevin和jerry成績
 mat[c('kevin','jerry'),]
+#取kevin和jerry成績的第一次考試成績
 mat[c('kevin','jerry'),'first']
+
+#取得第一次考試成績不及格的人
+mat[,'first']
+
 rowSums(mat)
 colSums(mat)
 
-# insert new value
+rowMeans(mat)
+colMeans(mat)
+
+#新增列與行
 mat2 = rbind(mat, c(78,63))
 rownames(mat2)[nrow(mat2)] = 'sam'
 mat2
@@ -256,9 +275,9 @@ m1 %*% m2
 ```{R}
 # syntax
 weather= c("sunny","rainy", "cloudy", "rainy", "cloudy")
-class(weather)
 weather_category = factor(weather)
 weather_category
+class(weather)
 class(weather_category)
 # order
 temperature = c("Low", "High", "High", "Medium", "Low", "Medium")
@@ -290,11 +309,14 @@ tail(iris)
 tail(iris, 10)
 str(iris)
 
+#取前三列資料
 iris[1:3,]
+#取前三列第一行的資料
 iris[1:3,1]
+#取前三列Sepal.Length欄位的資料
 iris[1:3,"Sepal.Length"]
 head(iris[,1:2])
-iris$"Sepal.Length"
+iris$"Sepal.Length"[1:3]
 
 #取前五筆包含length 及 width 的資料
 Five.Sepal.iris = iris[1:5, c("Sepal.Length","Sepal.Width")]
@@ -330,6 +352,8 @@ merge(x = df1, y = df2, by = NULL)
 #用order做資料排序
 iris[order(iris$Sepal.Length, decreasing = TRUE),]
 
+sort(iris$Sepal.Length, decreasing = TRUE)
+
 #資料轉換
 iris$Species_new = ifelse(iris$Species %in% c("setosa"), "IsSetosa","Notsetosa")
 
@@ -360,7 +384,8 @@ test$score
 test$score[2]
 
 flower= list(title="iris dataset", data= iris)
+flower$data[1:3,c("Sepal.Width","Sepal.Length")]
+
 class(flower)
 class(flower$data)
-flower$data[1,"Sepal.Width"]
 ```
