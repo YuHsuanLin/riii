@@ -6,7 +6,7 @@ output: html_document
 ---
 
 
-##package:ggplot2
+## package:ggplot2
 documentation
 - http://docs.ggplot2.org/current/
 
@@ -63,7 +63,7 @@ ggsave(filename='your_file_name.png',plot = g2)
 ```
 
 
-##資料預處理
+## 資料預處理
 ```{R}
 getwd()
 setwd('~/lecture/riii')
@@ -168,7 +168,7 @@ for(i in 1:length(names(cat_means))){
 
 ```
 
-##package dplyr
+## package dplyr
 - 類SQL語法,select,filter,arrange,mutate...
 - Chaining %>%, debug方便
 
@@ -299,15 +299,15 @@ g + geom_bar(stat='identity') + theme(text=element_text(size=16,  family="Songti
 
 ```
 
-##Learning map
+## Learning map
 - http://scikit-learn.org/stable/_static/ml_map.png
 
 - http://www.r-bloggers.com/whats-the-difference-between-machine-learning-statistics-and-data-mining/
 
 - http://mp.weixin.qq.com/s?__biz=MjM5ODczNTkwMA==&mid=2650107069&idx=1&sn=44a2eab6c4858c56af236749fdd1d784#rd
 
-#Classification
-##Decision Tree - using churn data in C50 package
+# Classification
+## Decision Tree - using churn data in C50 package
 ```{R}
 install.packages("C50")
 library(C50)
@@ -351,7 +351,7 @@ a[ind == 0]
 
 ```
 
-##rpart
+## rpart
 ```{R}
 install.packages('rpart')
 library('rpart')
@@ -377,7 +377,7 @@ printcp(churn.rp)
 plotcp(churn.rp)
 ```
 
-##Prune
+## Prune
 
 ```{R}
 #找出minimum cross-validation errors
@@ -402,7 +402,7 @@ confusionMatrix(table(predictions, testset$churn))
 
 ```
 
-##ctree
+## ctree
 ```{R}
 install.packages("party")
 library('party')
@@ -418,7 +418,7 @@ table(ctree.predict, testset$churn)
 confusionMatrix(table(ctree.predict, testset$churn))
 ```
 
-##C5.0
+## C5.0
 ```{R}
 install.packages("C50")
 library(C50)
@@ -438,7 +438,7 @@ table(c50.predict, testset$churn)
 confusionMatrix(table(c50.predict, testset$churn))
 ```
 
-##Estimating model performance with k-fold cross-validation
+## Estimating model performance with k-fold cross-validation
 ```{R}
 ind = cut(1:nrow(churnTrain), breaks=10, labels=F)
 ind
@@ -455,7 +455,7 @@ mean(accuracies)
 
 ```
 
-##caret cross-validation
+## caret cross-validation
 ```{R}
 install.packages("caret")
 library(caret)
@@ -467,7 +467,7 @@ predictions = predict(model, testset)
 table(predictions,testset$churn)
 ```
 
-##find importance variable
+## find importance variable
 ```{R}
 library('caret')
 importance = varImp(model, scale=FALSE)
@@ -476,7 +476,7 @@ plot(importance)
 
 ```
 
-##ROC
+## ROC
 - https://www.youtube.com/watch?v=OAl6eAyP-yo
 - http://www.navan.name/roc/
 
