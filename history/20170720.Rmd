@@ -221,7 +221,8 @@ applenews %>%
 applenews %>%
   select(category,clicked) %>% 
   filter(category == "社會") %>% 
-  arrange(desc(clicked))
+  arrange(.,desc(clicked)) %>%
+  head()
 
 
 # 總點擊數
@@ -247,6 +248,10 @@ applenews %>%
   arrange(desc(clicked_sum))
 
 #多個欄位計算
+applenews %>%
+  group_by(category) %>% 
+  summarise_at(.vars=vars(clicked,portion),.funs=funs(sum))
+
 applenews %>%
   group_by(category) %>% 
   summarise_at(.vars=vars(clicked),.funs=funs(sum,mean))
@@ -296,6 +301,8 @@ category_stat = tbl(my_database,"applenews") %>%
 library('ggplot2')
 g <- ggplot(category_stat,aes(x=category,y=mean))
 g + geom_bar(stat='identity') + theme(text=element_text(size=16,  family="Songti SC")) + scale_x_discrete(limits=category_stat$category)
+
++scale_fill_gradient(..., low = "#132B43", high = "#56B1F7")
 
 ```
 

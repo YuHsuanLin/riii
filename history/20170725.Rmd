@@ -63,6 +63,7 @@ library('rpart')
 #使用rpart(CART)建立決策樹模型
 
 churn.rp<-rpart(churn ~ ., data=trainset)
+#churn.rp<-rpart(churn ~ total_day_charge + #international_plan, data=trainset)
 churn.rp
 summary(churn.rp)
 
@@ -76,7 +77,7 @@ plot(churn.rp, margin=0.1)
 plot(churn.rp, uniform=TRUE,branch = 0.6, margin=0.1)
 ?plot.rpart
 text(churn.rp)
-text(churn.rp, all=TRUE, use.n=TRUE)
+text(churn.rp, all=TRUE, use.n=TRUE, cex=0.7)
 
 printcp(churn.rp)
 plotcp(churn.rp)
@@ -94,8 +95,8 @@ prune.tree=prune(churn.rp, cp=churn.cp)
 plot(prune.tree, margin=0.1)
 text(prune.tree, all=TRUE, use.n=TRUE, cex=0.7)
 
-predictions <-predict(prune.tree, testset,type = "class")
-table(testset$churn, predictions)
+predictions <-predict(prune.tree, testset,type='class')
+table(predictions,testset$churn)
 
 install.packages('caret')
 install.packages('e1071')
@@ -195,7 +196,7 @@ pred.rocr<-prediction(pred.to.roc, testset$churn)
 pred.rocr
 perf.rocr<-performance(pred.rocr, measure ="auc", x.measure="cutoff")
 perf.tpr.rocr<-performance(pred.rocr, "tpr","fpr")
-plot(perf.tpr.rocr,colorize=T,main=paste("AUC:",(perf.rocr@y.values)))
+plot(perf.tpr.rocr,main=paste("AUC:",(perf.rocr@y.values)))
 ```
 
 ## model comparison

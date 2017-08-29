@@ -1,0 +1,163 @@
+---
+title: "R_0718"
+author: "York Lin"
+date: "2017年07月18日"
+output: html_document
+---
+
+##資料預處理
+```{R}
+getwd()
+setwd('~/lecture/riii')
+load('Statistics/appledaily.RData')
+
+str(appledaily)
+head(appledaily)
+
+#把dt轉換成日期型態
+#方法一：用as.POSIXct()轉換
+appledaily$dt = as.POSIXct(appledaily$dt,format = '%Y年%m月%d日%H:%M')
+
+#方法二：用strptime()轉換
+strptime(appledaily$dt,'%Y年%m月%d日%H:%M')
+
+#比較as.POSIXct() 和 as.POSIXlt
+t1 = as.POSIXct(appledaily$dt,format = '%Y年%m月%d日%H:%M')
+t2 = as.POSIXlt(appledaily$dt,format = '%Y年%m月%d日%H:%M')
+
+class(t1)
+class(t2)
+
+unclass(t1)
+unclass(t2)
+
+#difftime
+Sys.time() - strptime(appledaily$dt,'%Y年%m月%d日%H:%M')[1]
+
+
+#擷取點擊數中數值部分
+#方法一：利用sub函數取代
+appledaily$clicked = sub('\\)','',sub('人氣\\(','',appledaily$clicked))
+appledaily$clicked = as.integer(appledaily$clicked)
+head(appledaily)
+
+#方法二：使用stringr套件的str_match()
+library(stringr)
+as.integer(str_match(appledaily$clicked,"人氣\\((\\d+)\\)")[,2])
+
+#儲存處理過的檔案
+applenews = appledaily
+save(applenews,file = 'Statistics/applenews.RData')
+
+#其他常見字串處理函式
+#grep()
+test_str = c('abcd','bcd','cde')
+grep('a',test_str)
+test_str[grep('a',test_str)]
+
+#grepl()
+grepl('a',test_str)
+test_str[grepl('a',test_str)]
+
+#strsplit()
+strsplit('abc-def','-')
+unlist(strsplit('abc-def','-'))[1]
+
+#substring()
+substring('abcdef',2,nchar('abcdef')-1)
+
+
+#遺失值處理(missing value)
+#install.packages('missForest')
+#library('missForest')
+
+#test = prodNA(applenews[,5], noNA = 0.1)
+sample(1:nrow(applenews),30)
+applenews[sample(1:nrow(applenews),30),'clicked'] = NA
+
+
+#找尋遺失值
+is.na(applenews)
+sum(is.na(applenews$clicked))
+
+#移除missing value
+complete.cases(applenews)
+rm.data <- applenews[complete.cases(applenews), ]
+
+#以全體平均填補
+mean_clicked = as.integer(mean(applenews$clicked,na.rm=T))
+applenews$clicked[is.na(applenews$clicked)] = mean_clicked
+
+#以類別平均填補
+cat_means = tapply(applenews$clicked,applenews$category,function(e){as.integer(mean(e,na.rm=T))})
+
+for(i in 1:length(names(cat_means))){
+  applenews[applenews$category == names(cat_means)[i] & is.na(applenews$clicked),'clicked'] = cat_means[i]
+}
+
+```
+
+##package dplyr
+- 類SQL語法,select,filter,arrange,mutate...
+- Chaining %>%, debug方便
+
+```{R}
+install.packages('dplyr')
+library(dplyr)
+data("Titanic")
+titanic = data.frame(Titanic)
+str(titanic)
+
+#原始R選取欄位方式
+titanic[,c("Sex","Age")]
+#dplyr選取資料
+select(titanic,Sex,Age)
+select(titanic,Sex:Survived)
+
+#原始R篩選欄位方式
+titanic[titanic$Sex=="Male" & titanic$Age=="Adult",]
+#dplyr篩選資料
+filter(titanic,Sex=="Male",Age=="Adult")
+filter(titanic,Sex=="Male" | Class=="Crew")
+filter(titanic,Sex=="Male" & Class=="Crew")
+#從某變數中抓出某特性的資料
+filter(titanic,Class %in% c('1st','Crew'))
+
+filter(select(titanic,Sex,Class,Age),Age=="Child")
+
+#Chaining
+1:10 %>%
+  sum() %>%
+  sqrt()
+
+titanic %>%
+  select(Sex,Class,Age) %>%
+  filter(Age == 'Child')
+
+#dplyr排序資料
+titanic %>%
+  select(Sex,Class,Freq,Age) %>%
+  filter(Age == 'Child') %>%
+  arrange(desc(Freq))
+
+#dplyr新增資料
+freqsum = titanic %>%
+  select(Freq) %>%
+  sum()
+
+titanic1 = titanic %>%
+  select(Sex,Age,Freq) %>%
+  mutate(portion=round(Freq/freqsum*100,2))
+
+#dplyr分組計算
+sexstat = titanic %>%
+  group_by(Sex) %>%
+  summarise(Sexsum = sum(Freq,na.rm=T))
+
+barplot(sexstat$Sexsum,names.arg = sexstat$Sex)
+
+titanic %>%
+  group_by(Class) %>%
+  summarise_each(funs(min(.,na.rm=T),max(.,na.rm=T)), matches("Freq"))
+
+```
