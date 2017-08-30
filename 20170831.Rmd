@@ -20,7 +20,7 @@ Kaggle
 UCI dataset
 - https://archive.ics.uci.edu/ml/datasets.html
 
-##R intro
+## R intro
 Functional Programming
 ```{r}
 x=1:5
@@ -53,7 +53,7 @@ lmfit <- lm(y1~x1, data=anscombe)
 abline(lmfit, col="red")
 ```
 
-##Basic type
+## Basic type
 - numeric: 1,2,1.2
 - integer: 1L,2L,3L
 - character: "string"
@@ -72,7 +72,7 @@ recursive:
 - dataframe
 - list
 
-##R basic command
+## R basic command
 ```{R}
 #文件查詢
 help(package="base")
@@ -101,7 +101,7 @@ str()
 str(c(1,2,3))
 ```
 
-##Basic computing
+## Basic computing
 ```{R, echo=TRUE}
 3+8
 3-8
@@ -114,7 +114,7 @@ str(c(1,2,3))
 T == TRUE
 ```
 
-##Assignment
+## Assignment
 ```{R}
 a = 3
 a <- 5 # ( alt + - )
@@ -125,7 +125,7 @@ a = a / 2
 
 ```
 
-##Vector
+## Vector
 - R語言最基本的物件
 ```{R, echo=TRUE}
 character(5)  ## character vector of length 5
@@ -175,7 +175,7 @@ height_vec[height_vec > 175] #condition (boolean vector)
 
 ```
 
-##seq() & rep() & paste()
+## seq() & rep() & paste()
 ```{R, echo=TRUE}
 1:20
 seq(1,20)
@@ -203,7 +203,7 @@ paste(c("big","bang"),1:2,collapse = "+" )
 length(paste(c("big","bang"),1:4,collapse = "+" ))
 ```
 
-##Matrix
+## Matrix
 ```{R}
 matrix(1:9, byrow=TRUE, nrow=3)
 matrix(1:9, nrow=3)
@@ -273,7 +273,7 @@ m1 %*% m2
 Sys.setlocale(category = "LC_ALL", locale = "C")
 ```
 
-##Factor
+## Factor
 ```{R}
 # syntax
 weather= c("sunny","rainy", "cloudy", "rainy", "cloudy")
@@ -295,7 +295,7 @@ levels(weather_factor) = c("cloudy","rainy","sunny")
 weather_factor
 ```
 
-##Dataframe
+## Dataframe
 ```{R}
 name <- c("Joe", "Bob", "Vicky")
 age <- c(28, 26, 34)
@@ -361,7 +361,7 @@ iris$Species_new = ifelse(iris$Species == c("setosa"), "IsSetosa","Notsetosa")
 
 ```
 
-##File read and write
+## File read and write
 ```{R}
 getwd()
 setwd("C:/Users/BigData/Desktop")
@@ -376,7 +376,7 @@ write.csv(test.data, file = "data/test.csv")
 
 ```
 
-##List
+## List
 ```{R}
 item= list(thing='hat',size=8.25)
 item$thing
