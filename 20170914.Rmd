@@ -131,6 +131,7 @@ plot(c50.performance, add=T,col='green')
 plot(ctree.performance, add=T,col='blue')
 ```
 
+# 分群問題
 
 ## 距離計算
 ```{R}
