@@ -419,6 +419,5 @@ png(filename='test123.png')
 plot(cdc$weight, cdc$height)
 dev.off()
 
-Sys.setlocale("LC_ALL", "C")
 ```
 

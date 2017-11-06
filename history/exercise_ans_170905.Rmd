@@ -31,7 +31,8 @@ nine_nine = function(){
   for(i in 1:9){
     for(j in 1:9){
       #mat[i,j] = i * j;
-      mat[i,j] = paste(i,"*",j,"= ",i*j)
+      #mat[i,j] = paste(i,"*",j,"= ",i*j)
+      mat[i,j] = sprintf(" %s * %s = %s",i,j,i*j)
     }
   }
   return(mat)
@@ -45,7 +46,7 @@ nine_nine2 = function(){
 }
 ```
 
-##p76
+## p76
 ```{R}
 match_func = function(filename= "data/match.txt"){
   mat = matrix(rep(-1,25), nrow=5, ncol = 5)
@@ -60,7 +61,7 @@ match_func = function(filename= "data/match.txt"){
 }
 ```
 
-##p76-2
+## p76-2
 ```{R}
 match_func = function(filename,header,sep){
   t = read.table(filename,header=header,sep = sep);
