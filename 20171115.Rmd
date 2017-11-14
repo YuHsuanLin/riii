@@ -357,3 +357,55 @@ dev.off()
 
 ```
 
+
+## package:ggplot2
+documentation
+- http://docs.ggplot2.org/current/
+
+cheat sheet
+- https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf
+
+why ggplot2?
+- fancy by default, good for demo and report 
+- consistent across all kinds of plot in syntax and behavior
+- strong support community(the mostly download package on CRAN)
+```{R}
+#basic syntax
+#ggplot(data,aes(x,y,group,...))+geom_object(...)
+install.packages('ggplot2')
+library('ggplot2')
+
+g <- ggplot(cdc,aes(x=height,y=weight))
+g+geom_point(aes(col=exerany))
+
+g <- ggplot(cdc,aes(x=genhlth))
+g+geom_bar()
+g+geom_bar() + ylab('Count') + ggtitle('cdc')
+#fill => 填滿顏色; color => 邊線顏色
+g+geom_bar(fill='snow',color='black')
+
+g <- ggplot(cdc,aes(x=genhlth,fill=gender))
+g+geom_bar()
+#g <- ggplot(cdc,aes(x=genhlth))
+#g+geom_bar(aes(fill=gender))
+
+g_bygrp <- ggplot(cdc,aes(x=exerany,fill=genhlth))
+g_bygrp + geom_bar()
+g_bygrp + geom_bar(position='stack')
+g_bygrp + geom_bar(position='dodge')
+g_bygrp + geom_bar(position='identity')
+
+precounted = as.data.frame(table(cdc$genhlth,dnn = c('genhlth')))
+precounted
+ggplot(precounted,aes(x=genhlth,y=Freq))+ geom_bar(stat='identity')
+
+g <- ggplot(cdc,aes(x=genhlth,y=height))
+g + geom_boxplot()
+
+#facet
+g <- ggplot(cdc,aes(x=weight))
+g2 = g+ geom_histogram()+facet_wrap(~genhlth)
+g2
+
+ggsave(filename='your_file_name.png',plot = g2)
+```
