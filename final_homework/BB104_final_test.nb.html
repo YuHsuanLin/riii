@@ -142,7 +142,7 @@ $(document).ready(function () {
 </style>
 <script>
 $(document).ready(function () {
-  window.initializeSourceEmbed("BB103_final_test.Rmd");
+  window.initializeSourceEmbed("BB104_final_test.Rmd");
   window.initializeCodeFolding("show" === "show");
 });
 </script>
@@ -172,169 +172,149 @@ $(document).ready(function () {
 
 
 <!-- rnb-text-begin -->
-<div id="class-bb103" class="section level2">
-<h2>class: BB103</h2>
+<div id="class-bb104" class="section level2">
+<h2>class: BB104</h2>
 </div>
 <div id="name-_______" class="section level2">
 <h2>name: _______</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIygxKSDoq4voroDlj5ZmaW5hbOizh+aWmeWkvuS4i+eahGx2cl9wcmljZXNfYmlnNS5SRGF0YeaqlOahiCBbNeWIhl1cblxuYGBgIn0= -->
-<pre class="r"><code>#(1) 請讀取final資料夾下的lvr_prices_big5.RData檔案 [5分]
-</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuIygxKSDoq4voroDlj5ZmaW5hbOizh+aWmeWkvuS4i+eahGx2cl9wcmljZXNfYmlnNS5SRGF0YeaqlOahiCBbNeWIhl1cblxuYGBgXG5gYGAifQ== -->
+<p><code>r</code>r #(1) 請讀取final資料夾下的lvr_prices_big5.RData檔案 [5分]</p>
+<pre><code></code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIygyKSDoq4vllY/lj6/kvb/nlKjlk6rlgIvlh73lvI/op4DnnIvmqpTmoYjnmoTos4fmlpnntZDmp4vvvJ9bNeWIhl1cblxuYGBgIn0= -->
-<pre class="r"><code>#(2) 請問可使用哪個函式觀看檔案的資料結構？[5分]
-</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuIygyKSDoq4vllY/lj6/kvb/nlKjlk6rlgIvlh73lvI/op4DnnIvmqpTmoYjnmoTos4fmlpnntZDmp4vvvJ9bNeWIhl1cblxuYGBgXG5gYGAifQ== -->
+<p><code>r</code>r #(2) 請問可使用哪個函式觀看檔案的資料結構？[5分]</p>
+<pre><code></code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIygzKSDoq4vllY/lj6/kvb/nlKjlk6rlgIvlh73lvI/op4DnnIvos4fmlpnliY0xMOethuizh+aWme+8n1s15YiGXVxuXG5gYGAifQ== -->
-<pre class="r"><code>#(3) 請問可使用哪個函式觀看資料前10筆資料？[5分]
-</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuIygzKSDoq4vllY/lj6/kvb/nlKjlk6rlgIvlh73lvI/op4DnnIvos4fmlpnliY0xMOethuizh+aWme+8n1s15YiGXVxuXG5gYGBcbmBgYCJ9 -->
+<p><code>r</code>r #(3) 請問可使用哪個函式觀看資料前10筆資料？[5分]</p>
+<pre><code></code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyg0KSDoq4vnr6npgbjlh7pcbiMgIDEuIGNpdHlfbGFuZF90eXBl54K65L2P5a6F55SoXG4jICAyLiB0b3RhbF9wcmljZSA+IDBcbiMgIDMuIGJ1aWxkaW5nX3NxbWV0ZXIgPiAwXG4jICA0LiBmaW5pc2hfeW1kIOmdnuepuuWAvFxuIyAg55qE5oi/5bGL6LOH5paZLOS4puWtmOWFpWhvdXNl6K6K5pW45Lit44CCWzjliIZdXG5cbmBgYCJ9 -->
-<pre class="r"><code>#(4) 請篩選出
-#  1. city_land_type為住宅用
-#  2. total_price &gt; 0
-#  3. building_sqmeter &gt; 0
-#  4. finish_ymd 非空值
-#  的房屋資料,並存入house變數中。[8分]
-</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuIyg0KSDoq4vnr6npgbjlh7pcbiMgIDEuIGNpdHlfbGFuZF90eXBl54K65L2P5a6F55SoXG4jICAyLiB0b3RhbF9wcmljZSA+IDBcbiMgIDMuIGJ1aWxkaW5nX3NxbWV0ZXIgPiAwXG4jICA0LiBmaW5pc2hfeW1kIOmdnuepuuWAvFxuIyAg55qE5oi/5bGL6LOH5paZLOS4puWtmOWFpWhvdXNl6K6K5pW45Lit44CCWzjliIZdXG5cbmBgYFxuYGBgIn0= -->
+<p><code>r</code>r #(4) 請篩選出 # 1. city_land_type為住宅用 # 2. total_price &gt; 0 # 3. building_sqmeter &gt; 0 # 4. finish_ymd 非空值 # 的房屋資料,並存入house變數中。[8分]</p>
+<pre><code></code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyg1KSDoq4vkvb/nlKhob3VzZeizh+aWme+8jOWIqeeUqOaIv+Wxi+WDueagvCh0b3RhbF9wcmljZSnlj4rmiL/lsYvlubPmlrnnsbPmlbgoYnVpbGRpbmdfc3FtZXRlcinlhanmrITkvY3vvIxcbiMgICAg55Si55Sf5LiA5paw5qyE5L2N54K65q+P5bmz5pa557Gz5YO55qC8KHByaWNlX3Blcl9zcW1ldGVyKe+8jOS4puWwh+WFtuWbm+aNqOS6lOWFpeWIsOaVtOaVuOS9jeOAgls15YiGXVxuXG5gYGAifQ== -->
-<pre class="r"><code>#(5) 請使用house資料，利用房屋價格(total_price)及房屋平方米數(building_sqmeter)兩欄位，
-#    產生一新欄位為每平方米價格(price_per_sqmeter)，並將其四捨五入到整數位。[5分]
-</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuIyg1KSDoq4vkvb/nlKhob3VzZeizh+aWme+8jOWIqeeUqOaIv+Wxi+WDueagvCh0b3RhbF9wcmljZSnlj4rmiL/lsYvlubPmlrnnsbPmlbgoYnVpbGRpbmdfc3FtZXRlcinlhanmrITkvY3vvIxcbiMgICAg55Si55Sf5LiA5paw5qyE5L2N54K65q+P5bmz5pa557Gz5YO55qC8KHByaWNlX3Blcl9zcW1ldGVyKe+8jOS4puWwh+WFtuWbm+aNqOS6lOWFpeWIsOaVtOaVuOS9jeOAgls15YiGXVxuXG5gYGBcbmBgYCJ9 -->
+<p><code>r</code>r #(5) 請使用house資料，利用房屋價格(total_price)及房屋平方米數(building_sqmeter)兩欄位， # 產生一新欄位為每平方米價格(price_per_sqmeter)，並將其四捨五入到整數位。[5分]</p>
+<pre><code></code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyg2KSDoq4vkvb/nlKhob3VzZeizh+aWme+8jOWIqeeUqHNjYWxlKCkg5bCH5q+P5bmz5pa557Gz5YO55qC8KHByaWNlX3Blcl9zcW1ldGVyKeashOS9jeizh+aWmeaomea6luWMllxuIyAgICDvvIzkuKbliZTpmaTmjolvdXRsaWVy6LOH5paZKHotc2NvcmUgPiAzKeOAgls15YiGXVxuaG91c2UgPSBob3VzZVthYnMoc2NhbGUoaG91c2UkcHJpY2VfcGVyX3NxbWV0ZXIpKSA8PSAzLF1cbmBgYCJ9 -->
-<pre class="r"><code>#(6) 請使用house資料，利用scale() 將每平方米價格(price_per_sqmeter)欄位資料標準化
-#    ，並剔除掉outlier資料(z-score &gt; 3)。[5分]
-house = house[abs(scale(house$price_per_sqmeter)) &lt;= 3,]</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuIyg2KSDoq4vkvb/nlKhob3VzZeizh+aWme+8jOWIqeeUqHNjYWxlKCkg5bCH5q+P5bmz5pa557Gz5YO55qC8KHByaWNlX3Blcl9zcW1ldGVyKeashOS9jeizh+aWmeaomea6luWMllxuIyAgICDvvIzkuKbliZTpmaTmjolvdXRsaWVy6LOH5paZKHotc2NvcmUgPiAzKeOAgls15YiGXVxuaG91c2UgPSBob3VzZVthYnMoc2NhbGUoaG91c2UkcHJpY2VfcGVyX3NxbWV0ZXIpKSA8PSAzLF1cbmBgYFxuYGBgIn0= -->
+<p><code>r</code>r #(6) 請使用house資料，利用scale() 將每平方米價格(price_per_sqmeter)欄位資料標準化 # ，並剔除掉outlier資料(z-score &gt; 3)。[5分] house = house[abs(scale(house$price_per_sqmeter)) &lt;= 3,]</p>
+<pre><code></code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyg3KSDoq4vllY/lnKhob3VzZeizh+aWmeS4reWQhOihjOaUv+WNgChhcmVhKeeahOizh+aWmeethuaVuOeCuuS9lT8g5Y+v5ZCm55Wr5Ye65YW26ZW35qKd5ZyWPyBbNeWIhl1cblxuYGBgIn0= -->
-<pre class="r"><code>#(7) 請問在house資料中各行政區(area)的資料筆數為何? 可否畫出其長條圖? [5分]
-</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuIyg3KSDoq4vllY/lnKhob3VzZeizh+aWmeS4reWQhOihjOaUv+WNgChhcmVhKeeahOizh+aWmeethuaVuOeCuuS9lT8g5Y+v5ZCm55Wr5Ye65YW26ZW35qKd5ZyWPyBbNeWIhl1cblxuYGBgXG5gYGAifQ== -->
+<p><code>r</code>r #(7) 請問在house資料中各行政區(area)的資料筆數為何? 可否畫出其長條圖? [5分]</p>
+<pre><code></code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyg4KSDoq4vkvb/nlKhob3VzZeizh+aWme+8jOioiOeul+WQhOihjOaUv+WNgOavj+W5s+aWueexs+WDueagvChwcmljZV9wZXJfc3FtZXRlcinmrITkvY3os4fmlpnnmoTlubPlnYfmlbjvvIzkuK3kvY3mlbjlj4rmqJnmupblt64gWzjliIZdXG5cbmBgYCJ9 -->
-<pre class="r"><code>#(8) 請使用house資料，計算各行政區每平方米價格(price_per_sqmeter)欄位資料的平均數，中位數及標準差 [8分]
-</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuIyg4KSDoq4vkvb/nlKhob3VzZeizh+aWme+8jOioiOeul+WQhOihjOaUv+WNgOavj+W5s+aWueexs+WDueagvChwcmljZV9wZXJfc3FtZXRlcinmrITkvY3os4fmlpnnmoTlubPlnYfmlbjvvIzkuK3kvY3mlbjlj4rmqJnmupblt64gWzjliIZdXG5cbmBgYFxuYGBgIn0= -->
+<p><code>r</code>r #(8) 請使用house資料，計算各行政區每平方米價格(price_per_sqmeter)欄位資料的平均數，中位數及標準差 [8分]</p>
+<pre><code></code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyg5KSDoq4vkvb/nlKhob3VzZeizh+aWmSzliKnnlKhnZ3Bsb3Qy55qEZmFjZXRfd3JhcOWHveaVuOe5quijveWQhOihjOaUv+WNgOaIv+Wxi+avj+W5s+aWueexs+WDueagvChwcmljZV9wZXJfc3FtZXRlcinnmoTnm7TmlrnlnJYgWzjliIZdXG5cbmBgYCJ9 -->
-<pre class="r"><code>#(9) 請使用house資料,利用ggplot2的facet_wrap函數繪製各行政區房屋每平方米價格(price_per_sqmeter)的直方圖 [8分]
-</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuIyg5KSDoq4vkvb/nlKhob3VzZeizh+aWmSzliKnnlKhnZ3Bsb3Qy55qEZmFjZXRfd3JhcOWHveaVuOe5quijveWQhOihjOaUv+WNgOaIv+Wxi+avj+W5s+aWueexs+WDueagvChwcmljZV9wZXJfc3FtZXRlcinnmoTnm7TmlrnlnJYgWzjliIZdXG5cbmBgYFxuYGBgIn0= -->
+<p><code>r</code>r #(9) 請使用house資料,利用ggplot2的facet_wrap函數繪製各行政區房屋每平方米價格(price_per_sqmeter)的直方圖 [8分]</p>
+<pre><code></code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIygxMCkg6Kmm5Yip55So5oi/5bGL5a6M5bel5pel5pyfKGZpbmlzaF95bWQp55Si55Sf5LiA5paw6K6K5pW454K65bGL6b2hKGJ1aWxkaW5nX2FnZSnliqDlhaVob3VzZeizh+aWmeS4reOAglxuI2hpbnQxOiDlj5blvpfnlbbliY3ml6XmnJ/nmoTlh73mlbjngrogU3lzLkRhdGUoKVxuI2hpbnQyOiDkuIDlubToq4vku6UzNjXlpKnoqIjnrpfvvIzlm5vmjajkupTlhaXoh7PmlbTmlbjkvY1cbiNoaW50Mzog5bCH6YGL566X5a6M55qE6LOH5paZ6L2J54K65pW05pW45Z6L5oWLKGludGVnZXIpIFs45YiGXVxuXG5gYGAifQ== -->
-<pre class="r"><code>#(10) 試利用房屋完工日期(finish_ymd)產生一新變數為屋齡(building_age)加入house資料中。
-#hint1: 取得當前日期的函數為 Sys.Date()
-#hint2: 一年請以365天計算，四捨五入至整數位
-#hint3: 將運算完的資料轉為整數型態(integer) [8分]
-</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuIygxMCkg6Kmm5Yip55So5oi/5bGL5a6M5bel5pel5pyfKGZpbmlzaF95bWQp55Si55Sf5LiA5paw6K6K5pW454K65bGL6b2hKGJ1aWxkaW5nX2FnZSnliqDlhaVob3VzZeizh+aWmeS4reOAglxuI2hpbnQxOiDlj5blvpfnlbbliY3ml6XmnJ/nmoTlh73mlbjngrogU3lzLkRhdGUoKVxuI2hpbnQyOiDkuIDlubToq4vku6UzNjXlpKnoqIjnrpfvvIzlm5vmjajkupTlhaXoh7PmlbTmlbjkvY1cbiNoaW50Mzog5bCH6YGL566X5a6M55qE6LOH5paZ6L2J54K65pW05pW45Z6L5oWLKGludGVnZXIpIFs45YiGXVxuXG5gYGBcbmBgYCJ9 -->
+<p><code>r</code>r #(10) 試利用房屋完工日期(finish_ymd)產生一新變數為屋齡(building_age)加入house資料中。 #hint1: 取得當前日期的函數為 Sys.Date() #hint2: 一年請以365天計算，四捨五入至整數位 #hint3: 將運算完的資料轉為整數型態(integer) [8分]</p>
+<pre><code></code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIygxMSkg6KuL6K6A5Y+WZmluYWzos4fmlpnlpL7kuIvnmoRob3VzZV9kYW5nZXIuUkRhdGHmqpTmoYjvvIxcbiMgICAgIOS4puWwh2hvdXNl6LOH5paZ6ZuG5ZKMaG91c2VfZGFuZ2Vy6LOH5paZ6ZuG5LulbGVmdCBvdXRlciBqb2lu5pa55byPam9pbui1t+S+hu+8jFxuIyAgICAg5a2Y5ZueaG91c2XorormlbjkuK0gWzXliIZdXG5cbmBgYCJ9 -->
-<pre class="r"><code>#(11) 請讀取final資料夾下的house_danger.RData檔案，
-#     並將house資料集和house_danger資料集以left outer join方式join起來，
-#     存回house變數中 [5分]
-</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuIygxMSkg6KuL6K6A5Y+WZmluYWzos4fmlpnlpL7kuIvnmoRob3VzZV9kYW5nZXIuUkRhdGHmqpTmoYjvvIxcbiMgICAgIOS4puWwh2hvdXNl6LOH5paZ6ZuG5ZKMaG91c2VfZGFuZ2Vy6LOH5paZ6ZuG5LulbGVmdCBvdXRlciBqb2lu5pa55byPam9pbui1t+S+hu+8jFxuIyAgICAg5a2Y5ZueaG91c2XorormlbjkuK0gWzXliIZdXG5cbmBgYFxuYGBgIn0= -->
+<p><code>r</code>r #(11) 請讀取final資料夾下的house_danger.RData檔案， # 並將house資料集和house_danger資料集以left outer join方式join起來， # 存回house變數中 [5分]</p>
+<pre><code></code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIygxMikg6KuL5bCHaG91c2Xos4fmlpnku6U4OjLnmoTmr5TkvovliIbngrroqJPnt7Tpm4blkozmuKzoqabpm4bvvIxcbiMgICAgIOWwh+iok+e3tOmbhuizh+aWmeWtmOWcqHRyYWluc2V06K6K5pW45Lit77yMXG4jICAgICDlsIfmuKzoqabpm4bos4fmlpnlrZjlnKh0ZXN0c2V06K6K5pW45Lit44CCIFs15YiGXVxuc2V0LnNlZWQoMTIwNilcblxuYGBgIn0= -->
-<pre class="r"><code>#(12) 請將house資料以8:2的比例分為訓練集和測試集，
-#     將訓練集資料存在trainset變數中，
-#     將測試集資料存在testset變數中。 [5分]
-set.seed(1206)
-</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuIygxMikg6KuL5bCHaG91c2Xos4fmlpnku6U4OjLnmoTmr5TkvovliIbngrroqJPnt7Tpm4blkozmuKzoqabpm4bvvIxcbiMgICAgIOWwh+iok+e3tOmbhuizh+aWmeWtmOWcqHRyYWluc2V06K6K5pW45Lit77yMXG4jICAgICDlsIfmuKzoqabpm4bos4fmlpnlrZjlnKh0ZXN0c2V06K6K5pW45Lit44CCIFs15YiGXVxuc2V0LnNlZWQoMTIwNilcblxuYGBgXG5gYGAifQ== -->
+<p><code>r</code>r #(12) 請將house資料以8:2的比例分為訓練集和測試集， # 將訓練集資料存在trainset變數中， # 將測試集資料存在testset變數中。 [5分] set.seed(1206)</p>
+<pre><code></code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIygxMykg5Yip55SocnBhcnTlpZfku7blu7rnq4vkuIDpoJDmuKzmiL/lsYvmmK/lkKbngrrljbHmqJMoZGFuZ2VyKeeahOaxuuetluaoueaooeWei++8jFxuIyAgICAg6KuL5Yip55So6KGM5pS/5Y2AKGFyZWEpLCDlsYvpvaEoYnVpbGRpbmdfYWdlKSwg5oi/5bGL57i95bmz5pa557Gz5pW4KGJ1aWxkaW5nX3NxbWV0ZXIpLFxuIyAgICAg5oi/5bGL6aGe5Z6LKGJ1aWxkaW5nX3R5cGUp5Y+K5q+P5bmz5pa557Gz5YO55qC8KHByaWNlX3Blcl9zcW1ldGVyKVxuIyAgICAgNeWAi+iuiuaVuOS9nOeCuuino+mHi+iuiuaVuOaUvuWFpeaooeWei+eVtuS4reW7uuaooe+8jOS4puWwh+aooeWei+WtmOWcqGhvdXNlLnJw6K6K5pW45Lit44CCIFs15YiGXVxuXG5gYGAifQ== -->
-<pre class="r"><code>#(13) 利用rpart套件建立一預測房屋是否為危樓(danger)的決策樹模型，
-#     請利用行政區(area), 屋齡(building_age), 房屋總平方米數(building_sqmeter),
-#     房屋類型(building_type)及每平方米價格(price_per_sqmeter)
-#     5個變數作為解釋變數放入模型當中建模，並將模型存在house.rp變數中。 [5分]
-</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuIygxMykg5Yip55SocnBhcnTlpZfku7blu7rnq4vkuIDpoJDmuKzmiL/lsYvmmK/lkKbngrrljbHmqJMoZGFuZ2VyKeeahOaxuuetluaoueaooeWei++8jFxuIyAgICAg6KuL5Yip55So6KGM5pS/5Y2AKGFyZWEpLCDlsYvpvaEoYnVpbGRpbmdfYWdlKSwg5oi/5bGL57i95bmz5pa557Gz5pW4KGJ1aWxkaW5nX3NxbWV0ZXIpLFxuIyAgICAg5oi/5bGL6aGe5Z6LKGJ1aWxkaW5nX3R5cGUp5Y+K5q+P5bmz5pa557Gz5YO55qC8KHByaWNlX3Blcl9zcW1ldGVyKVxuIyAgICAgNeWAi+iuiuaVuOS9nOeCuuino+mHi+iuiuaVuOaUvuWFpeaooeWei+eVtuS4reW7uuaooe+8jOS4puWwh+aooeWei+WtmOWcqGhvdXNlLnJw6K6K5pW45Lit44CCIFs15YiGXVxuXG5gYGBcbmBgYCJ9 -->
+<p><code>r</code>r #(13) 利用rpart套件建立一預測房屋是否為危樓(danger)的決策樹模型， # 請利用行政區(area), 屋齡(building_age), 房屋總平方米數(building_sqmeter), # 房屋類型(building_type)及每平方米價格(price_per_sqmeter) # 5個變數作為解釋變數放入模型當中建模，並將模型存在house.rp變數中。 [5分]</p>
+<pre><code></code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIygxNCkg6KuL5Yip55SocGxvdCgp5ZKMdGV4dCgp55Wr5Ye6aG91c2UucnDmqKHlnovnmoTmsbrnrZbmqLkgWzXliIZdXG5cbmBgYCJ9 -->
-<pre class="r"><code>#(14) 請利用plot()和text()畫出house.rp模型的決策樹 [5分]
-</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuIygxNCkg6KuL5Yip55SocGxvdCgp5ZKMdGV4dCgp55Wr5Ye6aG91c2UucnDmqKHlnovnmoTmsbrnrZbmqLkgWzXliIZdXG5cbmBgYFxuYGBgIn0= -->
+<p><code>r</code>r #(14) 請利用plot()和text()畫出house.rp模型的決策樹 [5分]</p>
+<pre><code></code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIygxNSkg6KuL5ZWP5q2k5rG6562W5pW45piv5ZCm6ZyA6KaB6YCy6KGM5Ymq5p6dKHBydW5lKe+8n1xuIyAgICAg5aaC6ZyA5Ymq5p6d6KuL5bCH5L+u5Ymq5b6M55qE5qih5Z6L5a2Y5ZueaG91c2UucnDkuK3jgIIgWzXliIZdXG5cbmBgYCJ9 -->
-<pre class="r"><code>#(15) 請問此決策數是否需要進行剪枝(prune)？
-#     如需剪枝請將修剪後的模型存回house.rp中。 [5分]
-</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuIygxNSkg6KuL5ZWP5q2k5rG6562W5pW45piv5ZCm6ZyA6KaB6YCy6KGM5Ymq5p6dKHBydW5lKe+8n1xuIyAgICAg5aaC6ZyA5Ymq5p6d6KuL5bCH5L+u5Ymq5b6M55qE5qih5Z6L5a2Y5ZueaG91c2UucnDkuK3jgIIgWzXliIZdXG5cbmBgYFxuYGBgIn0= -->
+<p><code>r</code>r #(15) 請問此決策數是否需要進行剪枝(prune)？ # 如需剪枝請將修剪後的模型存回house.rp中。 [5分]</p>
+<pre><code></code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIygxNikg6KuL5bCH5ris6Kmm6ZuG6LOH5paZKHRlc3RzZXQp5pS+5YWl5qih5Z6L5Lit6YCy6KGM6amX6K2J77yM6KuL5ZWP5q2k5qih5Z6L55qEYWNjdXJhY3ksIHByZWNpc2lvbixcbiMgICAgIHJlY2FsbOetiee4vuaViOWIhuWIpeeCuuS9le+8nyBbNeWIhl1cblxuYGBgIn0= -->
-<pre class="r"><code>#(16) 請將測試集資料(testset)放入模型中進行驗證，請問此模型的accuracy, precision,
-#     recall等績效分別為何？ [5分]
-</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuIygxNikg6KuL5bCH5ris6Kmm6ZuG6LOH5paZKHRlc3RzZXQp5pS+5YWl5qih5Z6L5Lit6YCy6KGM6amX6K2J77yM6KuL5ZWP5q2k5qih5Z6L55qEYWNjdXJhY3ksIHByZWNpc2lvbixcbiMgICAgIHJlY2FsbOetiee4vuaViOWIhuWIpeeCuuS9le+8nyBbNeWIhl1cblxuYGBgXG5gYGAifQ== -->
+<p><code>r</code>r #(16) 請將測試集資料(testset)放入模型中進行驗證，請問此模型的accuracy, precision, # recall等績效分別為何？ [5分]</p>
+<pre><code></code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIygxNykg6KuL57mq6KO95Ye65q2k5qih5Z6L55qEUk9D5puy57ea77yM5Lim6KiI566X5YW2QVVD44CCIFs45YiGXVxuXG5gYGAifQ== -->
-<pre class="r"><code>#(17) 請繪製出此模型的ROC曲線，並計算其AUC。 [8分]
-</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuIygxNykg6KuL57mq6KO95Ye65q2k5qih5Z6L55qEUk9D5puy57ea77yM5Lim6KiI566X5YW2QVVD44CCIFs45YiGXVxuXG5gYGBcbmBgYCJ9 -->
+<p><code>r</code>r #(17) 請繪製出此模型的ROC曲線，並計算其AUC。 [8分]</p>
+<pre><code></code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBGaW5hbCBUZXN0IgpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sKLS0tCgojIyBjbGFzczogQkIxMDMKIyMgbmFtZTogX19fX19fXwoKYGBge3J9CiMoMSkg6KuL6K6A5Y+WZmluYWzos4fmlpnlpL7kuIvnmoRsdnJfcHJpY2VzX2JpZzUuUkRhdGHmqpTmoYggWzXliIZdCgpgYGAKCmBgYHtyfQojKDIpIOiri+WVj+WPr+S9v+eUqOWTquWAi+WHveW8j+ingOeci+aqlOahiOeahOizh+aWmee1kOani++8n1s15YiGXQoKYGBgCgpgYGB7cn0KIygzKSDoq4vllY/lj6/kvb/nlKjlk6rlgIvlh73lvI/op4DnnIvos4fmlpnliY0xMOethuizh+aWme+8n1s15YiGXQoKYGBgCgpgYGB7cn0KIyg0KSDoq4vnr6npgbjlh7oKIyAgMS4gY2l0eV9sYW5kX3R5cGXngrrkvY/lroXnlKgKIyAgMi4gdG90YWxfcHJpY2UgPiAwCiMgIDMuIGJ1aWxkaW5nX3NxbWV0ZXIgPiAwCiMgIDQuIGZpbmlzaF95bWQg6Z2e56m65YC8CiMgIOeahOaIv+Wxi+izh+aWmSzkuKblrZjlhaVob3VzZeiuiuaVuOS4reOAgls45YiGXQoKYGBgCgpgYGB7cn0KIyg1KSDoq4vkvb/nlKhob3VzZeizh+aWme+8jOWIqeeUqOaIv+Wxi+WDueagvCh0b3RhbF9wcmljZSnlj4rmiL/lsYvlubPmlrnnsbPmlbgoYnVpbGRpbmdfc3FtZXRlcinlhanmrITkvY3vvIwKIyAgICDnlKLnlJ/kuIDmlrDmrITkvY3ngrrmr4/lubPmlrnnsbPlg7nmoLwocHJpY2VfcGVyX3NxbWV0ZXIp77yM5Lim5bCH5YW25Zub5o2o5LqU5YWl5Yiw5pW05pW45L2N44CCWzXliIZdCgpgYGAKCmBgYHtyfQojKDYpIOiri+S9v+eUqGhvdXNl6LOH5paZ77yM5Yip55Soc2NhbGUoKSDlsIfmr4/lubPmlrnnsbPlg7nmoLwocHJpY2VfcGVyX3NxbWV0ZXIp5qyE5L2N6LOH5paZ5qiZ5rqW5YyWCiMgICAg77yM5Lim5YmU6Zmk5o6Jb3V0bGllcuizh+aWmSh6LXNjb3JlID4gMynjgIJbNeWIhl0KaG91c2UgPSBob3VzZVthYnMoc2NhbGUoaG91c2UkcHJpY2VfcGVyX3NxbWV0ZXIpKSA8PSAzLF0KYGBgCgpgYGB7cn0KIyg3KSDoq4vllY/lnKhob3VzZeizh+aWmeS4reWQhOihjOaUv+WNgChhcmVhKeeahOizh+aWmeethuaVuOeCuuS9lT8g5Y+v5ZCm55Wr5Ye65YW26ZW35qKd5ZyWPyBbNeWIhl0KCmBgYAoKYGBge3J9CiMoOCkg6KuL5L2/55SoaG91c2Xos4fmlpnvvIzoqIjnrpflkITooYzmlL/ljYDmr4/lubPmlrnnsbPlg7nmoLwocHJpY2VfcGVyX3NxbWV0ZXIp5qyE5L2N6LOH5paZ55qE5bmz5Z2H5pW477yM5Lit5L2N5pW45Y+K5qiZ5rqW5beuIFs45YiGXQoKYGBgCgpgYGB7cn0KIyg5KSDoq4vkvb/nlKhob3VzZeizh+aWmSzliKnnlKhnZ3Bsb3Qy55qEZmFjZXRfd3JhcOWHveaVuOe5quijveWQhOihjOaUv+WNgOaIv+Wxi+avj+W5s+aWueexs+WDueagvChwcmljZV9wZXJfc3FtZXRlcinnmoTnm7TmlrnlnJYgWzjliIZdCgpgYGAKCmBgYHtyfQojKDEwKSDoqabliKnnlKjmiL/lsYvlrozlt6Xml6XmnJ8oZmluaXNoX3ltZCnnlKLnlJ/kuIDmlrDorormlbjngrrlsYvpvaEoYnVpbGRpbmdfYWdlKeWKoOWFpWhvdXNl6LOH5paZ5Lit44CCCiNoaW50MTog5Y+W5b6X55W25YmN5pel5pyf55qE5Ye95pW454K6IFN5cy5EYXRlKCkKI2hpbnQyOiDkuIDlubToq4vku6UzNjXlpKnoqIjnrpfvvIzlm5vmjajkupTlhaXoh7PmlbTmlbjkvY0KI2hpbnQzOiDlsIfpgYvnrpflroznmoTos4fmlpnovYnngrrmlbTmlbjlnovmhYsoaW50ZWdlcikgWzjliIZdCgpgYGAKCmBgYHtyfQojKDExKSDoq4voroDlj5ZmaW5hbOizh+aWmeWkvuS4i+eahGhvdXNlX2Rhbmdlci5SRGF0YeaqlOahiO+8jAojICAgICDkuKblsIdob3VzZeizh+aWmembhuWSjGhvdXNlX2Rhbmdlcuizh+aWmembhuS7pWxlZnQgb3V0ZXIgam9pbuaWueW8j2pvaW7otbfkvobvvIwKIyAgICAg5a2Y5ZueaG91c2XorormlbjkuK0gWzXliIZdCgpgYGAKCmBgYHtyfQojKDEyKSDoq4vlsIdob3VzZeizh+aWmeS7pTg6MueahOavlOS+i+WIhueCuuiok+e3tOmbhuWSjOa4rOippumbhu+8jAojICAgICDlsIfoqJPnt7Tpm4bos4fmlpnlrZjlnKh0cmFpbnNldOiuiuaVuOS4re+8jAojICAgICDlsIfmuKzoqabpm4bos4fmlpnlrZjlnKh0ZXN0c2V06K6K5pW45Lit44CCIFs15YiGXQpzZXQuc2VlZCgxMjA2KQoKYGBgCgpgYGB7cn0KIygxMykg5Yip55SocnBhcnTlpZfku7blu7rnq4vkuIDpoJDmuKzmiL/lsYvmmK/lkKbngrrljbHmqJMoZGFuZ2VyKeeahOaxuuetluaoueaooeWei++8jAojICAgICDoq4vliKnnlKjooYzmlL/ljYAoYXJlYSksIOWxi+m9oShidWlsZGluZ19hZ2UpLCDmiL/lsYvnuL3lubPmlrnnsbPmlbgoYnVpbGRpbmdfc3FtZXRlciksCiMgICAgIOaIv+Wxi+mhnuWeiyhidWlsZGluZ190eXBlKeWPiuavj+W5s+aWueexs+WDueagvChwcmljZV9wZXJfc3FtZXRlcikKIyAgICAgNeWAi+iuiuaVuOS9nOeCuuino+mHi+iuiuaVuOaUvuWFpeaooeWei+eVtuS4reW7uuaooe+8jOS4puWwh+aooeWei+WtmOWcqGhvdXNlLnJw6K6K5pW45Lit44CCIFs15YiGXQoKYGBgCgpgYGB7cn0KIygxNCkg6KuL5Yip55SocGxvdCgp5ZKMdGV4dCgp55Wr5Ye6aG91c2UucnDmqKHlnovnmoTmsbrnrZbmqLkgWzXliIZdCgpgYGAKCmBgYHtyfQojKDE1KSDoq4vllY/mraTmsbrnrZbmlbjmmK/lkKbpnIDopoHpgLLooYzliarmnp0ocHJ1bmUp77yfCiMgICAgIOWmgumcgOWJquaeneiri+Wwh+S/ruWJquW+jOeahOaooeWei+WtmOWbnmhvdXNlLnJw5Lit44CCIFs15YiGXQoKYGBgCgpgYGB7cn0KIygxNikg6KuL5bCH5ris6Kmm6ZuG6LOH5paZKHRlc3RzZXQp5pS+5YWl5qih5Z6L5Lit6YCy6KGM6amX6K2J77yM6KuL5ZWP5q2k5qih5Z6L55qEYWNjdXJhY3ksIHByZWNpc2lvbiwKIyAgICAgcmVjYWxs562J57i+5pWI5YiG5Yil54K65L2V77yfIFs15YiGXQoKYGBgCgpgYGB7cn0KIygxNykg6KuL57mq6KO95Ye65q2k5qih5Z6L55qEUk9D5puy57ea77yM5Lim6KiI566X5YW2QVVD44CCIFs45YiGXQoKYGBg</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBGaW5hbCBUZXN0IgpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sKLS0tCgojIyBjbGFzczogQkIxMDQKIyMgbmFtZTogX19fX19fXwoKYGBge3J9CiMoMSkg6KuL6K6A5Y+WZmluYWzos4fmlpnlpL7kuIvnmoRsdnJfcHJpY2VzX2JpZzUuUkRhdGHmqpTmoYggWzXliIZdCgpgYGAKCmBgYHtyfQojKDIpIOiri+WVj+WPr+S9v+eUqOWTquWAi+WHveW8j+ingOeci+aqlOahiOeahOizh+aWmee1kOani++8n1s15YiGXQoKYGBgCgpgYGB7cn0KIygzKSDoq4vllY/lj6/kvb/nlKjlk6rlgIvlh73lvI/op4DnnIvos4fmlpnliY0xMOethuizh+aWme+8n1s15YiGXQoKYGBgCgpgYGB7cn0KIyg0KSDoq4vnr6npgbjlh7oKIyAgMS4gY2l0eV9sYW5kX3R5cGXngrrkvY/lroXnlKgKIyAgMi4gdG90YWxfcHJpY2UgPiAwCiMgIDMuIGJ1aWxkaW5nX3NxbWV0ZXIgPiAwCiMgIDQuIGZpbmlzaF95bWQg6Z2e56m65YC8CiMgIOeahOaIv+Wxi+izh+aWmSzkuKblrZjlhaVob3VzZeiuiuaVuOS4reOAgls45YiGXQoKYGBgCgpgYGB7cn0KIyg1KSDoq4vkvb/nlKhob3VzZeizh+aWme+8jOWIqeeUqOaIv+Wxi+WDueagvCh0b3RhbF9wcmljZSnlj4rmiL/lsYvlubPmlrnnsbPmlbgoYnVpbGRpbmdfc3FtZXRlcinlhanmrITkvY3vvIwKIyAgICDnlKLnlJ/kuIDmlrDmrITkvY3ngrrmr4/lubPmlrnnsbPlg7nmoLwocHJpY2VfcGVyX3NxbWV0ZXIp77yM5Lim5bCH5YW25Zub5o2o5LqU5YWl5Yiw5pW05pW45L2N44CCWzXliIZdCgpgYGAKCmBgYHtyfQojKDYpIOiri+S9v+eUqGhvdXNl6LOH5paZ77yM5Yip55Soc2NhbGUoKSDlsIfmr4/lubPmlrnnsbPlg7nmoLwocHJpY2VfcGVyX3NxbWV0ZXIp5qyE5L2N6LOH5paZ5qiZ5rqW5YyWCiMgICAg77yM5Lim5YmU6Zmk5o6Jb3V0bGllcuizh+aWmSh6LXNjb3JlID4gMynjgIJbNeWIhl0KaG91c2UgPSBob3VzZVthYnMoc2NhbGUoaG91c2UkcHJpY2VfcGVyX3NxbWV0ZXIpKSA8PSAzLF0KYGBgCgpgYGB7cn0KIyg3KSDoq4vllY/lnKhob3VzZeizh+aWmeS4reWQhOihjOaUv+WNgChhcmVhKeeahOizh+aWmeethuaVuOeCuuS9lT8g5Y+v5ZCm55Wr5Ye65YW26ZW35qKd5ZyWPyBbNeWIhl0KCmBgYAoKYGBge3J9CiMoOCkg6KuL5L2/55SoaG91c2Xos4fmlpnvvIzoqIjnrpflkITooYzmlL/ljYDmr4/lubPmlrnnsbPlg7nmoLwocHJpY2VfcGVyX3NxbWV0ZXIp5qyE5L2N6LOH5paZ55qE5bmz5Z2H5pW477yM5Lit5L2N5pW45Y+K5qiZ5rqW5beuIFs45YiGXQoKYGBgCgpgYGB7cn0KIyg5KSDoq4vkvb/nlKhob3VzZeizh+aWmSzliKnnlKhnZ3Bsb3Qy55qEZmFjZXRfd3JhcOWHveaVuOe5quijveWQhOihjOaUv+WNgOaIv+Wxi+avj+W5s+aWueexs+WDueagvChwcmljZV9wZXJfc3FtZXRlcinnmoTnm7TmlrnlnJYgWzjliIZdCgpgYGAKCmBgYHtyfQojKDEwKSDoqabliKnnlKjmiL/lsYvlrozlt6Xml6XmnJ8oZmluaXNoX3ltZCnnlKLnlJ/kuIDmlrDorormlbjngrrlsYvpvaEoYnVpbGRpbmdfYWdlKeWKoOWFpWhvdXNl6LOH5paZ5Lit44CCCiNoaW50MTog5Y+W5b6X55W25YmN5pel5pyf55qE5Ye95pW454K6IFN5cy5EYXRlKCkKI2hpbnQyOiDkuIDlubToq4vku6UzNjXlpKnoqIjnrpfvvIzlm5vmjajkupTlhaXoh7PmlbTmlbjkvY0KI2hpbnQzOiDlsIfpgYvnrpflroznmoTos4fmlpnovYnngrrmlbTmlbjlnovmhYsoaW50ZWdlcikgWzjliIZdCgpgYGAKCmBgYHtyfQojKDExKSDoq4voroDlj5ZmaW5hbOizh+aWmeWkvuS4i+eahGhvdXNlX2Rhbmdlci5SRGF0YeaqlOahiO+8jAojICAgICDkuKblsIdob3VzZeizh+aWmembhuWSjGhvdXNlX2Rhbmdlcuizh+aWmembhuS7pWxlZnQgb3V0ZXIgam9pbuaWueW8j2pvaW7otbfkvobvvIwKIyAgICAg5a2Y5ZueaG91c2XorormlbjkuK0gWzXliIZdCgpgYGAKCmBgYHtyfQojKDEyKSDoq4vlsIdob3VzZeizh+aWmeS7pTg6MueahOavlOS+i+WIhueCuuiok+e3tOmbhuWSjOa4rOippumbhu+8jAojICAgICDlsIfoqJPnt7Tpm4bos4fmlpnlrZjlnKh0cmFpbnNldOiuiuaVuOS4re+8jAojICAgICDlsIfmuKzoqabpm4bos4fmlpnlrZjlnKh0ZXN0c2V06K6K5pW45Lit44CCIFs15YiGXQpzZXQuc2VlZCgxMjA2KQoKYGBgCgpgYGB7cn0KIygxMykg5Yip55SocnBhcnTlpZfku7blu7rnq4vkuIDpoJDmuKzmiL/lsYvmmK/lkKbngrrljbHmqJMoZGFuZ2VyKeeahOaxuuetluaoueaooeWei++8jAojICAgICDoq4vliKnnlKjooYzmlL/ljYAoYXJlYSksIOWxi+m9oShidWlsZGluZ19hZ2UpLCDmiL/lsYvnuL3lubPmlrnnsbPmlbgoYnVpbGRpbmdfc3FtZXRlciksCiMgICAgIOaIv+Wxi+mhnuWeiyhidWlsZGluZ190eXBlKeWPiuavj+W5s+aWueexs+WDueagvChwcmljZV9wZXJfc3FtZXRlcikKIyAgICAgNeWAi+iuiuaVuOS9nOeCuuino+mHi+iuiuaVuOaUvuWFpeaooeWei+eVtuS4reW7uuaooe+8jOS4puWwh+aooeWei+WtmOWcqGhvdXNlLnJw6K6K5pW45Lit44CCIFs15YiGXQoKYGBgCgpgYGB7cn0KIygxNCkg6KuL5Yip55SocGxvdCgp5ZKMdGV4dCgp55Wr5Ye6aG91c2UucnDmqKHlnovnmoTmsbrnrZbmqLkgWzXliIZdCgpgYGAKCmBgYHtyfQojKDE1KSDoq4vllY/mraTmsbrnrZbmlbjmmK/lkKbpnIDopoHpgLLooYzliarmnp0ocHJ1bmUp77yfCiMgICAgIOWmgumcgOWJquaeneiri+Wwh+S/ruWJquW+jOeahOaooeWei+WtmOWbnmhvdXNlLnJw5Lit44CCIFs15YiGXQoKYGBgCgpgYGB7cn0KIygxNikg6KuL5bCH5ris6Kmm6ZuG6LOH5paZKHRlc3RzZXQp5pS+5YWl5qih5Z6L5Lit6YCy6KGM6amX6K2J77yM6KuL5ZWP5q2k5qih5Z6L55qEYWNjdXJhY3ksIHByZWNpc2lvbiwKIyAgICAgcmVjYWxs562J57i+5pWI5YiG5Yil54K65L2V77yfIFs15YiGXQoKYGBgCgpgYGB7cn0KIygxNykg6KuL57mq6KO95Ye65q2k5qih5Z6L55qEUk9D5puy57ea77yM5Lim6KiI566X5YW2QVVD44CCIFs45YiGXQoKYGBg</div>
 
 
 
