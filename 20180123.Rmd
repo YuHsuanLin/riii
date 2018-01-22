@@ -1,7 +1,7 @@
 ---
-title: "R_1106"
+title: "R_basic1"
 author: "York Lin"
-date: "2017年11月08日"
+date: "2018年01月23日"
 output: html_document
 ---
 what is R?
@@ -20,9 +20,8 @@ Kaggle
 UCI dataset
 - https://archive.ics.uci.edu/ml/datasets.html
 
-## R intro
-
-## RDemo
+# R intro
+### RDemo
 ```{r}
 #使用範例資料
 data(anscombe)
@@ -34,26 +33,26 @@ lmfit <- lm(y1~x1, data=anscombe)
 abline(lmfit, col="red")
 ```
 
-## Basic type
+### Basic type
 - numeric: 1,2,1.2
 - integer: 1L,2L,3L
 - character: "string"
 - logical: TRUE,FALSE,T,F
 - complex: 1+4i
 
-## Basic Objects
-atomic:
-(由相同資料型態組成)
+### Basic Objects
+##### (由相同資料型態組成)
+##### atomic:
 - vector
 - matrix
 - factor
 
-recursive:
-(可以有混合的資料型態)
+##### (可以有混合的資料型態)
+##### recursive:
 - dataframe
 - list
 
-## R basic command
+### R basic command
 ```{R}
 #文件查詢
 help(package="base")
@@ -70,19 +69,15 @@ data()
 ls()
 #移除變數
 rm()
-#查看資料型態
-# difference between class, typeof, and mode
-#http://stackoverflow.com/questions/6258004/r-types-and-classes-of-variables
-class()
-typeof()
-mode()
-#查看資料結構
-str()
 
-str(c(1,2,3))
+x = c(1,2,3)
+#查看資料型態
+class(x)
+#查看資料結構
+str(x)
 ```
 
-## Basic computing
+### Basic computing
 ```{R, echo=TRUE}
 3+8
 3-8
@@ -95,18 +90,18 @@ str(c(1,2,3))
 T == TRUE
 ```
 
-## Assignment
+### Assignment
 ```{R}
 a = 3
-a <- 5 # ( alt + - )
+a <- 3 # ( alt + - )
 assign("a",3)
 
 a / 2
 a = a / 2
-
+a
 ```
 
-## Vector
+### Vector
 - R語言最基本的物件
 ```{R, echo=TRUE}
 character(5)  ## character vector of length 5
@@ -156,7 +151,7 @@ height_vec[height_vec > 175] #condition (boolean vector)
 
 ```
 
-## seq() & rep() & paste()
+### seq() & rep() & paste()
 ```{R, echo=TRUE}
 1:20
 seq(1,20)
@@ -164,7 +159,6 @@ seq(1,20)
 ?seq
 seq(from=1,to=20,by=2)
 seq(from=1,to=20,length=2)
-
 
 rep(1,5)
 ?rep
@@ -184,7 +178,7 @@ paste(c("big","bang"),1:2,collapse = "+" )
 length(paste(c("big","bang"),1:4,collapse = "+" ))
 ```
 
-## Matrix
+### Matrix
 ```{R}
 matrix(1:9, byrow=TRUE, nrow=3)
 matrix(1:9, nrow=3)
@@ -223,7 +217,7 @@ mat[mat[,1] < 60,'first']
 rowSums(mat)
 colSums(mat)
 
-rowMeans(mat)ma
+rowMeans(mat)
 colMeans(mat)
 
 #新增列與行
@@ -252,7 +246,7 @@ m1 %*% m2
 
 ```
 
-## Factor
+### Factor
 ```{R}
 # syntax
 weather= c("sunny","rainy", "cloudy", "rainy", "cloudy")
@@ -274,7 +268,7 @@ levels(weather_factor) = c("cloudy","rainy","sunny")
 weather_factor
 ```
 
-## Dataframe
+### Dataframe
 ```{R}
 name <- c("Joe", "Bob", "Vicky")
 age <- c(28, 26, 34)
@@ -336,25 +330,24 @@ sort(iris$Sepal.Length, decreasing = TRUE)
 
 #資料轉換
 iris$Species_new = ifelse(iris$Species == c("setosa"), "IsSetosa","Notsetosa")
-
+iris$Species_new
 ```
 
-## File read and write
+### File read and write
 ```{R}
-getwd()
-setwd("__your_working_directory_path__")
-tw2330 = read.csv("2330.csv", header=TRUE)
-
+# getwd()
+setwd('~/lecture/riii')
+# setwd("__your_working_directory_path__")
+tw2330 = read.csv("data/2330.csv", header=TRUE)
 test.data = read.table("data/match.txt" ,header = FALSE, sep="|")
 
 #table
 write.table(test.data, file = "data/test.txt" , sep = " ")
 #csv
 write.csv(test.data, file = "data/test.csv")
-
 ```
 
-## List
+### List
 ```{R}
 item= list(thing='hat',size=8.25)
 item$thing

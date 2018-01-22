@@ -13,3 +13,6 @@
 - 參考資料： 
     https://stackoverflow.com/questions/43833096/r-warning-message-in-strsplitcode-n-fixed-true-input-string-1-is-i
     http://psmethods.postach.io/post/ru-he-geng-gai-rde-yu-she-yu-xi
+
+## Class 1 
+- http://rpubs.com/YorkLin/riii_20180123
