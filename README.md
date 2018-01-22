@@ -15,4 +15,4 @@
     http://psmethods.postach.io/post/ru-he-geng-gai-rde-yu-she-yu-xi
 
 ## Class 1 
-- http://rpubs.com/YorkLin/riii_20180123
+- http://rpubs.com/YorkLin/riii_class1
