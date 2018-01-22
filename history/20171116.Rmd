@@ -1,0 +1,390 @@
+---
+title: "R_1116"
+author: "York Lin"
+date: "2017年11月16日"
+output: html_document
+---
+
+## 統計圖
+```{R}
+load('Statistics/cdc.Rdata')
+cdc$exerany=as.factor(cdc$exerany)
+cdc$hlthplan=as.factor(cdc$hlthplan)
+cdc$smoke100=as.factor(cdc$smoke100)
+
+#屬貭資料: 長條圖、圓餅圖、mosaicplot
+
+#barchart
+barplot(table(cdc$smoke100))
+?barplot
+barplot(table(cdc$smoke100),xlab='有無吸菸',ylab='人數',main='title',col='blue',family="Songti SC")
+
+#piechart
+pie(table(cdc$smoke100))
+pie(table(cdc$genhlth))
+pie(table(cdc$genhlth),col = rainbow(5))
+
+#piechart加上各分類比例
+pct = round(table(cdc$genhlth) / length(cdc$genhlth) *100,1)
+labels = paste(names(pct),pct,"%")
+pie(table(cdc$genhlth), labels = labels)
+
+#mosaicplot
+gender_smokers = table(cdc$gender,cdc$smoke100)
+mosaicplot(gender_smokers)
+
+#屬量資料: 直方圖、盒鬚圖、莖葉圖
+
+#histogram
+hist(cdc$height)
+
+par(mfrow=c(3,1))
+hist(cdc$height)
+hist(cdc$height,breaks = 30)
+hist(cdc$height,breaks = 50)
+
+#stem-leaf
+stem(cdc$age)
+tmp=sample(cdc$age,100)
+stem(sample(cdc$age,100))
+?stem
+stem(sample(cdc$age,100),scale=2)
+
+#boxplot
+par(mfrow=c(1,1))
+boxplot(cdc$weight)
+boxplot(cdc$weight, horizontal=TRUE)
+boxplot(cdc$weight ~ cdc$gender)
+boxplot(cdc$height ~ cdc$gender)
+
+bmi = (cdc$weight/cdc$height^2) * 703
+boxplot(bmi ~ cdc$genhlth)
+
+#觀察兩組資料間關係:點散布圖
+plot(cdc$weight, cdc$height)
+plot(cdc$weight, cdc$wtdesire)
+
+#儲存圖檔
+png(filename='test123.png')
+plot(cdc$weight, cdc$height)
+dev.off()
+
+```
+
+
+## package:ggplot2
+documentation
+- http://docs.ggplot2.org/current/
+
+cheat sheet
+- https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf
+
+why ggplot2?
+- fancy by default, good for demo and report 
+- consistent across all kinds of plot in syntax and behavior
+- strong support community(the mostly download package on CRAN)
+```{R}
+#basic syntax
+#ggplot(data,aes(x,y,group,...))+geom_object(...)
+install.packages('ggplot2')
+library('ggplot2')
+
+g <- ggplot(cdc,aes(x=height,y=weight))
+g+geom_point(aes(col=exerany))
+
+g <- ggplot(cdc,aes(x=genhlth))
+g+geom_bar()
+g+geom_bar() + ylab('Count') + ggtitle('cdc')
+#fill => 填滿顏色; color => 邊線顏色
+g+geom_bar(fill='snow',color='black')
+
+g <- ggplot(cdc,aes(x=genhlth,fill=gender))
+g+geom_bar()
+#g <- ggplot(cdc,aes(x=genhlth))
+#g+geom_bar(aes(fill=gender))
+
+g_bygrp <- ggplot(cdc,aes(x=exerany,fill=genhlth))
+g_bygrp + geom_bar()
+g_bygrp + geom_bar(position='stack')
+g_bygrp + geom_bar(position='dodge')
+g_bygrp + geom_bar(position='identity')
+
+precounted = as.data.frame(table(cdc$genhlth,dnn = c('genhlth')))
+precounted
+ggplot(precounted,aes(x=genhlth,y=Freq))+ geom_bar(stat='identity')
+
+g <- ggplot(cdc,aes(x=genhlth,y=height))
+g + geom_boxplot()
+
+#facet
+g <- ggplot(cdc,aes(x=weight))
+g2 = g+ geom_histogram()+facet_wrap(~genhlth)
+g2
+
+ggsave(filename='your_file_name.png',plot = g2)
+```
+
+## 資料預處理
+```{R}
+getwd()
+setwd('~/lecture/riii')
+load('Statistics/appledaily.RData')
+
+str(appledaily)
+head(appledaily)
+
+#把dt轉換成日期型態
+#方法一: 以as.POSIXct()轉換
+dt = as.POSIXct(appledaily$dt,format = '%Y年%m月%d日%H:%M')
+#方法二: 以strptime()轉換
+dt = strptime(appledaily$dt,'%Y年%m月%d日%H:%M')
+
+appledaily$dt = dt
+
+# Date 和 POSIX 差別
+# Date類別表示 "日期",  表示距離1970/1/1多少天, 單位為天
+# POSIX類別表示 "時間", 表示距離1970/1/1多少秒, 單位為秒
+
+now = Sys.time()
+class(now)
+unclass(now)
+
+nowDate = as.Date(now)
+class(nowDate)
+unclass(nowDate)
+
+#比較as.POSIXct() 和 as.POSIXlt
+t1 = as.POSIXct(appledaily$dt,format = '%Y年%m月%d日%H:%M')
+class(t1)
+unclass(t1)
+
+t2 = as.POSIXlt(appledaily$dt,format = '%Y年%m月%d日%H:%M')
+class(t2)
+unclass(t2)
+
+#difftime
+Sys.time() - appledaily$dt[1]
+
+#擷取點擊數中數值部分
+#方法一：利用sub函數取代
+clicked = sub('\\)','',sub('人氣\\(','',appledaily$clicked))
+clicked = as.integer(clicked)
+head(clicked)
+
+#方法二：使用stringr套件的str_match()
+library(stringr)
+?str_match
+clicked = as.integer(str_match(appledaily$clicked,"人氣\\((\\d+)\\)")[,2])
+
+appledaily$clicked = clicked
+head(appledaily)
+
+#其他常見字串處理函式
+#grep()  ==> return index
+test_str = c('abcd','bcd','cde')
+grep('a',test_str)
+test_str[grep('a',test_str)]
+
+#grepl() ==> return boolean 
+grepl('a',test_str)
+test_str[grepl('a',test_str)]
+
+#strsplit() ==> 字串分割
+splited = strsplit('abc-def','-')
+class(splited)
+unlist(splited)
+
+#substring() ==> 取得部份字串
+test_s = 'abcdef'
+nchar(test_s)
+substring(test_s,2,nchar('abcdef')-1)
+
+#替換類別名稱
+names(table(appledaily$category))
+appledaily$category[appledaily$category == "國際\",\"LA\",\"SF\",\"NY\",\"US"] = '國際'
+appledaily$category[appledaily$category == "國際\",\"SF\",\"US"] = '國際'
+names(table(appledaily$category))
+
+#儲存處理過的檔案
+applenews = appledaily
+save(applenews,file = 'Statistics/applenews.RData')
+
+
+#遺失值處理(missing value)
+applenews = appledaily
+na_list = sample(1:nrow(applenews),30)
+applenews[na_list,'clicked'] = NA
+
+#找尋遺失值
+is.na(applenews)
+sum(is.na(applenews$clicked))
+
+#移除missing value
+complete.cases(applenews)
+rm.data <- applenews[complete.cases(applenews), ]
+str(rm.data)
+
+#以全體平均填補
+applenews = appledaily
+na_list = sample(1:nrow(applenews),30)
+applenews[na_list,'clicked'] = NA
+
+mean_clicked = as.integer(mean(applenews$clicked,na.rm=T))
+applenews$clicked[is.na(applenews$clicked)] = mean_clicked
+
+sum(is.na(applenews$clicked))
+
+#以類別平均填補
+applenews = appledaily
+na_list = sample(1:nrow(applenews),30)
+applenews[na_list,'clicked'] = NA
+
+cat_means = tapply(applenews$clicked,applenews$category,function(e){as.integer(mean(e,na.rm=T))})
+cat_means
+
+for(i in 1:length(names(cat_means))){
+  applenews[applenews$category == names(cat_means)[i] & is.na(applenews$clicked),'clicked'] = cat_means[i]
+}
+
+sum(is.na(applenews$clicked))
+```
+
+## package dplyr
+- 類SQL語法,select,filter,arrange,mutate...
+- Chaining %>%, debug方便
+
+cheat sheet
+- https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf
+
+```{R}
+load('Statistics/applenews.RData')
+str(applenews)
+head(applenews)
+
+applenews = applenews[,-1]
+
+install.packages('dplyr')
+library(dplyr)
+
+#原先R 提供的過濾功能
+applenews[applenews$category == "娛樂",]
+
+#dplyr 的過濾功能
+filter(applenews, category == "娛樂")
+
+#and/or 
+filter(applenews, category == "娛樂" & clicked > 1000)
+filter(applenews, category == "娛樂" | clicked > 1000)
+
+#篩選多個類別
+filter(applenews, category %in% c("娛樂", "社會"))
+
+#原先R的欄位選取
+applenews[, c("category","clicked")]
+
+#dplyr 的欄位選取
+
+#選擇列舉出的欄位
+select(applenews,category,clicked)
+#選擇從category~clicked欄位
+select(applenews,category:clicked)
+#選擇欄位名稱含有click字串的欄位
+select(applenews,contains('click'))
+
+?matches
+
+#想同時filter 和 select
+filter(select(applenews,category:clicked),category == '娛樂')
+
+#使用Chaining
+select(applenews,category:clicked) %>%
+  filter(category == '娛樂')
+
+applenews %>% 
+  select(category:clicked) %>%
+  filter(category == '娛樂')
+
+#使用Arrange將資料做排序
+applenews %>%
+  select(category,clicked) %>% 
+  filter(category == "社會") %>% 
+  arrange(.,desc(clicked)) %>%
+  head()
+
+
+# 總點擊數
+freqsum = applenews %>%
+  select(clicked) %>% 
+  sum()
+
+#使用mutate產生新欄位
+applenews %>%
+  select(title, category,clicked) %>% 
+  mutate(portion= clicked / freqsum) %>%
+  arrange(desc(portion)) %>%
+  head()
+
+#新增portion欄位
+applenews = applenews %>%
+  mutate(portion= clicked / freqsum)
+
+#group_by & summarise
+applenews %>%
+  group_by(category) %>%
+  summarise(clicked_sum = sum(clicked, na.rm=TRUE)) %>%
+  arrange(desc(clicked_sum))
+
+#多個欄位計算
+applenews %>%
+  group_by(category) %>% 
+  summarise_at(.vars=vars(clicked,portion),.funs=funs(sum))
+
+applenews %>%
+  group_by(category) %>% 
+  summarise_at(.vars=vars(clicked),.funs=funs(sum,mean))
+
+applenews %>%
+  group_by(category) %>%
+  summarise_at(.funs=funs(min,max), .vars=vars(matches('clicked')), na.rm=T)
+
+#一般計數
+applenews %>%
+  summarise(n())
+
+#不重複計數
+applenews %>%
+  summarise(n_distinct(category))
+
+cat_stat = applenews %>%
+  group_by(category) %>%
+  summarise(clicked_sum = sum(clicked)) 
+
+cat_stat
+#繪製長條圖
+barplot(cat_stat$clicked_sum, names.arg=cat_stat$category, col=rainbow(length(cat_stat$category)),family="Songti SC")
+#繪製圓餅圖
+pie(cat_stat$clicked_sum, label = cat_stat$category,family="Songti SC")
+
+
+#連接資料庫範例(以sqlite3為例)
+# sqlite3 download page: https://www.sqlite.org/download.html
+install.packages('dbplyr')
+install.packages('RSQLite')
+library('dbplyr')
+library('RSQLite')
+
+my_database = src_sqlite('./mydatabase',create=T)
+copy_to(my_database,applenews,temporary = F)
+tbl(my_database,"applenews")
+tbl(my_database,"applenews") %>% collect()
+
+category_stat = tbl(my_database,"applenews") %>% 
+  group_by(category) %>%
+  summarise_at(.funs=funs(min,max,mean), .vars=vars(matches('clicked'))) %>%
+  arrange(desc(mean)) %>%
+  collect()
+
+library('ggplot2')
+g <- ggplot(category_stat,aes(x=category,y=mean))
+g + geom_bar(stat='identity') + theme(text=element_text(size=16,  family="Songti SC")) + scale_x_discrete(limits=category_stat$category)
+```

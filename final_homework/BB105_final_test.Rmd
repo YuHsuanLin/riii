@@ -3,7 +3,7 @@ title: "R Final Test"
 output: html_notebook
 ---
 
-## class: BB104
+## class: BB105
 ## name: _______
 
 ```{r}
