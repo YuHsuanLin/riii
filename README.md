@@ -16,3 +16,6 @@
 
 ## Class 1 
 - http://rpubs.com/YorkLin/riii_class1
+
+## Class 2 
+- http://rpubs.com/YorkLin/riii_class2
