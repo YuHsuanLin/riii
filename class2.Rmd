@@ -17,6 +17,18 @@ output: html_document
 - dataframe
 - list
 
+### List
+```{R}
+item= list(thing='hat',size=8.25)
+item$thing
+item$size
+
+flower= list(title="iris dataset", data= iris)
+class(flower)
+class(flower$data)
+flower$data[1,"Sepal.Width"]
+```
+
 ### Flow Control
 ```{R}
 x=5;
