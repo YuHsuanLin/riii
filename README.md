@@ -25,3 +25,6 @@
 
 ## Class 4
 - http://rpubs.com/YorkLin/riii_class4
+
+## Class 5
+- http://rpubs.com/YorkLin/riii_class5
