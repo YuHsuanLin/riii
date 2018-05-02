@@ -8,6 +8,9 @@
 - https://download1.rstudio.org/RStudio-1.1.447.exe 
 - http://course.largitdata.com/course/34
 
+## Markdown syntax說明
+- http://markdown.tw/
+
 ## 去除Warning message: In strsplit(code, “\n”, fixed = TRUE)
 - 指令： Sys.setlocale(category = "LC_ALL", locale = "C")
 - 參考資料： 
