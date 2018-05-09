@@ -1,0 +1,28 @@
+---
+title: "plot_補充"
+author: "york"
+date: "2018/5/7"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+### break / next
+```{R}
+#break(跳出迴圈)
+for(n in 1:10){
+  if(n==5){
+    break
+  }
+  print(n)
+}
+
+#next(略過本次,類似python pass)
+for(n in 1:10){
+  if(n==5){
+    next
+  }
+  print(n)
+}
+
+```
