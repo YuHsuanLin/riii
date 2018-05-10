@@ -44,7 +44,7 @@ abline(v=2.5,col='grey',lty = 2)
 legend(4.5,1,pch=1,legend = levels(iris$Species),col=1:3)
 text(iris$Petal.Length+0.1,iris$Petal.Width+0.05,1:nrow(iris),cex=0.5)
 title("iris")
-text(iris$Petal.Length+0.1,iris$Petal.Width+0.05,paste('(',iris$Petal.Length,', ',iris$Petal.Width,')'),cex=0.5)
+#text(iris$Petal.Length+0.1,iris$Petal.Width+0.05,paste('(',iris$Petal.Length,', ',iris$Petal.Width,')'),cex=0.5)
 
 #legend('bottomright',pch=1,legend = levels(iris$Species),col=1:3)
 
@@ -62,4 +62,28 @@ mice.data <- mice(iris,m = 3,method = "cart",seed = 1206)
 
 complete(mice.data,1)
 
+```
+
+### connect mysql
+```{R}
+#Method 1:
+#install.packages('RJDBC')
+install.packages("rJava",type='source')
+library('RJDBC')
+jar.loc <- '~/Downloads/mysql-connector-java-5.1.44/mysql-connector-java-5.1.44-bin.jar'
+driver <- JDBC("com.mysql.jdbc.Driver",jar.loc,identifier.quote="")
+
+conn <- dbConnect(driver, "jdbc:mysql://localhost:3306/test")
+data = dbGetQuery(conn, "SELECT * FROM author")
+head(data)
+
+dbDisconnect(conn)
+
+#Method 2:
+install.packages('RMySQL')
+library('RMySQL')
+conn = dbConnect(MySQL(), dbname = "test")
+data = dbGetQuery(conn, "select * from author")
+head(data)
+dbDisconnect(conn)
 ```
