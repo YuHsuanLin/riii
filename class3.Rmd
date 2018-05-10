@@ -23,6 +23,9 @@ output: html_document
 
 setwd('~/lecture/riii')
 load('Statistics/cdc.Rdata')
+cdc$exerany = as.factor(cdc$exerany)
+cdc$hlthplan = as.factor(cdc$hlthplan)
+cdc$smoke100 = as.factor(cdc$smoke100)
 
 library('ggplot2')
 
