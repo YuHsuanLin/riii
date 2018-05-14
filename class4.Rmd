@@ -144,7 +144,7 @@ mean(accuracies)
 
 ```
 
-### caret cross-validation
+### use caret package
 ```{R}
 #install.packages("caret")
 library(caret)
