@@ -1,0 +1,125 @@
+---
+title: "class4_補充"
+author: "york"
+date: "2018/5/9"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+### 其他分類方法
+
+### k-nearest neighbor classifer
+- https://www.youtube.com/watch?v=UqYde-LULfs
+
+```{R}
+library(C50)
+data(churn)
+#選擇建模變數
+variable.list = !names(churnTrain) %in% c('state','area_code','account_length')
+churnTrain=churnTrain[,variable.list]
+set.seed(2)
+#把資料分成training data 和 testing data
+ind<-sample(1:2, size=nrow(churnTrain), replace=T, prob=c(0.7, 0.3))
+trainset=churnTrain[ind==1,]
+testset=churnTrain[ind==2,]
+
+#install.packages("class")
+library(class)
+head(trainset)
+levels(trainset$international_plan) = list("0"="no", "1"="yes")
+levels(trainset$voice_mail_plan) = list("0"="no", "1"="yes")
+levels(testset$international_plan) = list("0"="no", "1"="yes")
+levels(testset$voice_mail_plan) = list("0"="no", "1"="yes")
+head(trainset)
+
+churn.knn  = knn(trainset[,! names(trainset) %in% c("churn")], testset[,! names(testset) %in% c("churn")], trainset$churn, k=3)
+
+summary(churn.knn)
+table(testset$churn, churn.knn)
+library('caret')
+library('e1071')
+confusionMatrix(table(testset$churn, churn.knn))
+
+#use caret package
+library('caret')
+control=trainControl(method="repeatedcv", number=10, repeats=1)
+train(churn~., data=trainset, method="knn", trControl=control,metric="ROC")
+```
+
+### naive bayes
+example
+- https://www.youtube.com/watch?v=ZAfarappAO0
+```{R}
+library('e1071')
+classifier=naiveBayes(trainset[, !names(trainset) %in% c("churn")], trainset$churn)
+
+classifier
+bayes.table = table(predict(classifier, testset[,!names(testset) %in% c("churn")]), testset$churn)
+bayes.table
+library('caret')
+library('e1071')
+confusionMatrix(bayes.table)
+
+#use caret package
+library('caret')
+control=trainControl(method="repeatedcv", number=10, repeats=1)
+train(churn~., data=trainset, method="nb", trControl=control)
+```
+
+### support vector machine
+
+- https://c3h3notes.wordpress.com/2010/10/25/r%E4%B8%8A%E7%9A%84libsvm-package-e1071-%E5%8F%83%E6%95%B8%E7%AF%87/
+- https://www.zhihu.com/question/21883548
+- https://www.listendata.com/2017/01/support-vector-machine-in-r-tutorial.html
+- https://www.youtube.com/watch?v=m2a2K4lprQw
+
+```{R}
+#install.packages('e1071')
+library('e1071')
+model  = svm(churn~., data = trainset, kernel="linear", cost=1, gamma = 1/ncol(trainset))
+
+summary(model)
+svm.pred = predict(model, testset[, !names(testset) %in% c("churn")])
+svm.table=table(svm.pred, testset$churn)
+svm.table
+confusionMatrix(svm.table)
+tuned = tune.svm(churn~., data = trainset, gamma = 10^(-6:-1), cost = 10^(1:2))
+summary(tuned)
+model.tuned = svm(churn~., data = trainset, gamma = tuned$best.parameters$gamma, cost = tuned$best.parameters$cost)
+
+summary(model.tuned)
+svm.tuned.pred = predict(model.tuned, testset[, !names(testset) %in% c("churn")])
+svm.tuned.table=table(svm.tuned.pred, testset$churn)
+svm.tuned.table
+library('caret')
+library('e1071')
+confusionMatrix(svm.tuned.table)
+
+
+library(caret)
+
+control=trainControl(method="repeatedcv", number=10, repeats=1,classProbs =TRUE,summaryFunction = twoClassSummary)
+
+svm_linear_model = train(churn~., data=trainset, method='svmLinear', trControl=control)
+svm_linear_model
+
+predictions = predict(svm_linear_model,testset,type='class')
+confusionMatrix(table(predictions,testset$churn))
+
+tune_funs = expand.grid(sigma = seq(0.1,1,0.1),C = seq(0.1,1,0.1) )
+svm_radial_model = train(churn~., data=trainset, method='svmRadial', trControl=control,tuneGrid = tune_funs)
+svm_radial_model
+predictions = predict(svm_radial_model,testset,type='class')
+confusionMatrix(table(predictions,testset$churn))
+
+```
+
+### neutualnet
+```{R}
+control=trainControl(method = "cv", number = 3, returnResamp = "all",classProbs =TRUE,summaryFunction = twoClassSummary)
+nn_model = train(churn~., data=trainset, method='nnet', trControl=control)
+
+predictions = predict(nn_model,testset)
+confusionMatrix(table(predictions,testset$churn))
+```
