@@ -23,3 +23,5 @@
 - http://rpubs.com/YorkLin/riii_180508
 ## Class 3 
 - http://rpubs.com/YorkLin/riii_180510
+## Class 4
+- http://rpubs.com/YorkLin/riii_180515
