@@ -71,6 +71,13 @@ plot(ctree.performance, add=T,col='blue')
 ```{R}
 library(randomForest)
 forest <- randomForest(churn ~., data = trainset, ntree=200,importance=T, proximity=T)
+
+#find best ntree
+#plot(forest)
+#legend("topright",colnames(forest$err.rate),col=1:3,cex=0.8,fill=1:3)
+#find nest mtry
+#tuneRF(trainset[,-17],trainset[,17])
+
 rf.predict.prob <- predict(forest, testset, type="prob")
 rf.prediction <- prediction(rf.predict.prob[,1], as.factor(testset$churn))
 rf.auc <- performance(rf.prediction, measure = "auc", x.measure = "cutoff")
