@@ -18,12 +18,5 @@
     http://psmethods.postach.io/post/ru-he-geng-gai-rde-yu-she-yu-xi
 
 ## Class 1 
-- http://rpubs.com/YorkLin/riii_180503 
-## Class 2 
-- http://rpubs.com/YorkLin/riii_180508
-## Class 3 
-- http://rpubs.com/YorkLin/riii_180510
-## Class 4
-- http://rpubs.com/YorkLin/riii_180515
-## Class 5 
-- http://rpubs.com/YorkLin/riii_180517
+- http://rpubs.com/YorkLin/385388 
+
