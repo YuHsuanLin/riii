@@ -19,4 +19,5 @@
 
 ## Class 1 
 - http://rpubs.com/YorkLin/385388 
-
+## Class 2
+- http://rpubs.com/YorkLin/386982
