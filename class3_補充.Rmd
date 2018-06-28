@@ -41,8 +41,8 @@ dcast(melt.data,formula=Species ~ variable,fun.aggregate = mean)
 ### connect mysql
 ```{R}
 #Method 1:
-#install.packages('RJDBC')
-install.packages("rJava",type='source')
+install.packages('RJDBC')
+#install.packages("rJava",type='source')
 library('RJDBC')
 jar.loc <- '~/Downloads/mysql-connector-java-5.1.44/mysql-connector-java-5.1.44-bin.jar'
 driver <- JDBC("com.mysql.jdbc.Driver",jar.loc,identifier.quote="")
@@ -56,7 +56,7 @@ dbDisconnect(conn)
 #Method 2:
 install.packages('RMySQL')
 library('RMySQL')
-conn = dbConnect(MySQL(), dbname = "test")
+conn = dbConnect(MySQL(), dbname = "test",host = 'localhost', port= 3306) #user,password
 data = dbGetQuery(conn, "select * from author")
 head(data)
 dbDisconnect(conn)
