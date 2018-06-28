@@ -1,0 +1,45 @@
+---
+title: "class3_補充"
+author: "york"
+date: "2018/5/9"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+### mice
+```{R}
+library(mice)
+data(iris)
+na_list = sample(1:nrow(iris),15)
+iris[na_list,'Sepal.Length'] = NA
+
+mice.data <- mice(iris,m = 3,method = "cart",seed = 1206)
+
+complete(mice.data,1)
+
+```
+
+### connect mysql
+```{R}
+#Method 1:
+#install.packages('RJDBC')
+install.packages("rJava",type='source')
+library('RJDBC')
+jar.loc <- '~/Downloads/mysql-connector-java-5.1.44/mysql-connector-java-5.1.44-bin.jar'
+driver <- JDBC("com.mysql.jdbc.Driver",jar.loc,identifier.quote="")
+
+conn <- dbConnect(driver, "jdbc:mysql://localhost:3306/test")
+data = dbGetQuery(conn, "SELECT * FROM author")
+head(data)
+
+dbDisconnect(conn)
+
+#Method 2:
+install.packages('RMySQL')
+library('RMySQL')
+conn = dbConnect(MySQL(), dbname = "test")
+data = dbGetQuery(conn, "select * from author")
+head(data)
+dbDisconnect(conn)
+```
