@@ -18,6 +18,16 @@ mice.data <- mice(iris,m = 3,method = "cart",seed = 1206)
 
 complete(mice.data,1)
 
+complete(mice.data,1)[na_list,'Sepal.Length']
+complete(mice.data,2)[na_list,'Sepal.Length']
+complete(mice.data,3)[na_list,'Sepal.Length']
+
+##比較各模型預測結果是否穩定(mean接近0,var很小)
+diff = complete(mice.data,1)[na_list,'Sepal.Length'] - complete(mice.data,2)[na_list,'Sepal.Length']
+
+mean(diff)
+var(diff)
+
 ```
 
 ### connect mysql
