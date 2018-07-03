@@ -1,0 +1,20 @@
+---
+title: "class4_補充"
+author: "york"
+date: "2018/7/3"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+### caret 套件使用說明
+```{R}
+# 查詢caret package 有實作的所有演算法
+names(getModelInfo())
+# 查詢caret package 有沒有實作rpart演算法
+names(getModelInfo())[grep('rpart',names(getModelInfo()))]
+# 查詢rpart model資訊
+getModelInfo('rpart')
+# 查詢rpart model可以tune的parameters
+getModelInfo('rpart')$rpart$parameters
+```
