@@ -25,3 +25,5 @@
 - http://rpubs.com/YorkLin/387670
 ## Class 4
 - http://rpubs.com/YorkLin/388963
+## Class 5
+- http://rpubs.com/YorkLin/389624
