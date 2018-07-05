@@ -3,6 +3,8 @@ title: "class5_補充"
 author: "york"
 date: "2018/7/5"
 output: html_document
+editor_options: 
+  chunk_output_type: console
 ---
 
 ### 其他分類方法
@@ -27,22 +29,30 @@ library(class)
 head(trainset)
 levels(trainset$international_plan) = list("0"="no", "1"="yes")
 levels(trainset$voice_mail_plan) = list("0"="no", "1"="yes")
+trainset$international_plan = as.numeric(trainset$international_plan)
+trainset$voice_mail_plan = as.numeric(trainset$voice_mail_plan)
+
 levels(testset$international_plan) = list("0"="no", "1"="yes")
 levels(testset$voice_mail_plan) = list("0"="no", "1"="yes")
+testset$international_plan = as.numeric(testset$international_plan)
+testset$voice_mail_plan = as.numeric(testset$voice_mail_plan)
+
+
 head(trainset)
 
 churn.knn  = knn(trainset[,! names(trainset) %in% c("churn")], testset[,! names(testset) %in% c("churn")], trainset$churn, k=3)
 
 summary(churn.knn)
-table(testset$churn, churn.knn)
+table(churn.knn,testset$churn)
 library('caret')
 library('e1071')
 confusionMatrix(table(testset$churn, churn.knn))
 
 #use caret package
 library('caret')
-control=trainControl(method="repeatedcv", number=10, repeats=1)
-train(churn~., data=trainset, method="knn", trControl=control,metric="ROC")
+control=trainControl(method="repeatedcv", number=10, repeats=1,classProbs = TRUE,summaryFunction = twoClassSummary)
+tune_funs=expand.grid(k=seq(3,15,2))
+knn.model = train(churn~., data=trainset, method="knn", trControl=control,metric="ROC",tuneGrid=tune_funs)
 ```
 
 ### naive bayes
