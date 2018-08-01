@@ -1,7 +1,7 @@
 ﻿# R 語言基礎
 
 ## Download R
-- http://cran.csie.ntu.edu.tw/bin/windows/base/old/3.4.3/R-3.4.3-win.exe
+- http://cran.csie.ntu.edu.tw/bin/windows/base/R-3.5.1-win.exe
 - http://course.largitdata.com/course/33
 
 ## Download RStudio
