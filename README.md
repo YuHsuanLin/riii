@@ -12,12 +12,15 @@
 step 1: add key
 
 in terminal
-
+```
 gpg --keyserver keyserver.ubuntu.com --recv-key E084DAB9
 gpg -a --export E084DAB9 | sudo apt-key add -
+```
 
 step 2: add source
+```
 sudo vi /etc/apt/sources.list
+```
 
 貼上以下文字
 ```
