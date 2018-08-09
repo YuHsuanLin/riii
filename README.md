@@ -55,5 +55,5 @@ step2: install R kernel
 step3: start jupyter notebook, select R kernel
 ```
 #in terminal
-jupeter notebook
+jupyter notebook
 ```
