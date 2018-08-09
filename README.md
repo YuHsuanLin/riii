@@ -10,7 +10,7 @@
 
 ## install r 3.5 on ubuntu
 step 1: add key
-# in terminal
+## in terminal
 gpg --keyserver keyserver.ubuntu.com --recv-key E084DAB9
 gpg -a --export E084DAB9 | sudo apt-key add -
 
