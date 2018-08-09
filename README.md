@@ -28,9 +28,10 @@ deb https://cloud.r-project.org/bin/linux/ubuntu xenial-cran35/
 deb http://debian.linux.org.tw/ubuntu/ bionic-backports main restricted universe
 ```
 step 3: use apt-get install r
+```
 sudo apt-get update
 sudo apt-get install r-base r-base-dev
-
+```
 
 ## write R code in jupyter notebook
 step 1: open R in terminal, install all packages using the following lines
