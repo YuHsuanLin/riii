@@ -40,7 +40,7 @@ step 1: open R in terminal, install all packages using the following lines
 > install.packages(c('repr', 'IRdisplay', 'evaluate', 'crayon', 'pbdZMQ', 'devtools', 'uuid', 'digest'))
 > devtools::install_github('IRkernel/IRkernel')
 ```
-if devtools install failed:
+if installing devtools failed:
 - https://www.digitalocean.com/community/tutorials/how-to-install-r-packages-using-devtools-on-ubuntu-16-04
 ```
 sudo apt-get install build-essential libcurl4-gnutls-dev libxml2-dev libssl-dev
