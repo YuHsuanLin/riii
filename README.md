@@ -8,7 +8,7 @@
 - https://download1.rstudio.org/RStudio-1.1.447.exe 
 - http://course.largitdata.com/course/34
 
-## install r 3.5 on ubuntu
+## install r 3.5 on ubuntu16.04
 step 1: add key
 
 in terminal
