@@ -8,7 +8,7 @@
 - https://download1.rstudio.org/RStudio-1.1.447.exe 
 - http://course.largitdata.com/course/34
 
-## install r 3.5 on ubuntu16.04
+## install R 3.5 on ubuntu16.04
 step 1: add key
 
 in terminal
@@ -57,3 +57,7 @@ step3: start jupyter notebook, select R kernel
 #in terminal
 jupyter notebook
 ```
+
+
+# CLASS 1
+- http://rpubs.com/YorkLin/riii_20181025
