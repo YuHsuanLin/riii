@@ -3,6 +3,8 @@ title: "R_basic1"
 author: "York Lin"
 date: "2018年10月25日"
 output: html_document
+editor_options: 
+  chunk_output_type: console
 ---
 
 R vs Python?
@@ -18,7 +20,52 @@ Kaggle
 UCI dataset
 - https://archive.ics.uci.edu/ml/datasets.html
 
+### R basic command
+```{R}
+#文件查詢
+help(package="base")
+?base::sum
+?sum
+help.search("sum")
+??sum
 
-```{r}
+#範例演釋
+demo()
+#使用內建資料集
+data()
+#看現有變數
+ls()
+#移除變數
+rm()
 
+x = c(1,2,3)
+#查看資料型態
+class(x)
+#查看資料結構
+str(x)
 ```
+
+### Basic computing
+```{R, echo=TRUE}
+3+8
+3-8
+3*8
+3/8
+1/0
+11%%2
+3<4
+2==5
+T == TRUE
+```
+
+### Assignment
+```{R}
+a = 3
+a <- 3 # ( alt + - )
+assign("a",3)
+
+a / 2
+a = a / 2
+a
+```
+
