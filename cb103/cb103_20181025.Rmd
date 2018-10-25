@@ -69,3 +69,91 @@ a = a / 2
 a
 ```
 
+### Vector
+- R語言最基本的物件
+```{R, echo=TRUE}
+character(5)  ## character vector of length 5
+numeric(5)
+logical(5)
+x = c(1,2,3,7)
+y= c(2,3,5,1)
+x+y
+x*y
+x-y
+x/y
+
+x = c(1,2,3,7)
+x + 10
+x + c(10)
+x + c(1,2)
+x + c(1,2,1,2)
+
+x == c(1,99,3,4)
+
+c(1,2,3)
+c(2,T,3+0i,"one")
+c(2,T,3+0i)
+c(c(1,2,3,4),c(5))
+
+x = c(1,2,3,4,NA)
+is.na(x)
+sum(x)
+sum(x, na.rm=T)
+# <- => alt + -
+
+
+height_vec = c(180,169,173)
+height_vec
+names(height_vec) = c("Brian", "Toby", "Sherry")
+height_vec
+
+name_vec = c("Brian", "Toby", "Sherry")
+names(height_vec) = name_vec
+height_vec > 175
+height_vec / 100
+height_vec > 175 | height_vec < 170
+height_vec < 175 & height_vec > 170
+
+#R 的index從1開始
+height_vec[c(1)] #index
+height_vec['Brian'] #element name
+height_vec[height_vec > 175] #condition (boolean vector)
+
+```
+
+##p38 example
+```{R, echo=TRUE}
+h = c(180,169,173)
+w = c(73,87,43)
+bmi = w / ((h/100)^2)
+names(bmi) = c("Brian", "Toby", "Sherry")
+bmi < 18.5 | bmi >= 24
+bmi[bmi < 18.5 | bmi >= 24]
+```
+
+### seq() & rep() & paste()
+```{R, echo=TRUE}
+1:20
+seq(1,20)
+20:1
+?seq
+seq(from=1,to=20,by=2)
+seq(from=1,to=20,length=2)
+
+rep(1,5)
+?rep
+rep(x=c(1,2), times=5)
+rep(x=c(1,2), times=c(1,2))
+rep(x=c(1,2), each=5)
+rep_len(x=c(1,2),length.out = 5)
+
+paste("the","big","bang","theory")
+paste("big","bang",sep="-")
+length(paste("the","big","bang","theory"))
+
+paste("big","bang",sep="")
+paste("big","bang",sep=";")
+paste(c("big","bang"),1:2)
+paste(c("big","bang"),1:2,collapse = "+" )
+length(paste(c("big","bang"),1:4,collapse = "+" ))
+```
