@@ -1,0 +1,24 @@
+---
+title: "R_basic1"
+author: "York Lin"
+date: "2018年10月25日"
+output: html_document
+---
+
+R vs Python?
+- https://www.datacamp.com/community/tutorials/r-or-python-for-data-analysis
+- https://spectrum.ieee.org/at-work/innovation/the-2018-top-programming-languages
+
+popular programming language for analytics
+- https://www.kdnuggets.com/2018/05/poll-tools-analytics-data-science-machine-learning-results.html
+
+Kaggle
+- https://www.kaggle.com/
+
+UCI dataset
+- https://archive.ics.uci.edu/ml/datasets.html
+
+
+```{r}
+
+```
