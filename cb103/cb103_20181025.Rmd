@@ -348,3 +348,44 @@ write.table(test.data, file = "data/test.txt" , sep = " ")
 write.csv(test.data, file = "data/test.csv")
 ```
 
+##p70 example
+```{R}
+setwd('~/lecture/riii')
+tw2330 = read.csv("data/2330.csv", header=TRUE)
+str(tw2330)
+tw2330$Date = as.Date(tw2330$Date)
+#max(tw2330$Close)
+stock2 = tw2330[(tw2330$Date >= '2017-01-01' & tw2330$Date < '2018-01-01'),]
+max(stock2$Close)
+
+summary(stock2$Close)
+
+ordered_stock = stock2[order(stock2$Close, decreasing = T),]
+ordered_stock[1,]
+ordered_stock[nrow(ordered_stock),]
+ordered_stock[1,"Close"] - ordered_stock[nrow(ordered_stock),"Close"]
+
+```
+
+###readr package
+- http://hadley.nz/
+- https://github.com/tidyverse/readr
+
+```{R}
+#install.packages("tidyverse")
+library('tidyverse')
+setwd('~/lecture/riii')
+stock = read_csv('data/2330.csv',col_names=T)
+```
+
+### List
+```{R}
+item= list(thing='hat',size=8.25)
+item$thing
+item$size
+
+flower= list(title="iris dataset", data= iris)
+class(flower)
+class(flower$data)
+flower$data[1,"Sepal.Width"]
+```
