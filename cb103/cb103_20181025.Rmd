@@ -267,3 +267,84 @@ weather_factor = factor(weather)
 levels(weather_factor) = c("cloudy","rainy","sunny")
 weather_factor
 ```
+
+### Dataframe
+```{R}
+name <- c("Joe", "Bob", "Vicky")
+age <- c(28, 26, 34)
+gender <- c("Male","Male","Female")
+df <- data.frame(name, age, gender)
+class(df)
+str(df)
+
+data(iris)
+head(iris)
+tail(iris)
+tail(iris, 10)
+str(iris)
+
+#取前三列資料
+iris[1:3,]
+#取前三列第一行的資料
+iris[1:3,1]
+#取前三列Sepal.Length欄位的資料
+iris[1:3,"Sepal.Length"]
+head(iris[,1:2])
+iris$"Sepal.Length"[1:3]
+
+#取前五筆包含length 及 width 的資料
+Five.Sepal.iris = iris[1:5, c("Sepal.Length","Sepal.Width")]
+#可以用條件做篩選
+setosa.data = iris[iris$Species=="setosa",1:5]
+str(setosa.data)
+
+#使用which 做資料篩選
+which(iris$Species=="setosa")
+
+#merge進行資料合併
+flower.type = data.frame(Species = "setosa", Flower = "iris")
+merge(flower.type, iris[1:3,], by ="Species")
+
+df1 = data.frame(CustomerId = c(1:6), Product = c(rep("Toaster", 3), rep("Radio", 3)))
+df2 = data.frame(CustomerId = c(2, 4, 6), State = c(rep("Alabama", 2), rep("Ohio", 1)))
+
+#Inner join:
+merge(x = df1, y= df2, by="CustomerId")
+
+#Outer join: 
+merge(x = df1, y = df2, by = "CustomerId", all = TRUE)
+
+#Left outer: 
+merge(x = df1, y = df2, by = "CustomerId", all.x = TRUE)
+
+#Right outer: 
+merge(x = df1, y = df2, by = "CustomerId", all.y = TRUE)
+
+#Cross join: 
+merge(x = df1, y = df2, by = NULL)
+
+#用order做資料排序
+iris[order(iris$Sepal.Length, decreasing = TRUE),]
+
+sort(iris$Sepal.Length, decreasing = TRUE)
+
+#資料轉換
+iris$Species_new = ifelse(iris$Species == c("setosa"), "IsSetosa","Notsetosa")
+iris$Species_new
+```
+
+### File read and write
+```{R}
+# getwd()
+setwd('~/lecture/riii')
+# setwd("__your_working_directory_path__")
+tw2330 = read.csv("data/2330.csv", header=TRUE)
+#tw2330 = read.csv('https://github.com/YuHsuanLin/riii/raw/master/data/2330.csv')
+test.data = read.table("data/match.txt" ,header = FALSE, sep="|")
+
+#table
+write.table(test.data, file = "data/test.txt" , sep = " ")
+#csv
+write.csv(test.data, file = "data/test.csv")
+```
+
