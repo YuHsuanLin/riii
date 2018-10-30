@@ -265,5 +265,6 @@ data(iris)
 
 tapply(iris$Sepal.Length, iris$Species, mean)
 
+lapply(names(iris[1:4]),function(e){tapply(iris[,e],iris$Species,mean) })
 ```
 
