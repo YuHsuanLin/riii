@@ -59,5 +59,9 @@ jupyter notebook
 ```
 
 
-# CLASS 1
+### CLASS 1
 - http://rpubs.com/YorkLin/riii_20181025
+
+### CLASS 2 
+- http://rpubs.com/YorkLin/riii_20181030 
+
