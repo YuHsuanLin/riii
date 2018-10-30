@@ -47,3 +47,84 @@ weather <- xmlToDataFrame(url)
 weather[ weather$SiteName == '臺北',  'Temperature'   ]
 ```
 
+### Flow Control
+```{R}
+x=5;
+if(x>3){
+  print("x > 3")
+}else{
+  print("x <= 3")
+}
+
+if(x>3) print("x > 3") else print("x <= 3")
+
+test = ifelse(x>3,"x > 3","x <= 3")
+test
+
+x=5;
+if(x>3){
+  print ("x > 3");
+} else if (x ==3){
+  print ("x == 3");
+}else{
+  print("x <= 3");
+}
+
+switch(2,print("aaa"),print("bbb"),print("ccc"))
+switch("third",first=print("aaa"),second=print("bbb"),third=print("ccc"))
+
+for(i in 1:10){
+  print(i);
+}
+
+sum=0
+for(i in 1:100){
+  sum= sum+ i;
+}
+sum
+
+sum(1:100)
+
+
+sum = 0;
+cnt = 0;
+while(cnt <= 100){
+  sum = sum + cnt;
+  cnt = cnt + 1;
+}
+sum
+
+mat = matrix(1:9, byrow=TRUE, nrow=3)
+for(i in 1:nrow(mat)){
+  for(j in 1:ncol(mat)){
+    print(mat[i,j])
+  }
+}
+
+for(i in seq_len(nrow(mat))) {
+  for(j in seq_len(ncol(mat))) { 
+    print(mat[i, j])
+  }
+}
+
+```
+
+### break / next
+```{R}
+#break(跳出迴圈)
+for(n in 1:10){
+  if(n==5){
+    break
+  }
+  print(n)
+}
+
+#next(略過本次,類似python continue)
+for(n in 1:10){
+  if(n==5){
+    next
+  }
+  print(n)
+}
+
+```
