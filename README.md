@@ -1,5 +1,12 @@
 ﻿# R 語言基礎
 
+### CLASS 1
+- http://rpubs.com/YorkLin/riii_20181025
+
+### CLASS 2 
+- http://rpubs.com/YorkLin/riii_20181030 
+
+
 ## Download R
 - http://cran.csie.ntu.edu.tw/bin/windows/base/R-3.5.1-win.exe
 - http://course.largitdata.com/course/33
@@ -59,9 +66,4 @@ jupyter notebook
 ```
 
 
-### CLASS 1
-- http://rpubs.com/YorkLin/riii_20181025
-
-### CLASS 2 
-- http://rpubs.com/YorkLin/riii_20181030 
 
