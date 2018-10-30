@@ -138,3 +138,59 @@ for(n in 1:10){
 
 ```
 
+
+### p86 example
+```{R}
+#method1
+mat = matrix(rep(1,9^2),nrow = 9)
+#mat = matrix(nrow=9,ncol=9)
+for(i in 1:nrow(mat)){
+  for(j in 1:ncol(mat)){
+    #mat[i,j] = i * j;
+    #mat[i,j] = paste(i,"*",j,"= ",i*j)
+    mat[i,j] = sprintf(" %s * %s = %s",i,j,i*j)
+  }
+}
+
+#method2
+mat1 = matrix(1:9, nrow = 9);
+mat2 = matrix(1:9, nrow = 1);
+mat = mat1 %*% mat2;
+mat
+```
+
+### Function
+```{R}
+f = function(a){
+    return(a+3)
+}
+f(3)
+
+#with default arguments
+f1 = function(a = 3) {
+    return(a+3)
+}
+f1()
+
+#lazy function
+f2 = function(a, b = 2, c = NULL) {
+   return(b + 1)
+}
+f2()
+
+#local variable
+b = 3
+f3 = function(a) {
+    b = 2
+    return(b)
+}
+f3()
+
+f4 = function(a,b){
+    if(a > 3){
+       a = 100;
+    }
+    return(a + b);
+}
+f4(4,1)
+```
