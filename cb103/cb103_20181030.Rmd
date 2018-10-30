@@ -194,3 +194,76 @@ f4 = function(a,b){
 }
 f4(4,1)
 ```
+
+## p90 example
+```{R}
+
+match_func = function(filename){
+  match = read.table(filename, sep= "|")
+  mat = matrix(rep(-1,5^2), nrow=5)
+  rownames(mat) = c("A","B","C","D","E")
+  colnames(mat) = c("A","B","C","D","E")
+  for (i in 1:nrow(match)){
+    mat[match[i,1], match[i,2]] = match[i,3];
+  }
+  return(mat)
+}
+
+match_func('~/lecture/riii/data/match.txt')
+
+#general case
+match_func = function(filename,header=T,sep='|'){
+  t = read.table(filename,header=header,sep = sep);
+  mat = matrix(rep(-1,length(levels(t[,1]))^2),
+               nrow = length(levels(t[,1])),
+               dimnames = list( levels(t[,1]), levels(t[,2] ) ));
+
+  for(i in 1:nrow(t)){
+    mat[t[i,1], t[i,2]] = t[i,3];
+  }
+  return(mat)
+}
+
+match_func('~/lecture/riii/data/match.txt',F)
+
+```
+
+### lapply sapply apply tapply
+```{R}
+x = list(c(1,2,3,4), c(5,6,7,8))
+lapply(x, sum)
+
+m1 = matrix(1:4, byrow=TRUE, nrow=2)
+m2 = matrix(5:8, byrow=TRUE, nrow=2)
+li = list(m1, m2)
+lapply(li, mean)
+
+grades =list(kevin = c(80,60,92), marry = c(56,75,64,84,56), QOO = c(10,20,3,4,10))
+lapply(grades, sum)
+lapply(grades, mean)
+lapply(grades, function(e){list(sum = sum(e), min = min(e))})
+
+class(lapply(grades, sum))
+sapply(grades, sum)
+class(sapply(grades, sum))
+
+sapply(li, mean)
+sapply(li,function(e) e[1,])
+
+m = matrix(1:4, byrow=TRUE, nrow=2)
+apply(m, 1, sum) # rowsums
+apply(m, 2, sum) # colsums
+
+rowmeans = apply(m, 1, mean)
+colmeans = apply(m, 2, mean)
+
+x = c(80,70,59,88,72,57)
+t = c(1,1,2,1,1,2)
+tapply(x,t, mean)
+
+data(iris)
+
+tapply(iris$Sepal.Length, iris$Species, mean)
+
+```
+
