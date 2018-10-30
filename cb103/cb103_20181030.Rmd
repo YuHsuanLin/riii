@@ -268,3 +268,51 @@ tapply(iris$Sepal.Length, iris$Species, mean)
 lapply(names(iris[1:4]),function(e){tapply(iris[,e],iris$Species,mean) })
 ```
 
+# 探索性資料分析
+### 表格
+```{R}
+#download file:
+#download.file("https://github.com/YuHsuanLin/riii/raw/master/Statistics/cdc.Rdata","~/lecture/riii/Statistics/cdc.Rdata")
+
+#import data
+#getwd()
+setwd("~/lecture/riii")
+load("Statistics/cdc.Rdata")
+
+str(cdc)
+head(cdc)
+names(cdc)
+
+#轉換資料類型
+cdc$exerany = as.factor(cdc$exerany)
+cdc$hlthplan = as.factor(cdc$hlthplan)
+cdc$smoke100 = as.factor(cdc$smoke100)
+
+str(cdc)
+
+#一維次數分配表
+table(cdc$exerany)
+
+#相對比例
+table(cdc$exerany) / length(cdc$exerany)
+
+#二維次數分配表
+table(cdc$gender,cdc$exerany)
+
+#連續型資料作表
+table(cdc$height)
+summary(cdc$height)
+cut(cdc$height,seq(45,95,by=5))
+
+#包含上界不包含下界
+table(cut(cdc$height,seq(45,95,by=5),right=T))
+
+#包含下界不包含上界
+table(cut(cdc$height,seq(45,95,by=5),right=F))
+## 加上labels(組別名稱)
+table(cut(cdc$height,seq(45,95,by=5),right=F,labels=seq(1,length(seq(45,95,by=5))-1)))
+## 把分組後資料存在cdc變數的h_group欄位中
+cdc$h_group = cut(cdc$height,seq(45,95,by=5),right=F)
+str(cdc)
+
+```
