@@ -417,6 +417,9 @@ pie(cat_stat$clicked_sum, label = cat_stat$category,family="Songti SC")
 ##ggplot2 scale function example
 - https://zhuanlan.zhihu.com/p/29566559
 
+## alter mysql 8.0 password encryption
+ALTER USER 'yourusername'@'localhost' IDENTIFIED WITH mysql_native_password BY 'youpassword';
+
 ### dplyr連接資料庫範例(mysql)
 ```{R}
 #install.packages('RMySQL')
