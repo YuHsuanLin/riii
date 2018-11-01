@@ -423,14 +423,15 @@ pie(cat_stat$clicked_sum, label = cat_stat$category,family="Songti SC")
 ALTER USER 'yourusername'@'localhost' IDENTIFIED WITH mysql_native_password BY 'youpassword';
 ```
 ### dplyr連接資料庫範例(mysql)
+- 可改用 RMariaDB package
 ```{R}
-#install.packages('RMySQL')
+install.packages('RMariaDB')
 #install.packages('dbplyr')
-library('RMySQL')
 library('dbplyr')
+library('RMariaDB')
 ##iris example
 
-conn = dbConnect(MySQL(),dbname='test',host='127.0.0.1',port=3306,user='root',password='pythonetl')
+conn = dbConnect(MariaDB(),dbname='test',host='127.0.0.1',port=3306,user='root',password='pythonetl')
 #db_drop_table(conn,'iris')
 copy_to(conn,iris,temporary = F)
 tbl(conn,"iris") %>%
@@ -458,3 +459,4 @@ library('ggplot2')
 g <- ggplot(category_stat,aes(x=category,y=mean))
 g + geom_bar(stat='identity') + theme(text=element_text(size=16,  family="Songti SC")) + scale_x_discrete(limits=category_stat$category)
 ```
+
