@@ -224,8 +224,8 @@ names(table(appledaily$category))
 
 ### 儲存處理過的檔案
 ```{R}
-applenews = appledaily
-save(applenews,file = 'Statistics/applenews.RData')
+#applenews = appledaily
+#save(applenews,file = 'Statistics/applenews.RData')
 ```
 
 ### 遺失值處理(missing value)
@@ -267,4 +267,29 @@ for(i in 1:length(cat_means)){
 }
 
 sum(is.na(applenews$clicked))
+```
+
+
+### mice
+```{R}
+#install.packages('mice')
+library(mice)
+data(iris)
+na_list = sample(1:nrow(iris),15)
+iris[na_list,'Sepal.Length'] = NA
+
+mice.data <- mice(iris,m = 3,method = "cart")
+
+complete(mice.data,1)
+
+complete(mice.data,1)[na_list,'Sepal.Length']
+complete(mice.data,2)[na_list,'Sepal.Length']
+complete(mice.data,3)[na_list,'Sepal.Length']
+
+##比較各模型預測結果是否穩定(mean接近0,var很小)
+diff = complete(mice.data,1)[na_list,'Sepal.Length'] - complete(mice.data,2)[na_list,'Sepal.Length']
+
+mean(diff)
+var(diff)
+
 ```
