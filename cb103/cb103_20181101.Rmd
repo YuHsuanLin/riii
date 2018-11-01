@@ -51,14 +51,15 @@ g_bygrp + geom_bar(position='stack')
 g_bygrp + geom_bar(position='dodge')
 g_bygrp + geom_bar(position='identity')
 
-#pie chart
-ggplot(cdc,aes(x=1,fill=genhlth)) + geom_bar() + coord_polar(theta = 'y')
-
+g <- ggplot(cdc,aes(x=genhlth))
 g+geom_bar()+coord_flip()
 
 g+geom_bar()+coord_polar(theta = 'x')
 g+geom_bar()+coord_polar(theta = 'y')
 g+geom_bar(aes(fill=gender))+coord_polar(theta = 'y')
+
+#pie chart
+ggplot(cdc,aes(x=1,fill=genhlth)) + geom_bar() + coord_polar(theta = 'y')
 
 
 precounted = as.data.frame(table(cdc$genhlth,dnn = c('genhlth')))
@@ -73,5 +74,24 @@ g <- ggplot(cdc,aes(x=weight))
 g2 = g+ geom_histogram()+facet_wrap(~genhlth)
 g2
 
-ggsave(filename='your_file_name.png',plot = g2)
+ggsave(filename='./your_file_name.png',plot = g2)
 ```
+
+```{R}
+data(iris)
+library(ggplot2)
+g2 = ggplot(iris,aes(x=Sepal.Length,y=Sepal.Width))
+g2+geom_point(aes(col=Species,size=Petal.Width))
+
+# install.packages('ggcorrplot')
+library(ggcorrplot)
+iris_cor = cor(iris[-5])
+ggcorrplot(iris_cor,method="circle",lab = TRUE,lab_size = 3)
+
+# install.packages("ggrepel") 
+library('ggrepel')
+g2 = ggplot(iris,aes(x=Sepal.Length,y=Sepal.Width))
+g2+geom_point(aes(col=Species))+geom_text(aes(label=1:150),size=3)
+g2+geom_point(aes(col=Species,size=Petal.Width))+geom_text_repel(aes(label=1:150),size=2)
+```
+
