@@ -176,3 +176,65 @@ getModelInfo('rpart')
 # 查詢rpart model可以tune的parameters
 getModelInfo('rpart')$rpart$parameters
 ```
+
+### find importance variable
+```{R}
+library('caret')
+importance = varImp(model, scale=FALSE)
+importance
+plot(importance)
+```
+
+### ROC
+- https://www.youtube.com/watch?v=OAl6eAyP-yo
+- http://www.navan.name/roc/
+
+```{R}
+#install.packages("ROCR")
+library(ROCR)
+predictions <-predict(model, testset, type="prob")
+head(predictions)
+pred.to.roc<-predictions[, 1]
+head(pred.to.roc)
+pred.rocr<-prediction(pred.to.roc, testset$churn)
+pred.rocr
+perf.rocr<-performance(pred.rocr, measure ="auc", x.measure="cutoff")
+perf.tpr.rocr<-performance(pred.rocr, measure="tpr",x.measure = "fpr")
+plot(perf.tpr.rocr,main=paste("AUC:",(perf.rocr@y.values)))
+```
+
+### model comparison
+```{R}
+#rpart
+library('rpart')
+churn.rp<-rpart(churn ~., data=trainset)
+
+#ctree
+#install.packages("party")
+library('party')
+ctree.model = ctree(churn ~ . , data = trainset)
+
+#C5.0
+library(C50)
+c50.model = C5.0(churn ~., data=trainset)
+
+rp.predict.prob = predict(churn.rp, testset,type='prob')
+c50.predict.prob = predict(c50.model,testset,type='prob')
+ctree.predict.prob = sapply(predict(ctree.model ,testset,type='prob'),function(e){unlist(e)[1]})
+rp.prediction = prediction(rp.predict.prob[,1],testset$churn)
+c50.prediction = prediction(c50.predict.prob[,1],testset$churn)
+ctree.prediction = prediction(ctree.predict.prob,testset$churn)
+rp.performance = performance(rp.prediction, "tpr","fpr")
+c50.performance = performance(c50.prediction, "tpr","fpr")
+ctree.performance = performance(ctree.prediction, "tpr","fpr")
+plot(rp.performance,col='red')
+plot(c50.performance, add=T,col='green')
+plot(ctree.performance, add=T,col='blue')
+
+rp.per.obj= performance(rp.prediction, measure = 'auc')
+rp.per.obj
+c50.per.obj = performance(c50.prediction, measure = 'auc')
+c50.per.obj
+ctree.per.obj = performance(ctree.prediction, measure = 'auc')
+ctree.per.obj
+```
