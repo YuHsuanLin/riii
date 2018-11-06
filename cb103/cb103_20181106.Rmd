@@ -75,6 +75,7 @@ rpart.plot(churn.rp)
 
 ## cost complexity
 - http://mlwiki.org/index.php/Cost-Complexity_Pruning
+
 ### Prune
 ```{R}
 printcp(churn.rp)
@@ -85,11 +86,62 @@ min_row = which.min(churn.rp$cptable[,"xerror"])
 churn.cp = churn.rp$cptable[min_row, "CP"]
 #將churn.cp設為臨界值來修剪樹
 prune.tree=prune(churn.rp, cp=churn.cp)
-
 plot(prune.tree, margin=0.1)
 text(prune.tree, all=TRUE, use.n=TRUE, cex=0.7)
 
 test_tree = prune(churn.rp,cp=0.06)
 plot(test_tree, margin=0.1)
 text(test_tree, all=TRUE, use.n=TRUE, cex=0.7)
+
+predictions <-predict(prune.tree, testset, type='class')
+table(predictions,testset$churn)
+
+#install.packages('caret')
+#install.packages('e1071')
+library('caret')
+library('e1071')
+confusionMatrix(table(predictions, testset$churn))
+?confusionMatrix
+```
+
+### use churnTest data
+```{R}
+test_predict = predict(prune.tree,churnTest,type='class')
+confusionMatrix(table(test_predict,churnTest$churn))
+```
+
+### ctree
+```{R}
+#install.packages("party")
+library('party')
+ctree.model = ctree(churn ~ . , data = trainset)
+plot(ctree.model, margin=0.1)
+
+daycharge.model = ctree(churn ~ total_day_charge + international_plan, data = trainset)
+plot(daycharge.model)
+
+ctree.predict = predict(ctree.model ,testset)
+table(ctree.predict, testset$churn)
+
+confusionMatrix(table(ctree.predict, testset$churn))
+```
+
+### C5.0
+```{R}
+#install.packages("C50")
+library(C50)
+c50.model = C5.0(churn ~., data=trainset)
+
+?C5.0Control
+
+c=C5.0Control(minCases = 20)
+c50.model = C5.0(churn ~., data=trainset,control = c)
+
+summary(c50.model)
+plot(c50.model)
+
+c50.predict = predict(c50.model,testset,type='class')
+table(c50.predict, testset$churn)
+
+confusionMatrix(table(c50.predict, testset$churn))
 ```
