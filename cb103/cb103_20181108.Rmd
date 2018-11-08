@@ -57,7 +57,7 @@ rpart_pred.rocr = prediction(rpart_prob_yes,churnTest$churn)
 rpart_perf.rocr = performance(rpart_pred.rocr,measure = 'tpr',x.measure = 'fpr')
 
 plot(rpart_perf.rocr,col='red')
-plot(rf.performance,col='black',add=T)
+plot(rf_perf.rocr,col='black',add=T)
 legend(0.7, 0.2, c('randomforest','rpart'), 1:2)
 
 ```
