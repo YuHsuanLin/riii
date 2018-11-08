@@ -102,7 +102,7 @@ round(sd(customer_s[,2]),3)
 hc=hclust(dist(customer_s, method="euclidean"), method="ward.D2")
 plot(hc,hang =-0.01, cex=0.7)
 
-hc3 =hclust(dist(customer, method="euclidean"), method="complete")
+hc3 =hclust(dist(customer, method="euclidean"), method="single")
 plot(hc3, hang =-0.01, cex=0.8)
 ```
 
@@ -118,3 +118,32 @@ rect.hclust(hc, k =3, border="blue")
 c_1 = customer[fit == 1,]
 summary(c_1)
 ```
+
+### 分裂式階層式(top-down)
+```{r}
+#install.packages('cluster')
+library(cluster)
+?diana
+dv =diana(customer_s, metric ="euclidean")
+summary(dv)
+plot(dv)
+
+fit2 =cutree(dv,k=4)
+c_1 = customer[fit2 ==1,]
+summary(c_1)
+```
+
+### k-means
+```{R}
+str(customer_s)
+set.seed(22)
+fit =kmeans(customer_s, centers=4)
+?kmeans
+
+barplot(t(fit$centers), beside =TRUE,xlab="cluster", ylab="value")
+?barplot
+fit$centers
+
+customer[fit$cluster == 1,]
+```
+
