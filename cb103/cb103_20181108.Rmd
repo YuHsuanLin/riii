@@ -33,31 +33,88 @@ legend("topright",colnames(rf_model$err.rate),col=1:3,cex=0.8,fill=1:3)
 #find nest mtry
 tuneRF(churnTrain[,-17],churnTrain[,17])
 
-rf_model <- randomForest(churn ~., data = churnTrain, ntree=50,mtry=4)
-confusionMatrix(table(predict(rf_model,churnTest),churnTest$churn))
+# rf_model <- randomForest(churn ~., data = churnTrain, ntree=50,mtry=4)
+# confusionMatrix(table(predict(rf_model,churnTest),churnTest$churn))
+# 
+# rf.predict.prob <- predict(rf_model, churnTest, type="prob")
+# rf.prediction <- prediction(rf.predict.prob[,1], as.factor(churnTest$churn))
+# rf.auc <- performance(rf.prediction, measure = "auc", x.measure = "cutoff")
+# rf.performance <- performance(rf.prediction, "tpr","fpr")
+# plot(rf.performance)
+# 
+# #比較CART和RandomForest
+# rf_model = train(churn~.,data=churnTrain,method='rf',trControl=trainControl(method="repeatedcv", number=10, repeats=3,classProbs = TRUE,summaryFunction = prSummary))
+# rf_prob_yes = predict(rf_model,churnTest,type='prob')[,1]
+# rf_pred.rocr = prediction(rf_prob_yes,churnTest$churn)
+# rf_perf.rocr = performance(rf_pred.rocr,measure = 'tpr',x.measure = 'fpr')
+# 
+# control=trainControl(method="repeatedcv", number=10, repeats=3,classProbs = TRUE,summaryFunction = prSummary)
+# tune_funs = expand.grid(cp=seq(0.01,0.1,0.01))
+# rpart_model =train(churn~., data=churnTrain, method="rpart", trControl=control,tuneGrid=tune_funs)
+# 
+# rpart_prob_yes = predict(rpart_model,churnTest,type='prob')[,1]
+# rpart_pred.rocr = prediction(rpart_prob_yes,churnTest$churn)
+# rpart_perf.rocr = performance(rpart_pred.rocr,measure = 'tpr',x.measure = 'fpr')
+# 
+# plot(rpart_perf.rocr,col='red')
+# plot(rf_perf.rocr,col='black',add=T)
+# legend(0.7, 0.2, c('randomforest','rpart'), 1:2)
+```
 
-rf.predict.prob <- predict(rf_model, churnTest, type="prob")
-rf.prediction <- prediction(rf.predict.prob[,1], as.factor(churnTest$churn))
-rf.auc <- performance(rf.prediction, measure = "auc", x.measure = "cutoff")
-rf.performance <- performance(rf.prediction, "tpr","fpr")
-plot(rf.performance)
+# 分群問題
 
-#比較CART和RandomForest
-rf_model = train(churn~.,data=churnTrain,method='rf',trControl=trainControl(method="repeatedcv", number=10, repeats=3,classProbs = TRUE,summaryFunction = prSummary))
-rf_prob_yes = predict(rf_model,churnTest,type='prob')[,1]
-rf_pred.rocr = prediction(rf_prob_yes,churnTest$churn)
-rf_perf.rocr = performance(rf_pred.rocr,measure = 'tpr',x.measure = 'fpr')
+### 距離計算
+```{R}
+x =c(0, 0, 1, 1, 1, 1)
+y =c(1, 0, 1, 1, 0, 1)
 
-control=trainControl(method="repeatedcv", number=10, repeats=3,classProbs = TRUE,summaryFunction = prSummary)
-tune_funs = expand.grid(cp=seq(0.01,0.1,0.01))
-rpart_model =train(churn~., data=churnTrain, method="rpart", trControl=control,tuneGrid=tune_funs)
+#euclidean
+?dist
+rbind(x,y)
 
-rpart_prob_yes = predict(rpart_model,churnTest,type='prob')[,1]
-rpart_pred.rocr = prediction(rpart_prob_yes,churnTest$churn)
-rpart_perf.rocr = performance(rpart_pred.rocr,measure = 'tpr',x.measure = 'fpr')
+dist(rbind(x,y), method ="euclidean")
+sqrt(sum((x-y)^2))
+dist(rbind(x,y), method ="minkowski", p=2)
 
-plot(rpart_perf.rocr,col='red')
-plot(rf_perf.rocr,col='black',add=T)
-legend(0.7, 0.2, c('randomforest','rpart'), 1:2)
+#city block
+dist(rbind(x,y), method ="manhattan")
+sum(abs(x-y))
+dist(rbind(x,y), method ="minkowski", p=1)
+```
 
+### Hierarchical Clustering
+### 聚合式(bottom-up)
+```{R}
+setwd('~/lecture/riii')
+customer=read.csv('data/customer.csv',header=TRUE)
+head(customer)
+str(customer)
+
+#數值變數作正規化
+customer_s =scale(customer[,-1])
+?scale
+
+#正規化後的變數平均數為0, 標準差為1
+round(mean(customer_s[,2]),3)
+round(sd(customer_s[,2]),3)
+
+?hclust
+hc=hclust(dist(customer_s, method="euclidean"), method="ward.D2")
+plot(hc,hang =-0.01, cex=0.7)
+
+hc3 =hclust(dist(customer, method="euclidean"), method="complete")
+plot(hc3, hang =-0.01, cex=0.8)
+```
+
+### cutree
+```{R}
+fit =cutree(hc, k =4)
+fit
+table(fit)
+plot(hc, hang =-0.01, cex=0.7)
+rect.hclust(hc, k =4, border="red")
+rect.hclust(hc, k =3, border="blue")
+
+c_1 = customer[fit == 1,]
+summary(c_1)
 ```
