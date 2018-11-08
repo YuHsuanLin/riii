@@ -254,4 +254,47 @@ y
 
 predict(ds, p$x, y)
 
+#filter群集的raw data
+cluster_1_raw = p$x[ds$cluster == 1,]
+cluster_1_raw
+
+```
+
+### 其他分類方法
+
+### k-nearest neighbor classifer
+- https://www.youtube.com/watch?v=UqYde-LULfs
+
+```{R}
+library(C50)
+data(churn)
+#選擇建模變數
+variable.list = !names(churnTrain) %in% c('state','area_code','account_length')
+churnTrain=churnTrain[,variable.list]
+churnTest=churnTest[,variable.list]
+
+#install.packages("class")
+#library(class)
+
+head(churnTrain)
+levels(churnTrain$international_plan) = list("0"="no", "1"="yes")
+levels(churnTrain$voice_mail_plan) = list("0"="no", "1"="yes")
+churnTrain$international_plan = as.numeric(churnTrain$international_plan)
+churnTrain$voice_mail_plan = as.numeric(churnTrain$voice_mail_plan)
+
+levels(churnTest$international_plan) = list("0"="no", "1"="yes")
+levels(churnTest$voice_mail_plan) = list("0"="no", "1"="yes")
+churnTest$international_plan = as.numeric(churnTest$international_plan)
+churnTest$voice_mail_plan = as.numeric(churnTest$voice_mail_plan)
+
+head(churnTrain)
+
+#use caret package
+library('caret')
+control=trainControl(method="cv",number=10,,classProbs = TRUE,summaryFunction = twoClassSummary)
+tune_funs=expand.grid(k=seq(3,15,2))
+knn.model = train(churn~., data=churnTrain, method="knn", trControl=control,metric="ROC",tuneGrid=tune_funs)
+
+knn.predict = predict(knn.model,churnTest)
+confusionMatrix(table(knn.predict,churnTest$churn))
 ```
