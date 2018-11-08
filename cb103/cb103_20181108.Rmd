@@ -7,6 +7,9 @@ editor_options:
   chunk_output_type: console
 ---
 
+### 講義dropbox 連結
+- https://www.dropbox.com/s/bhqmpndutktw401/201806%20-%20R%E8%AA%9E%E8%A8%80.pdf?dl=0
+
 - https://www.cnblogs.com/tgzhu/p/6708947.html
 
 ### 補充：隨機森林(Random Forest)
@@ -297,4 +300,43 @@ knn.model = train(churn~., data=churnTrain, method="knn", trControl=control,metr
 
 knn.predict = predict(knn.model,churnTest)
 confusionMatrix(table(knn.predict,churnTest$churn))
+```
+
+### naive bayes
+example
+- https://www.youtube.com/watch?v=ZAfarappAO0
+```{R}
+#use caret package
+library('caret')
+control=trainControl(method="repeatedcv", number=10, repeats=1)
+bayes.model = train(churn~., data=churnTrain, method="nb", trControl=control)
+bayes.model
+```
+
+### support vector machine
+
+- https://c3h3notes.wordpress.com/2010/10/25/r%E4%B8%8A%E7%9A%84libsvm-package-e1071-%E5%8F%83%E6%95%B8%E7%AF%87/
+- https://www.zhihu.com/question/21883548
+- https://www.listendata.com/2017/01/support-vector-machine-in-r-tutorial.html
+- https://www.youtube.com/watch?v=m2a2K4lprQw
+
+```{R}
+#install.packages('e1071')
+library('e1071')
+library(caret)
+
+control=trainControl(method="repeatedcv", number=10, repeats=1,classProbs =TRUE,summaryFunction = twoClassSummary)
+
+svm_linear_model = train(churn~., data=churnTrain, method='svmLinear', trControl=control)
+svm_linear_model
+
+predictions = predict(svm_linear_model,churnTest,type='raw')
+confusionMatrix(table(predictions,churnTest$churn))
+
+tune_funs = expand.grid(sigma = seq(0.1,1,0.1),C = seq(0.1,1,0.1) )
+svm_radial_model = train(churn~., data=churnTrain, method='svmRadial', trControl=control,tuneGrid = tune_funs)
+svm_radial_model
+predictions = predict(svm_radial_model,churnTest,type='class')
+confusionMatrix(table(predictions,churnTest$churn))
+
 ```
