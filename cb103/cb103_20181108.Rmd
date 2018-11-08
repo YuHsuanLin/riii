@@ -1,0 +1,63 @@
+---
+title: "R_basic5"
+author: "York Lin"
+date: "2018年11月8日"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+- https://www.cnblogs.com/tgzhu/p/6708947.html
+
+### 補充：隨機森林(Random Forest)
+```{R}
+library(C50)
+library(randomForest)
+library(ROCR)
+library('caret')
+library('e1071')
+data(churn)
+
+names(churnTrain) %in% c("state", "area_code", "account_length")
+!names(churnTrain) %in% c("state", "area_code", "account_length")
+#選擇建模變數
+variable.list = !names(churnTrain) %in% c('state','area_code','account_length')
+churnTrain=churnTrain[,variable.list]
+churnTest=churnTest[,variable.list]
+
+
+rf_model = randomForest(formula=churn ~ .,data=churnTrain)
+#find best ntree
+plot(rf_model)
+legend("topright",colnames(rf_model$err.rate),col=1:3,cex=0.8,fill=1:3)
+#find nest mtry
+tuneRF(churnTrain[,-17],churnTrain[,17])
+
+rf_model <- randomForest(churn ~., data = churnTrain, ntree=50,mtry=4)
+confusionMatrix(table(predict(rf_model,churnTest),churnTest$churn))
+
+rf.predict.prob <- predict(rf_model, churnTest, type="prob")
+rf.prediction <- prediction(rf.predict.prob[,1], as.factor(churnTest$churn))
+rf.auc <- performance(rf.prediction, measure = "auc", x.measure = "cutoff")
+rf.performance <- performance(rf.prediction, "tpr","fpr")
+plot(rf.performance)
+
+#比較CART和RandomForest
+rf_model = train(churn~.,data=churnTrain,method='rf',trControl=trainControl(method="repeatedcv", number=10, repeats=3,classProbs = TRUE,summaryFunction = prSummary))
+rf_prob_yes = predict(rf_model,churnTest,type='prob')[,1]
+rf_pred.rocr = prediction(rf_prob_yes,churnTest$churn)
+rf_perf.rocr = performance(rf_pred.rocr,measure = 'tpr',x.measure = 'fpr')
+
+control=trainControl(method="repeatedcv", number=10, repeats=3,classProbs = TRUE,summaryFunction = prSummary)
+tune_funs = expand.grid(cp=seq(0.01,0.1,0.01))
+rpart_model =train(churn~., data=churnTrain, method="rpart", trControl=control,tuneGrid=tune_funs)
+
+rpart_prob_yes = predict(rpart_model,churnTest,type='prob')[,1]
+rpart_pred.rocr = prediction(rpart_prob_yes,churnTest$churn)
+rpart_perf.rocr = performance(rpart_pred.rocr,measure = 'tpr',x.measure = 'fpr')
+
+plot(rpart_perf.rocr,col='red')
+plot(rf.performance,col='black',add=T)
+legend(0.7, 0.2, c('randomforest','rpart'), 1:2)
+
+```
