@@ -147,3 +147,61 @@ fit$centers
 customer[fit$cluster == 1,]
 ```
 
+### 投影至二維空間
+```{R}
+#install.packages("cluster")
+library(cluster)
+clusplot(customer_s, fit$cluster, color=TRUE, shade=TRUE)
+
+#了解component 成分為何
+pca =princomp(customer_s)
+summary(pca)
+pca$loadings
+
+```
+
+### Evaluating model
+```{R}
+#silhouette
+library('cluster')
+par(mfrow= c(1,1))
+set.seed(22)
+library(cluster)
+km =kmeans(customer_s, 4)
+kms=silhouette(km$cluster,dist(customer_s))
+summary(kms)
+plot(kms)
+```
+
+### 選擇k-means最佳k值
+```{R}
+#within sum of squares
+nk=2:10
+set.seed(22)
+WSS =sapply(nk, function(k){set.seed(22);kmeans(customer_s, centers=k)$tot.withinss})
+WSS
+plot(x=nk, y=WSS, type="l", xlab="number of k", ylab="within sum of squares")
+
+
+SW = sapply(nk,function(k){
+  set.seed(22); summary(silhouette(kmeans(customer_s,centers=k)$cluster,dist(customer_s)))$avg.width
+})
+
+plot(x=nk,y=SW,type='l')
+
+#install.packages("fpc")
+#install.packages("robustbase", repos="http://R-Forge.R-project.org")
+library(fpc)
+?cluster.stats
+cluster.stats(dist(customer_s), kmeans(customer_s, centers=2)$cluster)
+
+WSS =sapply(nk, function(k){set.seed(22);cluster.stats(dist(customer_s), kmeans(customer_s, centers=k)$cluster)$within.cluster.ss})
+
+plot(x=nk, y=WSS, type="l", xlab="number of k", ylab="within sum of squares")
+
+SW =sapply(2:10,function(k){set.seed(22);cluster.stats(dist(customer_s),kmeans(customer_s, centers=k)$cluster)$avg.silwidth})
+
+plot(x=nk,y=SW,type='l')
+
+
+```
