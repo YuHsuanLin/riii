@@ -189,3 +189,70 @@ paste(c("big","bang"),1:2)
 paste(c("big","bang"),1:2,collapse = "+" )
 length(paste(c("big","bang"),1:4,collapse = "+" ))
 ```
+### Matrix
+```{R}
+matrix(1:9, byrow=TRUE, nrow=3)
+matrix(1:9, nrow=3)
+kevin = c(85,73)
+marry = c(72,64)
+jerry = c(59,66)
+mat = matrix(c(kevin, marry, jerry), nrow=3, byrow= TRUE)
+colnames(mat) = c('first', 'second')
+rownames(mat) = c('kevin', 'marry', 'jerry')
+mat
+
+#取得矩陣維度
+dim(mat)
+#取得矩陣列數
+nrow(mat)
+#取得矩陣欄數
+ncol(mat)
+#矩陣轉置(transpose)
+t(mat)
+
+#取第一列
+mat[1,]
+#取第一行
+mat[,1]
+#取第一、二列
+mat[1:2,]
+
+#取kevin和jerry成績
+mat[c('kevin','jerry'),]
+#取kevin和jerry成績的第一次考試成績
+mat[c('kevin','jerry'),'first']
+
+#取得第一次考試成績不及格的人
+mat[mat[,1] < 60,'first']
+
+rowSums(mat)
+colSums(mat)
+
+rowMeans(mat)
+colMeans(mat)
+
+#新增列與行
+mat2 = rbind(mat, c(78,63))
+rownames(mat2)[nrow(mat2)] = 'sam'
+mat2
+
+mat3 = cbind(mat2,c(82,77,70,64))
+colnames(mat3)[ncol(mat3)] = 'third'
+mat3
+
+rowMeans(mat3)
+colMeans(mat3)
+
+
+# arithmetic
+m1 = matrix(1:4, byrow=TRUE, nrow=2)
+m2 = matrix(5:8, byrow=TRUE, nrow=2)
+
+m1 + m2
+m1 - m2
+m1 * m2
+m1 / m2
+
+m1 %*% m2
+
+```
