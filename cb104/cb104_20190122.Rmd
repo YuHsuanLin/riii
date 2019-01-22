@@ -256,3 +256,26 @@ m1 / m2
 m1 %*% m2
 
 ```
+
+### Factor
+```{R}
+# syntax
+weather= c("sunny","rainy", "cloudy", "rainy", "cloudy")
+weather_category = factor(weather)
+weather_category
+class(weather)
+class(weather_category)
+# order
+temperature = c("Low", "High", "High", "Medium", "Low", "Medium")
+temperature_category = factor(temperature, order = TRUE, levels = c("Low", "Medium", "High"))
+temperature_category
+temperature_category[3] > temperature_category[1]
+temperature_category[4] > temperature_category[3]
+
+# change levels name
+weather= c("s","r", "c", "r", "c")
+weather_factor = factor(weather)
+levels(weather_factor) = c("cloudy","rainy","sunny")
+weather_factor
+```
+
