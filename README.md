@@ -1,5 +1,8 @@
 ﻿# R 語言基礎
 
+### CLASS 1
+- http://rpubs.com/YorkLin/riii_199122
+
 ## Download R
 - http://cran.csie.ntu.edu.tw/bin/windows/base/R-3.5.1-win.exe
 - http://course.largitdata.com/course/33
