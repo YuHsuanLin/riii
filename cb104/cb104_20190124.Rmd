@@ -219,4 +219,6 @@ greeting = function(sen){
     return('hello!')
   }  
 }
+
+greeting("good morining")
 ```
