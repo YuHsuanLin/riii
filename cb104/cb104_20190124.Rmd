@@ -116,7 +116,7 @@ switch("third",first=print("aaa"),second=print("bbb"),third=print("ccc"))
 
 
 for(i in 1:10){
-  print(i);
+  print(i)
 }
 
 sum=0
@@ -126,15 +126,6 @@ for(i in 1:100){
 sum
 
 sum(1:100)
-
-
-sum = 0;
-cnt = 0;
-while(cnt <= 100){
-  sum = sum + cnt;
-  cnt = cnt + 1;
-}
-sum
 
 mat = matrix(1:9, byrow=TRUE, nrow=3)
 for(i in 1:nrow(mat)){
@@ -149,6 +140,14 @@ for(i in seq_len(nrow(mat))) {
   }
 }
 
+
+sum = 0;
+cnt = 0;
+while(cnt <= 100){
+  sum = sum + cnt;
+  cnt = cnt + 1;
+}
+sum
 ```
 
 ### Review seq()
@@ -178,4 +177,46 @@ for(n in 1:10){
   print(n)
 }
 
+```
+### Function
+```{R}
+addThree = function(a){
+    return(a+3)
+}
+addThree(3)
+
+#with default arguments
+addThree_2 = function(a = 3) {
+    return(a+3)
+}
+addThree_2()
+
+addThree_3 = function(a = 3) {
+    a+3
+}
+addThree_3()
+
+#lazy function
+f2 = function(a, b = 2, c = NULL) {
+   return(b + 1)
+}
+f2()
+
+#local variable
+b = 3
+f3 = function(a) {
+    b = 2
+    return(b)
+}
+f3()
+
+greeting = function(sen){
+  if(sen == 'good morning'){
+    return('good morning!')
+  } else if (sen == 'good evening'){
+    return('good evening!')
+  } else{
+    return('hello!')
+  }  
+}
 ```
