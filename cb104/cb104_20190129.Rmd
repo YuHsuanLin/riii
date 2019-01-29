@@ -266,16 +266,15 @@ wday(now_date,label=T)
 
 # Parsing dates and times
 ymd(20190129)
-mdy(10252018)
-dmy(25102018)
+mdy(01292019)
+dmy(29012019)
 
-ymd('2018/10/25')
-ymd('2018.10.25')
+ymd('2019/01/29')
+ymd('2019.01.29')
 
-ymd('2018.10.25')
+ymd('2019.01.29')
 ymd_hm('2019/1/29 14:40',tz='Asia/Taipei')
 with_tz(ymd_hm('2019/1/29 14:40',tz='Asia/Taipei'),tzone='America/Los_Angeles')
 
 appledaily$dt = ymd_hm(appledaily$dt)
-
 ```
