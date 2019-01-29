@@ -96,6 +96,7 @@ boxplot(bmi ~ cdc$genhlth)
 plot(cdc$weight, cdc$height)
 plot(cdc$weight, cdc$wtdesire)
 
+plot(cdc[,c('height','weight','age')])
 
 png(filename='test123.png')
 plot(cdc$weight, cdc$height)
