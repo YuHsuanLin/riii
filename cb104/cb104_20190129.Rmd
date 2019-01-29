@@ -249,6 +249,7 @@ as.POSIXct(tm,origin='1970-01-01',tz = 'Asia/Taipei')
 ```
 
 ### lubridate package
+- https://r4ds.had.co.nz/dates-and-times.html
 ```{R}
 #install.packages('lubridate')
 library(lubridate)
@@ -277,4 +278,25 @@ ymd_hm('2019/1/29 14:40',tz='Asia/Taipei')
 with_tz(ymd_hm('2019/1/29 14:40',tz='Asia/Taipei'),tzone='America/Los_Angeles')
 
 appledaily$dt = ymd_hm(appledaily$dt)
+```
+
+### 擷取點擊數中數值部分
+- https://r4ds.had.co.nz/strings.html
+```{R}
+#方法一：利用sub函數取代
+tmp = sub("人氣\\(","",appledaily$clicked[1])
+tmp2 = sub("\\)","",tmp)
+click = as.numeric(tmp2)
+
+clicked = sub('\\)','',sub('人氣\\(','',appledaily$clicked))
+clicked = as.integer(clicked)
+head(clicked)
+
+#方法二：使用stringr套件的str_match()
+library(stringr)
+?str_match
+clicked = as.integer(str_match(appledaily$clicked,"人氣\\((\\d+)\\)")[,2])
+
+appledaily$clicked = clicked
+head(clicked)
 ```
