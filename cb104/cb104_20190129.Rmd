@@ -247,3 +247,35 @@ tm = as.integer(unclass(as.POSIXct(Sys.time())))
 as.POSIXct(tm,origin='1970-01-01',tz = 'Japan')
 as.POSIXct(tm,origin='1970-01-01',tz = 'Asia/Taipei')
 ```
+
+### lubridate package
+```{R}
+#install.packages('lubridate')
+library(lubridate)
+
+# Extracting information
+now_date = now()
+
+year(now_date)
+month(now_date,label=T)
+day(now_date)
+hour(now_date)
+minute(now_date)
+second(now_date)
+wday(now_date,label=T)
+
+# Parsing dates and times
+ymd(20190129)
+mdy(10252018)
+dmy(25102018)
+
+ymd('2018/10/25')
+ymd('2018.10.25')
+
+ymd('2018.10.25')
+ymd_hm('2019/1/29 14:40',tz='Asia/Taipei')
+with_tz(ymd_hm('2019/1/29 14:40',tz='Asia/Taipei'),tzone='America/Los_Angeles')
+
+appledaily$dt = ymd_hm(appledaily$dt)
+
+```
