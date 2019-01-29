@@ -103,3 +103,64 @@ plot(cdc$weight, cdc$height)
 dev.off()
 
 ```
+
+###plot type
+```{r}
+x <- 1:6
+y <- x
+par(mfrow=c(2,4))
+types <- c('p','l', 'o', 'b', 'c', 's', 'h', 'n')
+for(t in types){
+  #print(t)
+  title <- paste('type:', t)
+  plot(x,y, type = t, main = title)
+}
+
+```
+
+### package:ggplot2
+##### documentation
+- http://docs.ggplot2.org/current/
+
+##### cheat sheet
+- https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf
+
+##### why ggplot2?
+- fancy by default, good for demo and report 
+- consistent across all kinds of plot in syntax and behavior
+- strong support community(the mostly download package on CRAN)
+```{R}
+#basic syntax
+#ggplot(data,aes(x,y,group,...))+geom_object(...)
+#install.packages('ggplot2')
+
+library('ggplot2')
+
+g <- ggplot(cdc,aes(x=height,y=weight))
+g+geom_point()
+
+g <- ggplot(cdc,aes(x=height,y=weight,col=gender))
+g+geom_point()
+
+
+g <- ggplot(cdc,aes(x=height,y=weight))
+g+geom_point(aes(col=gender))
+
+g <- ggplot(cdc,aes(x=genhlth))
+g+geom_bar()
+g+geom_bar() + ylab('次數') + ggtitle('健康狀況長條圖')
+#fill => 填滿顏色; color => 邊線顏色
+g+geom_bar(fill='snow',color='black')
+
+g+geom_bar(col='black',aes(fill=gender))
+
+g+geom_bar(col='black',aes(fill=gender),position='stack')
+g+geom_bar(col='black',aes(fill=gender),position='dodge')
+
+g = ggplot(cdc,aes(x=gender))
+g+geom_bar(aes(fill=genhlth),position='stack')
+g+geom_bar(aes(fill=genhlth),position='dodge')
+g+geom_bar(aes(fill=genhlth),position='fill')
+g+geom_bar(aes(fill=genhlth),position='identity')
+```
+
