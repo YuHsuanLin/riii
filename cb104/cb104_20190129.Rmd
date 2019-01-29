@@ -1,0 +1,40 @@
+---
+title: "R_basic3"
+author: "York Lin"
+date: "2019年01月29日"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+## p90 example
+```{R}
+
+match_func = function(filename){
+  match = read.table(filename, sep= "|")
+  mat = matrix(rep(-1,5^2), nrow=5)
+  rownames(mat) = c("A","B","C","D","E")
+  colnames(mat) = c("A","B","C","D","E")
+  for (i in 1:nrow(match)){
+    mat[match[i,1], match[i,2]] = match[i,3];
+  }
+  return(mat)
+}
+
+match_func('~/lecture/riii/data/match.txt')
+
+#general case
+match_func = function(filename,header=T,sep='|'){
+  t = read.table(filename,header=header,sep = sep);
+  mat = matrix(rep(-1,length(levels(t[,1]))^2),
+               nrow = length(levels(t[,1])),
+               dimnames = list( levels(t[,1]), levels(t[,2] ) ));
+
+  for(i in 1:nrow(t)){
+    mat[t[i,1], t[i,2]] = t[i,3];
+  }
+  return(mat)
+}
+
+match_func('~/lecture/riii/data/match.txt',F)
+```
