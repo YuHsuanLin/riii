@@ -1,0 +1,115 @@
+---
+title: "R_basic4"
+author: "York Lin"
+date: "2019年02月12日"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+## review dplyr select & filter
+```{R}
+setwd('~/lecture/riii')
+load('Statistics/applenews.RData')
+str(applenews)
+
+applenews = applenews[,-1]
+
+#install.packages('dplyr')
+library(dplyr)
+
+#原先R 提供的過濾功能
+head(applenews[applenews$category == "娛樂",])
+
+#dplyr 的過濾功能
+head(filter(applenews, category == "娛樂"))
+
+#and/or 
+head(filter(applenews, category == "娛樂" & clicked > 10000))
+head(filter(applenews,category == '娛樂' , clicked > 10000))
+head(filter(applenews, category == "娛樂" | clicked > 10000))
+
+#篩選多個類別
+head(filter(applenews, category %in% c("娛樂", "社會")))
+
+#原先R的欄位選取
+head(applenews[, c("category","clicked")])
+
+#dplyr 的欄位選取
+
+#選擇列舉出的欄位
+head(select(applenews,category,clicked))
+#選擇從category~clicked欄位
+head(select(applenews,dt:clicked))
+#選擇欄位名稱含有click字串的欄位
+head(select(applenews,contains('click')))
+
+##iris - selected helpers
+head(select(iris,starts_with("Sepal")))
+head(select(iris,ends_with("Length")))
+
+?matches
+
+#想同時filter 和 select
+head(filter(select(applenews,category:clicked),category == '娛樂'))
+
+#使用Chaining
+select(applenews,category:clicked) %>%
+  filter(category == '娛樂') %>%
+  head()
+
+applenews %>% 
+  select(category:clicked) %>%
+  filter(category == '娛樂') %>%
+  head()
+
+```
+
+## dplyr 其他常用函式
+```{R}
+#使用mutate產生新欄位
+# 總點擊數
+freqsum = applenews %>%
+  select(clicked) %>% 
+  sum()
+
+applenews %>%
+  select(title, category,clicked) %>% 
+  mutate(portion= clicked / freqsum) %>%
+  arrange(desc(portion)) %>%
+  head()
+
+#新增portion欄位
+applenews = applenews %>%
+  mutate(portion= clicked / freqsum)
+
+#group_by & summarise
+applenews %>%
+  group_by(category) %>%
+  summarise(clicked_sum = sum(clicked, na.rm=TRUE)) %>%
+  arrange(desc(clicked_sum))
+
+#多個欄位計算
+applenews %>%
+  group_by(category) %>% 
+  summarise_at(.vars=vars(clicked,portion),.funs=funs(sum))
+
+applenews %>%
+  group_by(category) %>% 
+  summarise_at(.vars=vars(clicked),.funs=funs(sum,mean))
+
+applenews %>%
+  group_by(category) %>%
+  summarise_at(.funs=funs(min,max), .vars=vars(matches('clicked')), na.rm=T)
+
+
+cat_stat = applenews %>%
+  group_by(category) %>%
+  summarise(clicked_sum = sum(clicked)) 
+
+cat_stat
+#繪製長條圖
+barplot(cat_stat$clicked_sum, names.arg=cat_stat$category, col=rainbow(length(cat_stat$category)),family="Songti SC")
+#繪製圓餅圖
+pie(cat_stat$clicked_sum, label = cat_stat$category,family="Songti SC")
+```
