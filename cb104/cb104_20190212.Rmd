@@ -256,3 +256,70 @@ library('e1071')
 confusionMatrix(table(predictions, testset$churn))
 ?confusionMatrix
 ```
+
+### ctree
+```{R}
+#install.packages("party")
+library('party')
+ctree.model = ctree(churn ~ . , data = trainset,controls = ctree_control(minsplit = 10))
+plot(ctree.model, margin=0.1)
+
+daycharge.model = ctree(churn ~ total_day_charge + international_plan, data = trainset)
+plot(daycharge.model)
+
+ctree.predict = predict(ctree.model ,testset,type='response')
+table(ctree.predict, testset$churn)
+
+confusionMatrix(table(ctree.predict, testset$churn))
+```
+
+### C5.0
+```{R}
+#install.packages("C50")
+library(C50)
+c50.model = C5.0(churn ~., data=trainset)
+
+?C5.0Control
+
+c=C5.0Control(minCases = 20)
+c50.model = C5.0(churn ~., data=trainset,control = c)
+
+summary(c50.model)
+plot(c50.model)
+
+c50.predict = predict(c50.model,testset,type='class')
+table(c50.predict, testset$churn)
+
+confusionMatrix(table(c50.predict, testset$churn))
+```
+
+### use caret package
+```{R}
+#install.packages("caret")
+library(caret)
+control=trainControl(method="repeatedcv", number=10, repeats=3)
+model =train(churn~., data=churnTrain, method="rpart", trControl=control)
+
+
+control=trainControl(method="repeatedcv", number=10, repeats=3,classProbs = TRUE,summaryFunction = multiClassSummary)
+tune_funs = expand.grid(cp=seq(0.01,0.1,0.01))
+model =train(churn~., data=churnTrain, method="rpart", trControl=control,tuneGrid=tune_funs)
+
+model
+predictions = predict(model, churnTest)
+
+
+confusionMatrix(table(predictions,churnTest$churn))
+```
+
+### caret 套件使用說明
+```{R}
+# 查詢caret package 有實作的所有演算法
+names(getModelInfo())
+# 查詢caret package 有沒有實作rpart演算法
+names(getModelInfo())[grep('rpart',names(getModelInfo()))]
+# 查詢rpart model資訊
+getModelInfo('rpart')
+# 查詢rpart model可以tune的parameters
+getModelInfo('rpart')$rpart$parameters
+```
