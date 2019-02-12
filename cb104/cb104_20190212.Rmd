@@ -111,3 +111,53 @@ barplot(cat_stat$clicked_sum, names.arg=cat_stat$category, col=rainbow(length(ca
 #繪製圓餅圖
 pie(cat_stat$clicked_sum, label = cat_stat$category,family="Songti SC")
 ```
+
+- docker run --rm --name some-mysql -p 3306:3306 -v $(pwd)/docker_mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=pythonetl mysql:5.7
+
+## alter mysql 8.0 password encryption
+- https://stackoverflow.com/questions/49194719/authentication-plugin-caching-sha2-password-cannot-be-loaded
+```
+ALTER USER 'yourusername'@'localhost' IDENTIFIED WITH mysql_native_password BY 'youpassword';
+
+CREATE DATABASE test CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```
+### dplyr連接資料庫範例(mysql)
+- 可改用 RMariaDB package
+```{R}
+#install.packages('RMariaDB')
+#install.packages('dbplyr')
+library('dbplyr')
+library('RMariaDB')
+
+##iris example
+conn = dbConnect(MariaDB(),dbname='test',host='127.0.0.1',port=3306,user='root',password='pythonetl')
+db_drop_table(conn,'iris')
+copy_to(conn,iris,temporary = F)
+
+tbl(conn,"iris") %>%
+  select(starts_with('Sepal'),'Species') %>%
+  group_by(Species) %>%
+  summarise_at(.funs=funs(mean(.,na.rm=T),sd(.,na.rm=T)),.vars=vars(starts_with('Sepal'))) %>%
+  collect()
+
+dbGetQuery(conn,'select * from iris') %>% filter(Species == 'setosa')
+
+dbListTables(conn)
+
+## applenews example
+copy_to(conn,applenews,temporary = F,overwrite=T)
+tbl(conn,"applenews")
+dbSendQuery(conn, "SET NAMES utf8");
+tbl(conn,"applenews")
+category_stat = tbl(conn,"applenews") %>%
+  group_by(category) %>%
+  summarise_at(.funs=funs(min(.,na.rm=T),max(.,na.rm=T),mean(.,na.rm=T)), .vars=vars(matches('clicked'))) %>%
+  arrange(desc(mean)) %>%
+  collect()
+
+library('ggplot2')
+g <- ggplot(category_stat,aes(x=category,y=mean))
+g + geom_bar(stat='identity') + theme(text=element_text(size=16,  family="Songti SC")) + scale_x_discrete(limits=category_stat$category)
+```
+
+
