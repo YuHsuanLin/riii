@@ -73,15 +73,13 @@ freqsum = applenews %>%
   select(clicked) %>% 
   sum()
 
-applenews %>%
-  select(title, category,clicked) %>% 
-  mutate(portion= clicked / freqsum) %>%
-  arrange(desc(portion)) %>%
-  head()
-
 #新增portion欄位
 applenews = applenews %>%
+  select(title, category,clicked) %>% 
   mutate(portion= clicked / freqsum)
+
+# arrange (資料排序)
+applenews %>% arrange(desc(clicked)) %>% head()
 
 #group_by & summarise
 applenews %>%
@@ -92,7 +90,7 @@ applenews %>%
 #多個欄位計算
 applenews %>%
   group_by(category) %>% 
-  summarise_at(.vars=vars(clicked,portion),.funs=funs(sum))
+  summarise_at(.vars=vars(clicked,portion),.funs=funs(sum,mean,min,max,sd))
 
 applenews %>%
   group_by(category) %>% 
