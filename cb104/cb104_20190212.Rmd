@@ -226,3 +226,33 @@ library('rpart.plot')
 rpart.plot(churn.rp)
 ```
 
+## cost complexity
+- http://mlwiki.org/index.php/Cost-Complexity_Pruning
+
+### Prune
+```{R}
+printcp(churn.rp)
+plotcp(churn.rp)
+
+#找出minimum cross-validation errors
+min_row = which.min(churn.rp$cptable[,"xerror"])
+churn.cp = churn.rp$cptable[min_row, "CP"]
+#將churn.cp設為臨界值來修剪樹
+prune.tree=prune(churn.rp, cp=churn.cp)
+plot(prune.tree, margin=0.1)
+text(prune.tree, all=TRUE, use.n=TRUE, cex=0.7)
+
+test_tree = prune(churn.rp,cp=0.06)
+plot(test_tree, margin=0.1)
+text(test_tree, all=TRUE, use.n=TRUE, cex=0.7)
+
+predictions <-predict(prune.tree, testset, type='class')
+table(predictions,testset$churn)
+
+#install.packages('caret')
+#install.packages('e1071')
+library('caret')
+library('e1071')
+confusionMatrix(table(predictions, testset$churn))
+?confusionMatrix
+```
