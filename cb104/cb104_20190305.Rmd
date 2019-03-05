@@ -211,3 +211,30 @@ fit2 =cutree(dv,k=4)
 c_1 = customer[fit2 ==1,]
 summary(c_1)
 ```
+
+### k-means
+```{R}
+str(customer_s)
+set.seed(22)
+fit =kmeans(customer_s, centers=4)
+?kmeans
+
+barplot(t(fit$centers), beside =TRUE,xlab="cluster", ylab="value")
+?barplot
+fit$centers
+
+customer[fit$cluster == 1,]
+```
+
+### 投影至二維空間
+```{R}
+#install.packages("cluster")
+library(cluster)
+clusplot(customer_s, fit$cluster, color=TRUE, shade=TRUE)
+
+#了解component 成分為何
+pca =princomp(customer_s)
+summary(pca)
+pca$loadings
+
+```
