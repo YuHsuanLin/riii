@@ -56,13 +56,13 @@ plot(importance)
 ```{R}
 #install.packages("ROCR")
 library(ROCR)
-predictions <-predict(model, testset, type="prob")
+predictions <-predict(model, churnTest, type="prob")
 head(predictions)
 pred.to.roc<-predictions[, 1]
 head(pred.to.roc)
-pred.rocr<-prediction(pred.to.roc, testset$churn)
+pred.rocr<-prediction(pred.to.roc, churnTest$churn)
 pred.rocr
-perf.rocr<-performance(pred.rocr, measure ="auc", x.measure="cutoff")
+perf.rocr<-performance(pred.rocr, measure ="auc")
 perf.tpr.rocr<-performance(pred.rocr, measure="tpr",x.measure = "fpr")
 plot(perf.tpr.rocr,main=paste("AUC:",(perf.rocr@y.values)))
 ```
@@ -96,9 +96,11 @@ plot(c50.performance, add=T,col='green')
 plot(ctree.performance, add=T,col='blue')
 
 rp.per.obj= performance(rp.prediction, measure = 'auc')
-rp.per.obj
 c50.per.obj = performance(c50.prediction, measure = 'auc')
-c50.per.obj
 ctree.per.obj = performance(ctree.prediction, measure = 'auc')
-ctree.per.obj
+rp.per.obj@y.values
+c50.per.obj@y.values
+ctree.per.obj@y.values
 ```
+
+
