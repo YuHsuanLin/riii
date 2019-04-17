@@ -4,11 +4,11 @@
 - http://rpubs.com/YorkLin/riii_190418
 
 ## Download R
-- http://cran.csie.ntu.edu.tw/bin/windows/base/R-3.5.1-win.exe
+- http://cran.csie.ntu.edu.tw/bin/windows/base/R-3.5.3-win.exe 
 - http://course.largitdata.com/course/33
 
 ## Download RStudio
-- https://download1.rstudio.org/RStudio-1.1.447.exe 
+- https://download1.rstudio.org/desktop/windows/RStudio-1.2.1335.exe 
 - http://course.largitdata.com/course/34
 
 ## install R 3.5 on ubuntu16.04
