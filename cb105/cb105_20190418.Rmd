@@ -3,6 +3,8 @@ title: "R_basic1"
 author: "York Lin"
 date: "2019年04月18日"
 output: html_document
+editor_options: 
+  chunk_output_type: console
 ---
 what is R?
 - https://zh.wikipedia.org/wiki/R%E8%AF%AD%E8%A8%80
@@ -31,7 +33,7 @@ data(anscombe)
 #使用資料中x1,y1變數畫出點散布圖
 plot(y1 ~ x1, data = anscombe)
 #建立回歸模型並assign到lmfit變數中
-lmfit <- lm(y1~x1, data=anscombe) 
+lmfit <- lm(y1~1x1, data=anscombe) 
 #在點散佈圖上加上迴歸線
 abline(lmfit, col="red")
 ```
@@ -56,3 +58,101 @@ abline(lmfit, col="red")
 ##### recursive:
 - dataframe
 - list
+
+### R basic command
+```{R}
+#文件查詢
+help(package="base")
+?base::sum
+?sum
+help.search("sum")
+??sum
+
+#範例演釋
+demo()
+#使用內建資料集
+data()
+#看現有變數
+ls()
+#移除變數
+rm()
+
+x = c(1,2,3)
+#查看資料型態
+class(x)
+#查看資料結構
+str(x)
+```
+
+### Basic computing
+```{R, echo=TRUE}
+3+8
+3-8
+3*8
+3/8
+11%%2
+3<4
+2==5
+T == TRUE
+```
+
+### Assignment
+```{R}
+a = 3
+a <- 3 # ( alt + - )
+assign("a",3)
+
+a / 2
+a = a / 2
+a
+```
+
+### Vector
+- R語言最基本的物件
+```{R, echo=TRUE}
+character(5)  ## character vector of length 5
+numeric(5)
+logical(5)
+x = c(1,2,3,7)
+y= c(2,3,5,1)
+x+y
+x*y
+x-y
+x/y
+
+x = c(1,2,3,7)
+x + 10
+x + c(10)
+x + c(1,2)
+x + c(1,2,1,2)
+
+x == c(1,99,3,4)
+
+c(1,2,3)
+c(2,T,3+0i,"one")
+c(2,T,3+0i)
+c(c(1,2,3,4),c(5))
+
+x = c(1,2,3,4,NA)
+is.na(x)
+sum(x)
+sum(x, na.rm=T)
+
+height_vec = c(180,169,173)
+height_vec
+names(height_vec) = c("Brian", "Toby", "Sherry")
+height_vec
+
+name_vec = c("Brian", "Toby", "Sherry")
+names(height_vec) = name_vec
+height_vec > 175
+height_vec / 100
+height_vec > 175 | height_vec < 170
+height_vec < 175 & height_vec > 170
+
+#R 的index從1開始
+height_vec[c(1)] #index
+height_vec['Brian'] #element name
+height_vec[height_vec > 175] #condition (boolean vector)
+
+```
