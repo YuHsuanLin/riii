@@ -156,3 +156,40 @@ height_vec['Brian'] #element name
 height_vec[height_vec > 175] #condition (boolean vector)
 
 ```
+
+##p38 example
+```{R, echo=TRUE}
+h = c(180,169,173)
+w = c(73,87,43)
+bmi = w / ((h/100)^2)
+names(bmi) = c("Brian", "Toby", "Sherry")
+bmi < 18.5 | bmi >= 24
+bmi[bmi < 18.5 | bmi >= 24]
+```
+
+### seq() & rep() & paste()
+```{R, echo=TRUE}
+1:20
+seq(1,20)
+20:1
+?seq
+seq(from=1,to=20,by=2)
+seq(from=1,to=20,length=2)
+
+rep(1,5)
+?rep
+rep(x=c(1,2), times=5)
+rep(x=c(1,2), times=c(1,2))
+rep(x=c(1,2), each=5)
+rep_len(x=c(1,2),length.out = 5)
+
+paste("the","big","bang","theory")
+paste("big","bang",sep="-")
+length(paste("the","big","bang","theory"))
+
+paste("big","bang",sep="")
+paste("big","bang",sep=";")
+paste(c("big","bang"),1:2)
+paste(c("big","bang"),1:2,collapse = "+" )
+length(paste(c("big","bang"),1:4,collapse = "+" ))
+```
