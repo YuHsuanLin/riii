@@ -361,4 +361,51 @@ setwd('~/lecture/riii')
 tw2330 = read.csv("data/2330.csv", header=TRUE)
 str(tw2330)
 tw2330$Date = as.Date(tw2330$Date)
+
+stock2 = tw2330[(tw2330$Date >= '2017-01-01' & tw2330$Date < '2018-01-01'),]
+max(stock2$Close)
+
+summary(stock2$Close)
+
+ordered_stock = stock2[order(stock2$Close, decreasing = T),]
+ordered_stock[1,]
+ordered_stock[nrow(ordered_stock),]
+ordered_stock[1,"Close"] - ordered_stock[nrow(ordered_stock),"Close"]
+
+```
+
+```{R}
+#merge進行資料合併
+flower.type = data.frame(Species = "setosa", Flower = "iris")
+merge(flower.type, iris[1:3,], by ="Species")
+
+df1 = data.frame(CustomerId = c(1:6), Product = c(rep("Toaster", 3), rep("Radio", 3)))
+df2 = data.frame(CustomerId = c(2, 4, 6), State = c(rep("Alabama", 2), rep("Ohio", 1)))
+
+#Inner join:
+merge(x = df1, y= df2, by="CustomerId")
+
+#Outer join: 
+merge(x = df1, y = df2, by = "CustomerId", all = TRUE)
+
+#Left outer: 
+merge(x = df1, y = df2, by = "CustomerId", all.x = TRUE)
+
+#Right outer: 
+merge(x = df1, y = df2, by = "CustomerId", all.y = TRUE)
+
+#Cross join: 
+merge(x = df1, y = df2, by = NULL)
+```
+
+### List
+```{R}
+item= list(thing='hat',size=8.25)
+item$thing
+item$size
+
+flower= list(title="iris dataset", data= iris)
+class(flower)
+class(flower$data)
+flower$data[1,"Sepal.Width"]
 ```
