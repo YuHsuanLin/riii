@@ -262,3 +262,46 @@ m1 / m2
 m1 %*% m2
 
 ```
+
+##p54 example
+```{R}
+kevin = c(85,73)
+marry = c(72,64)
+jerry = c(59,66)
+mat = matrix(c(kevin, marry, jerry), nrow=3, byrow= TRUE)
+colnames(mat) = c('first', 'second')
+rownames(mat) = c('kevin', 'marry', 'jerry')
+
+final = mat %*% c(0.4,0.6)
+final
+
+cbind(mat,final)
+mat2 = cbind(mat,final)
+mat2
+colnames(mat2)[ncol(mat2)] = 'final'
+mat2
+
+```
+
+
+### Factor
+```{R}
+# syntax
+weather= c("sunny","rainy", "cloudy", "rainy", "cloudy")
+weather_category = factor(weather)
+weather_category
+class(weather)
+class(weather_category)
+# order
+temperature = c("Low", "High", "High", "Medium", "Low", "Medium")
+temperature_category = factor(temperature, order = TRUE, levels = c("Low", "Medium", "High"))
+temperature_category
+temperature_category[3] > temperature_category[1]
+temperature_category[4] > temperature_category[3]
+
+# change levels name
+weather= c("s","r", "c", "r", "c")
+weather_factor = factor(weather)
+levels(weather_factor) = c("cloudy","rainy","sunny")
+weather_factor
+```
