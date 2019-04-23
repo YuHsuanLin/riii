@@ -261,3 +261,33 @@ tapply(iris$Sepal.Length,iris$Species,function(e){list(avg=mean(e),md=median(e),
 
 lapply(names(iris[1:4]),function(e){tapply(iris[,e],iris$Species,mean) })
 ```
+
+
+# 探索性資料分析
+### 表格
+```{R}
+#import data
+#getwd()
+setwd("~/lecture/riii")
+load("./Statistics/cdc.Rdata")
+
+str(cdc)
+head(cdc)
+names(cdc)
+
+#轉換資料類型
+cdc$exerany = as.factor(cdc$exerany)
+cdc$hlthplan = as.factor(cdc$hlthplan)
+cdc$smoke100 = as.factor(cdc$smoke100)
+
+str(cdc)
+
+#一維次數分配表
+table(cdc$exerany)
+
+#相對比例
+table(cdc$exerany) / length(cdc$exerany)
+
+#二維次數分配表
+table(cdc$gender,cdc$exerany)
+```
