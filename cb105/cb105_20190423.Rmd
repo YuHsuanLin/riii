@@ -59,8 +59,8 @@ head(json_data)
 ### read xml
 ```{R}
 library(XML)
-#url <- 'http://opendata.epa.gov.tw/ws/Data/ATM00698/?$format=xml'
-#weather <- xmlToDataFrame(url)
-#View(weather)
-#weather[ weather$SiteName == '臺北',  'Temperature'   ]
+url <- 'http://opendata.epa.gov.tw/ws/Data/ATM00698/?$format=xml'
+weather <- xmlToDataFrame(url)
+View(weather)
+weather[ weather$SiteName == '臺北',  'Temperature'   ]
 ```
