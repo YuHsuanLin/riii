@@ -140,3 +140,86 @@ while(cnt <= 100){
 }
 sum
 ```
+
+##p86
+```{R}
+mat = matrix(rep(1,9^2),nrow = 9)
+#mat = matrix(nrow=9,ncol=9)
+for(i in 1:nrow(mat)){
+  for(j in 1:ncol(mat)){
+    #mat[i,j] = i * j;
+    #mat[i,j] = paste(i,"*",j,"= ",i*j)
+    mat[i,j] = sprintf("%s * %s = %s",i,j,i*j)
+  }
+}
+mat
+
+mat1 = matrix(1:9, nrow = 9);
+mat2 = matrix(1:9, nrow = 1);
+mat = mat1 %*% mat2;
+mat
+```
+
+
+### break / next
+```{R}
+#break(跳出迴圈)
+for(n in 1:10){
+  if(n==5){
+    break
+  }
+  print(n)
+}
+
+#next(略過本次,類似python continue)
+for(n in 1:10){
+  if(n==5){
+    next
+  }
+  print(n)
+}
+```
+### Function
+```{R}
+addThree = function(a){
+    return(a+3)
+}
+addThree(3)
+
+#with default arguments
+addThree_2 = function(a = 3) {
+    return(a+3)
+}
+addThree_2()
+
+addThree_3 = function(a = 3) {
+    a+3
+}
+addThree_3()
+
+#lazy function
+f2 = function(a, b = 2, c = NULL) {
+   return(b + 1)
+}
+f2()
+
+#local variable
+b = 3
+f3 = function(a) {
+    b = 2
+    return(b)
+}
+f3()
+
+greeting = function(sen){
+  if(sen == 'good morning'){
+    return('good morning!')
+  } else if (sen == 'good evening'){
+    return('good evening!')
+  } else{
+    return('hello!')
+  }  
+}
+
+greeting("good morining")
+```
