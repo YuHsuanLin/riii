@@ -291,3 +291,33 @@ table(cdc$exerany) / length(cdc$exerany)
 #二維次數分配表
 table(cdc$gender,cdc$exerany)
 ```
+
+### practice
+```{R}
+apply( table(cdc$smoke100,cdc$gender), 2, function(e){ e/sum(e)})
+```
+
+### 表格(續)
+```{R}
+#三維以上
+table(cdc$gender,cdc$genhlth,cdc$exerany)
+
+#產生新欄位
+table(paste(cdc$gender,cdc$genhlth,sep='_'),cdc$exerany)
+
+#連續型資料作表
+table(cdc$height)
+summary(cdc$height)
+head(cut(cdc$height,seq(45,95,by=5)))
+
+#包含上界不包含下界
+table(cut(cdc$height,seq(45,95,by=5),right=T))
+
+#包含下界不包含上界
+table(cut(cdc$height,seq(45,95,by=5),right=F))
+## 加上labels(組別名稱)
+table(cut(cdc$height,seq(45,95,by=5),right=F,labels=seq(1,length(seq(45,95,by=5))-1)))
+## 把分組後資料存在cdc變數的h_group欄位中
+cdc$h_group = cut(cdc$height,seq(45,95,by=5),right=F)
+str(cdc)
+```
