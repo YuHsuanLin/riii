@@ -286,3 +286,48 @@ applenews$clicked[is.na(applenews$clicked)] = mean_clicked
 sum(is.na(applenews$clicked))
 
 ```
+
+### 遺失值處理(missing value)(續)
+```{R}
+
+#以類別平均填補
+applenews = appledaily
+applenews[idx,'clicked'] = NA
+
+cat_means = tapply(applenews$clicked,applenews$category,function(e){as.integer(mean(e,na.rm=T))})
+cat_means
+
+for(i in 1:length(cat_means)){
+  applenews[applenews$category == names(cat_means)[i] & is.na(applenews$clicked),'clicked'] = cat_means[i]
+}
+
+sum(is.na(applenews$clicked))
+```
+
+### mice
+```{R}
+library(mice)
+data(iris)
+na_list = sample(1:nrow(iris),15)
+iris[na_list,'Sepal.Length'] = NA
+
+mice.data <- mice(iris,m = 3,method = "cart",seed = 1206)
+
+complete(mice.data,1)
+
+complete(mice.data,1)[na_list,'Sepal.Length']
+complete(mice.data,2)[na_list,'Sepal.Length']
+complete(mice.data,3)[na_list,'Sepal.Length']
+
+##比較各模型預測結果是否穩定(mean接近0,var很小)
+diff1 = complete(mice.data,1)[na_list,'Sepal.Length'] - complete(mice.data,2)[na_list,'Sepal.Length']
+
+diff2 = complete(mice.data,1)[na_list,'Sepal.Length'] - complete(mice.data,3)[na_list,'Sepal.Length']
+
+diff3 = complete(mice.data,2)[na_list,'Sepal.Length'] - complete(mice.data,3)[na_list,'Sepal.Length']
+
+
+mean(diff)
+var(diff)
+
+```
