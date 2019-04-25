@@ -331,3 +331,75 @@ mean(diff1+diff2+diff3)
 var(diff1+diff2+diff3)
 
 ```
+
+### package dplyr
+- 類SQL語法,select,filter,arrange,mutate...
+- Chaining %>%, debug方便
+
+##### cheat sheet
+- https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf
+
+```{R}
+setwd('~/lecture/riii')
+load('Statistics/applenews.RData')
+str(applenews)
+
+applenews = applenews[,-1]
+
+#install.packages('dplyr')
+library(dplyr)
+
+#原先R 提供的過濾功能
+applenews[applenews$category == "娛樂",]
+
+#dplyr 的過濾功能
+filter(applenews, category == "娛樂")
+
+#and/or 
+head(filter(applenews, category == "娛樂" & clicked > 10000))
+head(filter(applenews,category == '娛樂' , clicked > 10000))
+head(filter(applenews, category == "娛樂" | clicked > 10000))
+
+#篩選多個類別
+applenews[applenews$category %in% c("娛樂","社會"),]
+
+head(filter(applenews, category %in% c("娛樂", "社會")))
+
+#原先R的欄位選取
+head(applenews[, c("category","clicked")])
+
+#dplyr 的欄位選取
+
+#選擇列舉出的欄位
+head(select(applenews,category,clicked))
+#選擇從category~clicked欄位
+head(select(applenews,dt:clicked))
+#選擇欄位名稱含有click字串的欄位
+head(select(applenews,contains('click')))
+
+##iris - selected helpers
+head(select(iris,starts_with("Sepal")))
+head(select(iris,ends_with("Length")))
+
+?matches
+
+#想同時filter 和 select
+head(filter(select(applenews,category:clicked),category == '娛樂'))
+
+#使用Chaining
+select(applenews,category:clicked) %>%
+  filter(category == '娛樂') %>%
+  head()
+
+applenews %>% 
+  select(category:clicked) %>%
+  filter(category == '娛樂') %>%
+  head()
+
+### arrange (資料排序)
+applenews %>% 
+  select(category:clicked) %>%
+  filter(category == '娛樂') %>%
+  arrange(desc(clicked)) %>%
+  head()
+```
