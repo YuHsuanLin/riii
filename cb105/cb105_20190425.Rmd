@@ -327,7 +327,7 @@ diff2 = complete(mice.data,1)[na_list,'Sepal.Length'] - complete(mice.data,3)[na
 diff3 = complete(mice.data,2)[na_list,'Sepal.Length'] - complete(mice.data,3)[na_list,'Sepal.Length']
 
 
-mean(diff)
-var(diff)
+mean(diff1+diff2+diff3)
+var(diff1+diff2+diff3)
 
 ```
