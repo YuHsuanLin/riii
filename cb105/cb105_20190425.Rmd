@@ -94,6 +94,44 @@ g+geom_bar() + ylab('次數') + ggtitle('健康狀況長條圖')
 g+geom_bar(fill='snow',color='black')
 
 g+geom_bar(aes(col=gender))+ylab("次數")+ggtitle("健康狀況長條圖")
-
 ```
 
+### ggplot2(續)
+```{R}
+## theme
+g+geom_bar(aes(col=gender))+ylab("次數")+ggtitle("健康狀況長條圖") + theme(text=element_text(size=16,  family="Songti SC"))
+
+##position
+g = ggplot(cdc,aes(x=gender))
+g+geom_bar(aes(fill=genhlth),position='stack')
+g+geom_bar(aes(fill=genhlth),position='dodge')
+g+geom_bar(aes(fill=genhlth),position='fill')
+g+geom_bar(aes(fill=genhlth),position='identity')
+
+#facet
+g <- ggplot(cdc,aes(x=weight))
+g+ geom_histogram()+facet_wrap(~genhlth)
+g+ geom_histogram()+facet_grid(~genhlth)
+g+ geom_histogram()+facet_grid(gender~genhlth)
+
+#coordinate
+g <- ggplot(cdc,aes(x=genhlth))
+g+geom_bar()+coord_flip()
+
+g+geom_bar()+coord_polar(theta = 'x')
+g+geom_bar()+coord_polar(theta = 'y')
+g+geom_bar(aes(fill=gender))+coord_polar(theta = 'y')
+
+#pie chart
+ggplot(cdc,aes(x=1)) + geom_bar(aes(fill=genhlth)) + coord_polar(theta = 'y')
+
+#stat function
+?geom_bar
+
+precounted = as.data.frame(table(cdc$genhlth,dnn = c('genhlth')))
+precounted
+g2 = ggplot(precounted,aes(x=genhlth,y=Freq))+ geom_bar(stat='identity')
+
+#save
+ggsave(filename = './g2.jpg',plot=g2)
+```
