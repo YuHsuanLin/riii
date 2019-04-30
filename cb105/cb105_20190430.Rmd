@@ -24,10 +24,6 @@ CREATE DATABASE test CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 - 可改用 RMariaDB package
 
 ```{R}
-setwd('~/lecture/riii')
-load('Statistics/applenews.RData')
-str(applenews)
-applenews = applenews[,-1]
 
 #install.packages('dplyr')
 library(dplyr)
@@ -36,6 +32,8 @@ library(dplyr)
 #install.packages('dbplyr')
 library('dbplyr')
 library('RMariaDB')
+
+data("iris")
 
 ##iris example
 conn = dbConnect(MariaDB(),dbname='test',host='127.0.0.1',port=3306,user='root',password='pythonetl')
@@ -51,6 +49,13 @@ tbl(conn,"iris") %>%
 dbGetQuery(conn,'select * from iris') %>% filter(Species == 'setosa')
 
 dbListTables(conn)
+
+
+setwd('~/lecture/riii')
+load('Statistics/applenews.RData')
+str(applenews)
+applenews = applenews[,-1]
+
 
 ## applenews example
 copy_to(conn,applenews,temporary = F,overwrite=T)
