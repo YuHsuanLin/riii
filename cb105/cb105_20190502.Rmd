@@ -87,6 +87,7 @@ dist(rbind(x,y), method ="manhattan")
 sum(abs(x-y))
 dist(rbind(x,y), method ="minkowski", p=1)
 ```
+
 ### Hierarchical Clustering
 ### 聚合式(bottom-up)
 ```{R}
@@ -109,4 +110,31 @@ plot(hc,hang =-0.01, cex=0.7)
 
 hc3 =hclust(dist(customer, method="euclidean"), method="single")
 plot(hc3, hang =-0.01, cex=0.8)
+```
+
+### cutree
+```{R}
+fit =cutree(hc, k =4)
+fit
+table(fit)
+plot(hc, hang =-0.01, cex=0.7)
+rect.hclust(hc, k =4, border="red")
+rect.hclust(hc, k =3, border="blue")
+
+c_1 = customer[fit == 1,]
+summary(c_1)
+```
+
+### 分裂式階層式(top-down)
+```{r}
+#install.packages('cluster')
+library(cluster)
+?diana
+dv =diana(customer_s, metric ="euclidean")
+summary(dv)
+plot(dv)
+
+fit2 =cutree(dv,k=4)
+c_1 = customer[fit2 ==1,]
+summary(c_1)
 ```
