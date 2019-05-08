@@ -1,19 +1,7 @@
 ﻿# R 語言基礎
 
 ### CLASS 1
-- http://rpubs.com/YorkLin/riii_190418
-
-### CLASS 2
-- http://rpubs.com/YorkLin/riii_190423
-
-### CLASS 3
-- http://rpubs.com/YorkLin/riii_190425
-
-### CLASS 4
-- http://rpubs.com/YorkLin/riii_190430
-
-### CLASS 5
-- http://rpubs.com/YorkLin/riii_190502
+- http://rpubs.com/YorkLin/riii_190509
 
 ## Download R
 - http://cran.csie.ntu.edu.tw/bin/windows/base/R-3.5.3-win.exe 
