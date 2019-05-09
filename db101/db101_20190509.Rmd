@@ -197,3 +197,16 @@ paste(c("big","bang"),1:2)
 paste(c("big","bang"),1:2,collapse = "+" )
 length(paste(c("big","bang"),1:4,collapse = "+" ))
 ```
+
+### Matrix
+```{R}
+matrix(1:9, byrow=TRUE, nrow=3)
+matrix(1:9, nrow=3)
+kevin = c(85,73)
+marry = c(72,64)
+jerry = c(59,66)
+mat = matrix(c(kevin, marry, jerry), nrow=3, byrow= TRUE)
+colnames(mat) = c('first', 'second')
+rownames(mat) = c('kevin', 'marry', 'jerry')
+mat
+```
