@@ -31,7 +31,6 @@ summary(FinancialReport)
 ### read json
 ```{R}
 setwd('~/lecture/riii/')
-
 library(jsonlite)
 json_data<- fromJSON('./data/rent.json')
 as_tibble(json_data)
@@ -44,5 +43,6 @@ library(XML)
 url <- 'http://opendata.epa.gov.tw/ws/Data/ATM00698/?$format=xml'
 weather <- xmlToDataFrame(url)
 View(weather)
+str(weather)
 weather[ weather$SiteName == '臺北',  'Temperature'   ]
 ```
