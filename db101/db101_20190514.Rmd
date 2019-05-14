@@ -229,5 +229,44 @@ match_func2 = function(filename,header=F,sep='|'){
   }
   mat
 }
-
 ```
+
+### lapply sapply apply tapply
+```{R}
+x = list(c(1,2,3,4), c(5,6,7,8))
+## 回傳list的結果
+lapply(x, sum)
+class(lapply(x, sum))
+## 回傳簡化的結果(vector)
+sapply(x, sum)
+class(sapply(x, sum))
+
+lapply(x,addThree)
+## 匿名函式
+lapply(x,function(e){e+3})
+
+m1 = matrix(1:4, byrow=TRUE, nrow=2)
+m2 = matrix(5:8, byrow=TRUE, nrow=2)
+li = list(m1, m2)
+lapply(li, function(e){e[1,]})
+lapply(li, mean)
+
+m = matrix(1:4, byrow=TRUE, nrow=2)
+apply(m, 1, sum) # rowsums
+apply(m, 2, sum) # colsums
+
+rowmeans = apply(m, 1, mean)
+colmeans = apply(m, 2, mean)
+
+x = c(80,70,59,88,72,57)
+t = c(1,1,2,1,1,2)
+tapply(x,t, mean)
+
+data(iris)
+
+tapply(iris$Sepal.Length, iris$Species, mean)
+tapply(iris$Sepal.Length,iris$Species,function(e){list(avg=mean(e),md=median(e),s_d = sd(e))})
+
+lapply(names(iris[1:4]),function(e){tapply(iris[,e],iris$Species,mean) })
+```
+
