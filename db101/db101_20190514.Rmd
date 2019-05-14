@@ -209,3 +209,25 @@ greeting = function(sen){
 greeting("good morning")
 ```
 
+### p90 practice
+```{R}
+match_func = function(filename){
+  mat = matrix(data=-1,nrow=5,ncol=5)
+  rownames(mat) = c("A","B","C","D","E")
+  colnames(mat) = c("A","B","C","D","E")
+  for(i in 1:nrow(match_df)){
+    mat[match_df[i,1],match_df[i,2]] = match_df[i,3]
+  }
+  mat
+}
+
+match_func2 = function(filename,header=F,sep='|'){
+  match_df = read.table(filename,header = header,sep=sep)
+  mat = matrix(data=-1,nrow=length(levels(match_df[,1])),ncol=length(levels(match_df[,2])),dimnames = list(levels(match_df[,1]),levels(match_df[,2])))
+  for(i in 1:nrow(match_df)){
+    mat[match_df[i,1],match_df[i,2]] = match_df[i,3]
+  }
+  mat
+}
+
+```
