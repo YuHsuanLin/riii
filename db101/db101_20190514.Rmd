@@ -267,6 +267,8 @@ data(iris)
 tapply(iris$Sepal.Length, iris$Species, mean)
 tapply(iris$Sepal.Length,iris$Species,function(e){list(avg=mean(e),md=median(e),s_d = sd(e))})
 
-lapply(names(iris[1:4]),function(e){tapply(iris[,e],iris$Species,mean) })
-```
+s = lapply(names(iris[1:4]),function(e){tapply(iris[,e],iris$Species,mean) })
 
+names(s)
+names(s) = names(iris[1:4])
+```
