@@ -6,6 +6,8 @@
 ### CLASS 2
 - http://rpubs.com/YorkLin/riii_190514
 
+### CLASS 3 
+- http://rpubs.com/YorkLin/riii_190516
 
 ## Download R
 - http://cran.csie.ntu.edu.tw/bin/windows/base/R-3.5.3-win.exe 
