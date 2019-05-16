@@ -428,3 +428,39 @@ applenews %>%
   arrange(desc(clicked)) %>%
   head()
 ```
+
+
+## dplyr 其他常用函式
+```{R}
+#使用mutate產生新欄位
+# 總點擊數
+freqsum = applenews %>%
+  select(clicked) %>% 
+  sum()
+
+##
+applenews$portion = applenews$clicked / freqsum
+
+#新增portion欄位
+applenews = applenews %>%
+  mutate(portion= clicked / freqsum)
+
+#group_by & summarise
+applenews %>%
+  group_by(category) %>%
+  summarise(clicked_sum = sum(clicked, na.rm=TRUE)) %>%
+  arrange(desc(clicked_sum))
+
+#多個欄位計算
+applenews %>%
+  group_by(category) %>% 
+  summarise_at(.vars=vars(clicked,portion),.funs=funs(sum,mean,min,max,sd))
+
+applenews %>%
+  group_by(category) %>% 
+  summarise_at(.vars=vars(clicked),.funs=funs(sum,mean))
+
+applenews %>%
+  group_by(category) %>%
+  summarise_at(.funs=funs(min,max), .vars=vars(matches('clicked')), na.rm=T)
+```
