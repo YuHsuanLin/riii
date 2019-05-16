@@ -259,6 +259,10 @@ unlist(splited)[seq(from=1,to=4,by=2)]
 test_s = 'abcdef'
 nchar(test_s)
 substring(test_s,2,nchar('abcdef')-1)
+
+#利用gsub函數取代
+s = "aaa bbb ccc aaa bbb aaa"
+gsub("aaa","",s)
 ```
 
 ### 替換類別名稱
@@ -304,4 +308,52 @@ mean_clicked = as.integer(mean(applenews$clicked,na.rm=T))
 applenews$clicked[is.na(applenews$clicked)] = mean_clicked
 
 sum(is.na(applenews$clicked))
+```
+
+### 遺失值處理(missing value)(續)
+```{R}
+#以類別平均填補
+applenews = appledaily
+applenews[idx,'clicked'] = NA
+
+cat_means = tapply(applenews$clicked,applenews$category,function(e){as.integer(mean(e,na.rm=T))})
+cat_means
+
+for(i in 1:length(cat_means)){
+  applenews[applenews$category == names(cat_means)[i] & is.na(applenews$clicked),'clicked'] = cat_means[i]
+}
+
+for(i in names(cat_means)){
+  applenews[applenews$category == i & is.na(applenews$clicked),'clicked'] = cat_means[i]
+}
+
+sum(is.na(applenews$clicked))
+```
+
+### mice
+```{R}
+library(mice)
+data(iris)
+na_list = sample(1:nrow(iris),15)
+iris[na_list,'Sepal.Length'] = NA
+
+mice.data <- mice(iris,m = 3,method = "cart",seed = 1206)
+
+complete(mice.data,1)
+
+complete(mice.data,1)[na_list,'Sepal.Length']
+complete(mice.data,2)[na_list,'Sepal.Length']
+complete(mice.data,3)[na_list,'Sepal.Length']
+
+##比較各模型預測結果是否穩定(mean接近0,var很小)
+diff1 = complete(mice.data,1)[na_list,'Sepal.Length'] - complete(mice.data,2)[na_list,'Sepal.Length']
+
+diff2 = complete(mice.data,1)[na_list,'Sepal.Length'] - complete(mice.data,3)[na_list,'Sepal.Length']
+
+diff3 = complete(mice.data,2)[na_list,'Sepal.Length'] - complete(mice.data,3)[na_list,'Sepal.Length']
+
+
+mean(diff1+diff2+diff3)
+var(diff1+diff2+diff3)
+
 ```
