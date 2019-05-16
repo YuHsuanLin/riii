@@ -171,3 +171,37 @@ appledaily$dt = as.POSIXct(appledaily$dt,format = '%Y年%m月%d日%H:%M')
 
 str(appledaily)
 ```
+
+### lubridate package
+- https://r4ds.had.co.nz/dates-and-times.html
+```{R}
+#install.packages('lubridate')
+library(lubridate)
+
+# Extracting information
+now_date = now()
+
+year(now_date)
+month(now_date,label=T)
+day(now_date)
+hour(now_date)
+minute(now_date)
+second(now_date)
+wday(now_date,label=T)
+
+load('./Statistics/appledaily.RData')
+
+# Parsing dates and times
+ymd(20190129)
+mdy(01292019)
+dmy(29012019)
+
+ymd('2019/01/29')
+ymd('2019.01.29')
+
+ymd('2019.01.29')
+ymd_hm('2019/1/29 14:40',tz='Asia/Taipei')
+with_tz(ymd_hm('2019/1/29 14:40',tz='Asia/Taipei'),tzone='America/Los_Angeles')
+
+appledaily$dt = ymd_hm(appledaily$dt)
+```
