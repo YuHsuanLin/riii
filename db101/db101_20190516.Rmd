@@ -337,7 +337,7 @@ data(iris)
 na_list = sample(1:nrow(iris),15)
 iris[na_list,'Sepal.Length'] = NA
 
-mice.data <- mice(iris,m = 3,method = "cart",seed = 1206)
+mice.data <- mice(iris,m = 3,method = "cart")
 
 complete(mice.data,1)
 
@@ -355,5 +355,4 @@ diff3 = complete(mice.data,2)[na_list,'Sepal.Length'] - complete(mice.data,3)[na
 
 mean(diff1+diff2+diff3)
 var(diff1+diff2+diff3)
-
 ```
