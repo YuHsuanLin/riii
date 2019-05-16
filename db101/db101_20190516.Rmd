@@ -39,10 +39,12 @@ plot(iris$Petal.Length,iris$Petal.Width,type='n')
 points(iris$Petal.Length,iris$Petal.Width,col=iris$Species)
 abline(h=0.9,col='grey',lty = 2)
 abline(v=2.5,col='grey',lty = 2)
-legend(4.5,1,pch=1,legend = levels(iris$Species),col=1:3)
-text(iris$Petal.Length+0.1,iris$Petal.Width+0.05,1:nrow(iris),cex=0.5)
-title("iris")
+#legend(4.5,1,pch=1,legend = levels(iris$Species),col=1:3)
+legend('bottomright',pch=1,legend = levels(iris$Species),col=1:3)
+#text(iris$Petal.Length+0.1,iris$Petal.Width+0.05,1:nrow(iris),cex=0.5)
 text(iris$Petal.Length+0.1,iris$Petal.Width+0.05,paste('(',iris$Petal.Length,', ',iris$Petal.Width,')'),cex=0.5)
 
-#legend('bottomright',pch=1,legend = levels(iris$Species),col=1:3)
+title("iris")
+
+
 ```
