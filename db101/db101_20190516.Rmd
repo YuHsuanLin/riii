@@ -155,7 +155,7 @@ load('./Statistics/appledaily.RData')
 str(appledaily)
 as.POSIXct(appledaily[1,'dt'],format='%Y年%m月%d日%H:%M')
 
-#比較as.POSIXct() 和 as.POSIXlt
+#比較as.POSIXct() 和 as.POSIXlt()
 t1 = as.POSIXct(appledaily$dt,format = '%Y年%m月%d日%H:%M')
 class(t1)
 head(unclass(t1))
@@ -165,4 +165,9 @@ class(t2)
 unclass(t2)
 
 strptime(appledaily$dt,'%Y年%m月%d日%H:%M')
+
+
+appledaily$dt = as.POSIXct(appledaily$dt,format = '%Y年%m月%d日%H:%M')
+
+str(appledaily)
 ```
