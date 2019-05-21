@@ -36,7 +36,7 @@ library('RMariaDB')
 data("iris")
 ##iris example
 conn = dbConnect(MariaDB(),dbname='test',host='127.0.0.1',port=3306,user='root',password='pythonetl')
-db_drop_table(conn,'iris')
+#db_drop_table(conn,'iris')
 copy_to(conn,iris,temporary = F)
 
 tbl(conn,"iris") %>%
