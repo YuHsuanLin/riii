@@ -36,7 +36,7 @@ library('RMariaDB')
 data("iris")
 ##iris example
 conn = dbConnect(MariaDB(),dbname='test',host='127.0.0.1',port=3306,user='root',password='pythonetl')
-#db_drop_table(conn,'iris')
+db_drop_table(conn,'iris')
 copy_to(conn,iris,temporary = F)
 
 tbl(conn,"iris") %>%
@@ -216,10 +216,12 @@ predictions = predict(model,churnTest)
 table(predictions,churnTest$churn)
 confusionMatrix(table(predictions,churnTest$churn))
 
-control=trainControl(method="repeatedcv", number=10, repeats=3,classProbs = TRUE,summaryFunction = multiClassSummary)
+control=trainControl(method="repeatedcv", number=10, repeats=3,summaryFunction = multiClassSummary,classProbs=T)
+
+model =train(churn~., data=churnTrain, method="rpart", trControl=control)
 
 
-tune_funs = expand.grid(cp=seq(0.01,0.1,0.01))
+tune_funs = expand.grid(cp=seq(0,0.1,0.01))
 model =train(churn~., data=churnTrain, method="rpart", trControl=control,tuneGrid=tune_funs)
 
 model
@@ -237,4 +239,31 @@ names(getModelInfo())[grep('rpart',names(getModelInfo()))]
 getModelInfo('rpart')
 # 查詢rpart model可以tune的parameters
 getModelInfo('rpart')$rpart$parameters
+```
+
+
+### find importance variable
+```{R}
+library('caret')
+importance = varImp(model, scale=FALSE)
+importance
+plot(importance)
+```
+
+### ROC
+- https://www.youtube.com/watch?v=OAl6eAyP-yo
+- http://www.navan.name/roc/
+
+```{R}
+#install.packages("ROCR")
+library(ROCR)
+predictions <-predict(model, churnTest, type="prob")
+head(predictions)
+pred.to.roc<-predictions[, "yes"]
+head(pred.to.roc)
+pred.rocr<-prediction(pred.to.roc, churnTest$churn)
+pred.rocr
+perf.rocr<-performance(pred.rocr, measure ="auc")
+perf.tpr.rocr<-performance(pred.rocr, measure="tpr",x.measure = "fpr")
+plot(perf.tpr.rocr,main=paste("AUC:",(perf.rocr@y.values)))
 ```
