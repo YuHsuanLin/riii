@@ -1,0 +1,79 @@
+---
+title: "R_basic5"
+author: "York Lin"
+date: "2019年05月02日"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{R}
+library(C50)
+
+data(churn)
+
+names(churnTrain) %in% c("state", "area_code", "account_length")
+!names(churnTrain) %in% c("state", "area_code", "account_length")
+#選擇建模變數
+variable.list = !names(churnTrain) %in% c('state','area_code','account_length')
+churnTrain=churnTrain[,variable.list]
+churnTest=churnTest[,variable.list]
+
+set.seed(2)
+#把資料分成training data 和 validation data
+ind<-sample(1:2, size=nrow(churnTrain), replace=T, prob=c(0.7, 0.3))
+trainset=churnTrain[ind==1,]
+testset=churnTrain[ind==2,]
+```
+
+### find importance variable
+```{R}
+library('caret')
+tune_funs = expand.grid(cp=seq(0.01,0.1,0.01))
+model =train(churn~., data=churnTrain, method="rpart",tuneGrid=tune_funs)
+
+importance = varImp(model, scale=FALSE)
+importance
+plot(importance)
+```
+
+- https://www.cnblogs.com/tgzhu/p/6708947.html
+- http://www.rpubs.com/skydome20/R-Note16-Ensemble_Learning
+
+### 補充：隨機森林(Random Forest)
+```{R}
+#install.packages('randomForest')
+library(randomForest)
+library('caret')
+library('e1071')
+library(ROCR)
+
+rf_model = randomForest(formula=churn ~ .,data=churnTrain)
+#find best ntree
+plot(rf_model)
+legend("topright",colnames(rf_model$err.rate),col=1:3,cex=0.8,fill=1:3)
+#find nest mtry
+tuneRF(churnTrain[,-17],churnTrain[,17])
+
+rf_model <- randomForest(churn ~., data = churnTrain, ntree=50,mtry=4)
+# rf_model = train(churn~.,data=churnTrain,method='rf')
+confusionMatrix(table(predict(rf_model,churnTest),churnTest$churn))
+
+rf.predict.prob <- predict(rf_model, churnTest, type="prob")
+rf.prediction <- prediction(rf.predict.prob[,1], as.factor(churnTest$churn))
+rf.auc <- performance(rf.prediction, measure = "auc", x.measure = "cutoff")
+rf.performance <- performance(rf.prediction, "tpr","fpr")
+plot(rf.performance)
+
+#比較CART和RandomForest
+tune_funs = expand.grid(cp=seq(0.01,0.1,0.01))
+rpart_model =train(churn~., data=churnTrain, method="rpart",tuneGrid=tune_funs)
+
+rpart_prob_yes = predict(rpart_model,churnTest,type='prob')[,1]
+rpart_pred.rocr = prediction(rpart_prob_yes,churnTest$churn)
+rpart_perf.rocr = performance(rpart_pred.rocr,measure = 'tpr',x.measure = 'fpr')
+
+plot(rpart_perf.rocr,col='red')
+plot(rf.performance,col='black',add=T)
+legend(x=0.7, y=0.2, legend =c('randomforest','rpart'), fill= c("black","red"))
+```
