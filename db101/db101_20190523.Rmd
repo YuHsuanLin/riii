@@ -107,3 +107,50 @@ plot(rpart_perf.rocr,col='red')
 plot(rf.performance,col='black',add=T)
 legend(x=0.7, y=0.2, legend =c('randomforest','rpart'), fill= c("black","red"))
 ```
+
+
+# 分群問題
+
+### 距離計算
+```{R}
+x =c(0, 0, 1, 1, 1, 1)
+y =c(1, 0, 1, 1, 0, 1)
+
+#euclidean
+?dist
+rbind(x,y)
+
+dist(rbind(x,y), method ="euclidean")
+sqrt(sum((x-y)^2))
+dist(rbind(x,y), method ="minkowski", p=2)
+
+#city block
+dist(rbind(x,y), method ="manhattan")
+sum(abs(x-y))
+dist(rbind(x,y), method ="minkowski", p=1)
+```
+
+
+### Hierarchical Clustering
+### 聚合式(bottom-up)
+```{R}
+setwd('~/lecture/riii')
+customer=read.csv('data/customer.csv',header=TRUE)
+head(customer)
+str(customer)
+
+#數值變數作正規化
+customer_s =scale(customer[,-1])
+?scale
+
+#正規化後的變數平均數為0, 標準差為1
+round(mean(customer_s[,2]),3)
+round(sd(customer_s[,2]),3)
+
+?hclust
+hc=hclust(dist(customer_s, method="euclidean"), method="ward.D2")
+plot(hc,hang =-0.01, cex=0.7)
+
+hc3 =hclust(dist(customer, method="euclidean"), method="single")
+plot(hc3, hang =-0.01, cex=0.8)
+```
