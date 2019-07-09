@@ -1,0 +1,48 @@
+---
+title: "R_basic2"
+author: "York Lin"
+date: "2019年07月09日"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+###readr package
+- http://hadley.nz/
+- https://github.com/tidyverse/readr
+
+```{R}
+#install.packages("tidyverse")
+#install.packages("readr")
+library('tidyverse')
+setwd('~/lecture/riii')
+stock = read_csv('data/2330.csv',col_names=T)
+```
+
+### read excel file
+```{R}
+library(readxl)
+setwd('~/lecture/riii/')
+FinancialReport <- read_excel("./data/FinancialReport.xlsx")
+#View(FinancialReport)
+summary(FinancialReport)
+```
+
+### read json
+```{R}
+setwd('~/lecture/riii/')
+library(jsonlite)
+json_data<- fromJSON('./data/rent.json')
+as_tibble(json_data)
+head(json_data)
+```
+
+### read xml
+```{R}
+library(XML)
+#url <- 'http://opendata.epa.gov.tw/ws/Data/ATM00698/?$format=xml'
+#weather <- xmlToDataFrame(url)
+#View(weather)
+#str(weather)
+#weather[ weather$SiteName == '臺北',  'Temperature'   ]
+```
