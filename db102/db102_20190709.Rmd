@@ -285,3 +285,56 @@ table(cdc$gender,cdc$genhlth,cdc$exerany)
 #產生新欄位
 table(paste(cdc$gender,cdc$genhlth,sep='_'),cdc$exerany)
 ```
+
+### 統計量
+```{R}
+#集中量數:mean median mode
+
+a = c(100,120,130,110,100,90,80,90,100,110)
+sum(a) / 10
+mean(a)
+
+#有極端值
+b = c(a, 10000)
+mean(b)
+
+a
+sort(a)
+median(a)
+
+sort(b)
+median(b)
+
+table(c(1,4,4,3))
+which.max(table(c(1,4,4,3)))
+names(which.max(table(c(1,4,4,3))))
+
+mean(cdc$height)
+median(cdc$height)
+as.numeric(names(which.max(table(cdc$height))))
+
+#離差量數:range IQR variance stardard deviation
+
+a = c(173,162,150,160,155,168,171,185,175,178,182)
+sort(a)
+range(a)
+
+quantile(a,0.5)
+quantile(a,0.25)
+quantile(a,0.75)
+quantile(a,0.75) - quantile(a,0.25)
+IQR(a)
+summary(a)
+
+#全距
+range(cdc$height)
+#四分位距
+IQR(cdc$height)
+#變異數
+var(cdc$height)
+#標準差
+sqrt(var(cdc$height))
+sd(cdc$height)
+#摘要數據
+summary(cdc$height)
+```
