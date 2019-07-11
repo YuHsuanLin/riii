@@ -134,4 +134,33 @@ g+geom_bar(aes(fill=genhlth),position='stack')
 g+geom_bar(aes(fill=genhlth),position='dodge')
 g+geom_bar(aes(fill=genhlth),position='fill')
 g+geom_bar(aes(fill=genhlth),position='identity')
+
+## geom_area example
+g = ggplot(data=cdc,aes(x=weight))
+g+geom_area(aes(y=..density..,fill=gender), stat = "bin")
+g+geom_area(aes(y=..density..,fill=gender), stat = "bin",position='stack')
+g+geom_area(aes(y=..density..,fill=gender), stat = "bin",position='identity')
+g+geom_area(aes(y=..density..,fill=gender), stat = "bin",position='identity',alpha=0.4)
+g+geom_area(aes(y=..density..,fill=gender), stat = "bin",position='identity',alpha=0.5)
+
+```
+
+```{R}
+#facet
+g <- ggplot(cdc,aes(x=weight))
+g+ geom_histogram()+facet_wrap(~genhlth)
+g+ geom_histogram()+facet_grid(~genhlth)
+g+ geom_histogram()+facet_grid(gender~genhlth)
+
+#coordinate
+g <- ggplot(cdc,aes(x=genhlth))
+g+geom_bar()+coord_flip()
+
+g+geom_bar()+coord_polar(theta = 'x')
+g+geom_bar()+coord_polar(theta = 'y')
+g+geom_bar(aes(fill=gender))+coord_polar(theta = 'y')
+
+#pie chart
+ggplot(cdc,aes(x=1)) + geom_bar(aes(fill=genhlth)) + coord_polar(theta = 'y')
+
 ```
