@@ -3,8 +3,11 @@
 ### CLASS 1
 - http://rpubs.com/YorkLin/riii_190619
 
-### CLASS 1
+### CLASS 2 
 - http://rpubs.com/YorkLin/riii_190709 
+
+### CLASS 3
+- http://rpubs.com/YorkLin/riii_190711
 
 ## Download R
 - http://cran.csie.ntu.edu.tw/bin/windows/base/R-3.5.3-win.exe 
