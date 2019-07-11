@@ -142,7 +142,6 @@ g+geom_area(aes(y=..density..,fill=gender), stat = "bin",position='stack')
 g+geom_area(aes(y=..density..,fill=gender), stat = "bin",position='identity')
 g+geom_area(aes(y=..density..,fill=gender), stat = "bin",position='identity',alpha=0.4)
 g+geom_area(aes(y=..density..,fill=gender), stat = "bin",position='identity',alpha=0.5)
-
 ```
 
 ```{R}
@@ -162,5 +161,4 @@ g+geom_bar(aes(fill=gender))+coord_polar(theta = 'y')
 
 #pie chart
 ggplot(cdc,aes(x=1)) + geom_bar(aes(fill=genhlth)) + coord_polar(theta = 'y')
-
 ```
