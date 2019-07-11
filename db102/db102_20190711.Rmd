@@ -10,6 +10,7 @@ editor_options:
 ### p90 practice
 ```{R}
 match_func = function(filename){
+  match_df = read.table(filename,header = T,sep='|')
   mat = matrix(data=-1,nrow=5,ncol=5)
   rownames(mat) = c("A","B","C","D","E")
   colnames(mat) = c("A","B","C","D","E")
@@ -68,5 +69,50 @@ legend('bottomright',pch=1,legend = levels(iris$Species),col=1:3)
 #text(iris$Petal.Length+0.1,iris$Petal.Width+0.05,1:nrow(iris),cex=0.5)
 text(iris$Petal.Length+0.1,iris$Petal.Width+0.05,paste('(',iris$Petal.Length,', ',iris$Petal.Width,')'),cex=0.5)
 
+text(2,2,'aaaaa',cex=2)
+
 title("iris")
+```
+
+### package:ggplot2
+##### documentation
+- http://docs.ggplot2.org/current/
+
+##### cheat sheet
+- https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf
+
+##### why ggplot2?
+- fancy by default, good for demo and report 
+- consistent across all kinds of plot in syntax and behavior
+- strong support community(the mostly download package on CRAN)
+```{R}
+#basic syntax
+#ggplot(data,aes(x,y,group,...))+geom_object(...)
+
+#install.packages('ggplot2')
+
+library('ggplot2')
+setwd('~/lecture/riii')
+
+load('./Statistics/cdc.Rdata')
+cdc$exerany = as.factor(cdc$exerany)
+cdc$hlthplan = as.factor(cdc$hlthplan)
+cdc$smoke100 = as.factor(cdc$smoke100)
+
+g <- ggplot(cdc,aes(x=height,y=weight))
+g+geom_point()
+
+g <- ggplot(cdc,aes(x=height,y=weight,col=gender))
+g+geom_point()
+
+g <- ggplot(cdc,aes(x=height,y=weight))
+g+geom_point(aes(col=gender))
+
+g <- ggplot(cdc,aes(x=genhlth))
+g+geom_bar()
+g+geom_bar() + ylab('次數') + ggtitle('健康狀況長條圖')
+#fill => 填滿顏色; color => 邊線顏色
+g+geom_bar(fill='snow',color='black')
+
+g+geom_bar(aes(fill=gender))+ylab("次數")+ggtitle("健康狀況長條圖")
 ```
