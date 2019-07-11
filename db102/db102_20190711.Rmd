@@ -162,3 +162,19 @@ g+geom_bar(aes(fill=gender))+coord_polar(theta = 'y')
 #pie chart
 ggplot(cdc,aes(x=1)) + geom_bar(aes(fill=genhlth)) + coord_polar(theta = 'y')
 ```
+
+```{R}
+precounted = as.data.frame(table(cdc$genhlth,dnn = c('genhlth')))
+precounted
+g2 = ggplot(precounted,aes(x=genhlth,y=Freq))+ geom_bar(stat='identity')
+
+#save
+ggsave(filename = './g2.jpg',plot=g2)
+```
+
+## Esquisse
+```{R}
+install.packages('esquisse')
+library('esquisse')
+esquisse::esquisser()
+```
