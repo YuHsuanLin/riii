@@ -232,14 +232,8 @@ mat[c('kevin','jerry'),'first']
 mat[mat[,1] < 60,'first']
 ```
 
-
+### Matrix(續)
 ```{R}
-rowSums(mat)
-colSums(mat)
-
-rowMeans(mat)
-colMeans(mat)
-
 #新增列與行
 mat2 = rbind(mat, c(78,63))
 rownames(mat2)[nrow(mat2)] = 'sam'
@@ -251,7 +245,6 @@ mat3
 
 rowMeans(mat3)
 colMeans(mat3)
-
 
 # arithmetic
 m1 = matrix(1:4, byrow=TRUE, nrow=2)
