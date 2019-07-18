@@ -377,3 +377,8 @@ tw2330 = read.csv("data/2330.csv", header=TRUE)
 #tw2330 = read.csv('https://github.com/YuHsuanLin/riii/raw/master/data/2330.csv')
 test.data = read.table("data/match.txt" ,header = FALSE, sep="|")
 ```
+
+###parse date with format
+```{R}
+as.Date("2018.1.1",format="%Y.%m.%d")
+```
