@@ -257,3 +257,47 @@ m1 / m2
 
 m1 %*% m2
 ```
+
+##p54 example
+```{R}
+kevin = c(85,73)
+marry = c(72,64)
+jerry = c(59,66)
+mat = matrix(c(kevin, marry, jerry), nrow=3, byrow= TRUE)
+colnames(mat) = c('first', 'second')
+rownames(mat) = c('kevin', 'marry', 'jerry')
+
+final = mat %*% c(0.4,0.6)
+final
+
+cbind(mat,final)
+mat2 = cbind(mat,final)
+mat2
+colnames(mat2)[ncol(mat2)] = 'final'
+mat2
+```
+
+```{R}
+#type priority
+c("string",1+2i,5.5,TRUE)
+c(1+2i,5.5,TRUE)
+c(5.5,TRUE)
+#as.
+as.data.frame(mat)
+as.character(1034)
+#is.
+is.matrix(mat)
+is.data.frame(mat)
+is.numeric(mat)
+is.character(mat)
+#is.na
+sum(c(1,2,3,NA))
+sum(c(1,2,3,NA),na.rm=T)
+is.na(c(1,2,3,NA))
+c(1,2,3,NA)[is.na(c(1,2,3,NA))]
+is.na(c(1,2,3,NA))
+!is.na(c(1,2,3,NA))
+c(1,2,3,NA)[!is.na(c(1,2,3,NA))]
+sum(c(1,2,3,NA)[!is.na(c(1,2,3,NA))])
+```
+
