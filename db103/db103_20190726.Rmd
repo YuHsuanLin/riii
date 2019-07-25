@@ -1,0 +1,77 @@
+---
+title: "R_basic2"
+author: "York Lin"
+date: "2019年07月26日"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+##p70 example
+```{R}
+setwd('~/lecture/riii')
+tw2330 = read.csv("data/2330.csv", header=TRUE)
+str(tw2330)
+tw2330$Date = as.Date(tw2330$Date)
+
+tw2330_2017 = tw2330[(tw2330$Date >= '2017-01-01' & tw2330$Date < '2018-01-01'),]
+max(tw2330_2017$Close)
+
+summary(tw2330_2017$Close)
+
+ordered_stock = tw2330_2017[order(tw2330_2017$Close, decreasing = T),]
+```
+
+### List
+```{R}
+item= list(thing='hat',size=8.25)
+item$thing
+item$size
+
+flower= list(title="iris dataset", data= iris)
+class(flower)
+class(flower$data)
+flower$data[1,"Sepal.Width"]
+```
+
+
+###readr package
+- http://hadley.nz/
+- https://github.com/tidyverse/readr
+
+```{R}
+#install.packages("tidyverse")
+#install.packages("readr")
+library('tidyverse')
+setwd('~/lecture/riii')
+stock = read_csv('data/2330.csv',col_names=T)
+```
+
+### read excel file
+```{R}
+#install.packages("readxl")
+library(readxl)
+setwd('~/lecture/riii/')
+FinancialReport <- read_excel("./data/FinancialReport.xlsx")
+#View(FinancialReport)
+summary(FinancialReport)
+```
+
+### read json
+```{R}
+setwd('~/lecture/riii/')
+library(jsonlite)
+json_data<- fromJSON('./data/rent.json')
+json_data <- as_tibble(json_data)
+head(json_data)
+```
+
+### read xml
+```{R}
+library(XML)
+url <- 'http://opendata.epa.gov.tw/ws/Data/ATM00698/?$format=xml'
+#weather <- xmlToDataFrame(url)
+#View(weather)
+#str(weather)
+#weather[ weather$SiteName == '臺北',  c('DataCreationDate','Temperature')   ]
+```
