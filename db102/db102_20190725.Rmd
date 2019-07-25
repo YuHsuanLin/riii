@@ -155,3 +155,46 @@ rect.hclust(hc, k =3, border="blue")
 c_1 = customer[fit == 1,]
 summary(c_1)
 ```
+
+### 分裂式階層式(top-down)
+```{r}
+#install.packages('cluster')
+library(cluster)
+?diana
+dv =diana(customer_s, metric ="euclidean")
+summary(dv)
+plot(dv)
+
+fit2 =cutree(dv,k=4)
+c_1 = customer[fit2 ==2,]
+summary(c_1)
+```
+
+### k-means
+```{R}
+str(customer_s)
+set.seed(22)
+fit =kmeans(customer_s, centers=4)
+?kmeans
+
+barplot(t(fit$centers), beside =TRUE,xlab="cluster", ylab="value")
+?barplot
+fit$centers
+
+customer[fit$cluster == 1,]
+```
+
+### 投影至二維空間,繪製分群結果
+```{R}
+plot(customer[,-1],col=fit$cluster)
+
+#install.packages("cluster")
+library(cluster)
+clusplot(customer_s, fit$cluster, color=TRUE, shade=TRUE)
+
+#了解component 成分為何
+pca =princomp(customer_s)
+summary(pca)
+pca$loadings
+```
+
