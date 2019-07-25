@@ -412,7 +412,7 @@ dev.off()
 
 ## data explorer
 ```{R}
-install.packages('DataExplorer')
+#install.packages('DataExplorer')
 library('DataExplorer')
 help(package = 'DataExplorer')
 

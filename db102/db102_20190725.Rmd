@@ -225,3 +225,49 @@ WSS =sapply(nk, function(k){set.seed(22);kmeans(customer_s, centers=k)$tot.withi
 WSS
 plot(x=nk, y=WSS, type="l", xlab="number of k", ylab="within sum of squares")
 ```
+
+### model comparison
+```{R}
+library(fpc)
+single_c=hclust(dist(customer_s), method="single")
+hc_single=cutree(single_c, k =4)
+
+complete_c=hclust(dist(customer_s), method="complete")
+hc_complete=cutree(complete_c, k =4)
+
+set.seed(22)
+km =kmeans(customer_s, 4)
+
+cs=cluster.stats(dist(customer_s),km$cluster)
+cs[c("within.cluster.ss","avg.silwidth")]
+
+q =sapply(
+  list(kmeans=km$cluster, 
+       hc_single=hc_single, 
+       hc_complete=hc_complete), function(c)cluster.stats(dist(customer_s),c)[c("within.cluster.ss","avg.silwidth")])
+q
+```
+
+### density-based method-DBSCAN
+- http://123android.blogspot.tw/2012/01/28dec11-data-mining.html
+```{R}
+#install.packages("mlbench")
+# mlbench package provides many methods to generate simulated data with different shapes and sizes.
+#In this example, we generate a Cassini problem graph
+library(mlbench)
+#install.packages("fpc")
+library(fpc)
+set.seed(2)
+p = mlbench.cassini(500)
+plot(p$x)
+
+?mlbench.cassini
+
+ds = dbscan(data = dist(p$x),eps= 0.2, MinPts = 2, method="dist")
+ds
+plot(ds, p$x)
+
+#filter群集的raw data
+cluster_1_raw = p$x[ds$cluster == 1,]
+cluster_1_raw
+```
