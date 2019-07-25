@@ -48,7 +48,7 @@ ctree.predict.prob = sapply(predict(ctree.model ,testset,type='prob'),function(e
 rp.prediction = prediction(rp.predict.prob[,1],testset$churn)
 c50.prediction = prediction(c50.predict.prob[,1],testset$churn)
 ctree.prediction = prediction(ctree.predict.prob,testset$churn)
-rp.performance = performance(rp.prediction, "tpr","fpr")
+rp.performance = performance(rp.prediction, measure="tpr",x.measure = "fpr")
 c50.performance = performance(c50.prediction, "tpr","fpr")
 ctree.performance = performance(ctree.prediction, "tpr","fpr")
 plot(rp.performance,col='red')
@@ -96,4 +96,62 @@ rpart_perf.rocr = performance(rpart_pred.rocr,measure = 'tpr',x.measure = 'fpr')
 plot(rpart_perf.rocr,col='red')
 plot(rf.performance,col='black',add=T)
 legend(x=0.7, y=0.2, legend =c('randomforest','rpart'), fill= c("black","red"))
+```
+
+# 分群問題
+
+### 距離計算
+```{R}
+x =c(0, 0, 1, 1, 1, 1)
+y =c(1, 0, 1, 1, 0, 1)
+
+#euclidean
+?dist
+rbind(x,y)
+
+dist(rbind(x,y), method ="euclidean")
+sqrt(sum((x-y)^2))
+dist(rbind(x,y), method ="minkowski", p=2)
+
+#city block
+dist(rbind(x,y), method ="manhattan")
+sum(abs(x-y))
+dist(rbind(x,y), method ="minkowski", p=1)
+```
+
+### Hierarchical Clustering
+### 聚合式(bottom-up)
+```{R}
+setwd('~/lecture/riii')
+customer=read.csv('data/customer.csv',header=TRUE)
+head(customer)
+str(customer)
+
+#數值變數作正規化
+customer_s =scale(customer[,-1])
+?scale
+
+#正規化後的變數平均數為0, 標準差為1
+round(mean(customer_s[,2]),3)
+round(sd(customer_s[,2]),3)
+
+?hclust
+hc=hclust(dist(customer_s, method="euclidean"), method="ward.D2")
+plot(hc,hang =-0.01, cex=0.7)
+
+hc3 =hclust(dist(customer, method="euclidean"), method="single")
+plot(hc3, hang =-0.01, cex=0.8)
+```
+
+### cutree
+```{R}
+fit =cutree(hc, k =4)
+fit
+table(fit)
+plot(hc, hang =-0.01, cex=0.7)
+rect.hclust(hc, k =4, border="red")
+rect.hclust(hc, k =3, border="blue")
+
+c_1 = customer[fit == 1,]
+summary(c_1)
 ```
