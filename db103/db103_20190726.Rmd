@@ -179,3 +179,25 @@ while(cnt <= 100){
 }
 sum
 ```
+
+##p86
+```{R}
+mat = matrix(rep(1,9^2),nrow = 9)
+mat = matrix(data=0,nrow=9,ncol=9)
+for(i in 1:nrow(mat)){
+  for(j in 1:ncol(mat)){
+    #mat[i,j] = i * j;
+    #mat[i,j] = paste(i,"*",j,"= ",i*j)
+    mat[i,j] = sprintf("%s * %s = %s",i,j,i*j)
+  }
+}
+mat
+
+rep(1,9^2)
+
+mat1 = matrix(1:9, nrow = 9);
+mat2 = matrix(1:9, nrow = 1);
+mat = mat1 %*% mat2;
+mat
+```
+
