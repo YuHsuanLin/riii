@@ -10,7 +10,7 @@ editor_options:
 ##p70 example
 ```{R}
 setwd('~/lecture/riii')
-tw2330 = read.csv("data/2330.csv", header=TRUE)
+tw2330 = read.csv("./data/2330.csv", header=TRUE)
 str(tw2330)
 tw2330$Date = as.Date(tw2330$Date)
 
@@ -20,6 +20,28 @@ max(tw2330_2017$Close)
 summary(tw2330_2017$Close)
 
 ordered_stock = tw2330_2017[order(tw2330_2017$Close, decreasing = T),]
+```
+
+```{R}
+#merge進行資料合併
+
+df1 = data.frame(CustomerId = c(1:6), Product = c(rep("Toaster", 3), rep("Radio", 3)))
+df2 = data.frame(CustomerId = c(2, 4, 6), State = c(rep("Alabama", 2), rep("Ohio", 1)))
+
+#Inner join:
+merge(x = df1, y= df2, by="CustomerId")
+
+#Outer join: 
+merge(x = df1, y = df2, by = "CustomerId", all = TRUE)
+
+#Left outer: 
+merge(x = df1, y = df2, by = "CustomerId", all.x = TRUE)
+
+#Right outer: 
+merge(x = df1, y = df2, by = "CustomerId", all.y = TRUE)
+
+#Cross join: 
+merge(x = df1, y = df2, by = NULL)
 ```
 
 ### List
@@ -32,8 +54,10 @@ flower= list(title="iris dataset", data= iris)
 class(flower)
 class(flower$data)
 flower$data[1,"Sepal.Width"]
-```
 
+li = list(c(1,2,3,4),c(5,6,7,8))
+li[[1]]
+```
 
 ###readr package
 - http://hadley.nz/
@@ -45,6 +69,15 @@ flower$data[1,"Sepal.Width"]
 library('tidyverse')
 setwd('~/lecture/riii')
 stock = read_csv('data/2330.csv',col_names=T)
+
+read_csv('data/2330.csv',col_names=T,col_types = cols(
+  Date = col_date(format = ""),
+  Open = col_double(),
+  High = col_double(),
+  Low = col_double(),
+  Close = col_double(),
+  Volume = col_double()
+))
 ```
 
 ### read excel file
