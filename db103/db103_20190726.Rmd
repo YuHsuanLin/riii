@@ -201,3 +201,48 @@ mat = mat1 %*% mat2;
 mat
 ```
 
+### Function
+```{R}
+addThree = function(a){
+    return(a+3)
+}
+addThree(3)
+
+#with default arguments
+addThree_2 = function(a = 3) {
+    return(a+3)
+}
+addThree_2()
+
+addThree_3 = function(a = 3) {
+    a+3;
+}
+addThree_3()
+
+#lazy function
+f2 = function(a, b = 2, c = NULL) {
+   return(b + 1)
+}
+f2()
+
+#local variable
+b = 3
+f3 = function() {
+    b = 2
+    return(b)
+}
+f3()
+
+greeting = function(sen){
+  if(sen == 'good morning'){
+    return('good morning!')
+  } else if (sen == 'good evening'){
+    return('good evening!')
+  } else{
+    return('hello!')
+  }  
+}
+
+greeting("good morning")
+```
+
