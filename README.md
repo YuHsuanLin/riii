@@ -1,5 +1,14 @@
 ﻿# R 語言基礎
 
+### DB103
+### CLASS 1
+- http://rpubs.com/YorkLin/riii_190718
+
+### CLASS 2
+- http://rpubs.com/YorkLin/riii_190726
+
+
+### DB102
 ### CLASS 1
 - http://rpubs.com/YorkLin/riii_190619
 
