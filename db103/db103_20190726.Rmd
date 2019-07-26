@@ -246,3 +246,24 @@ greeting = function(sen){
 greeting("good morning")
 ```
 
+### lapply sapply
+```{R}
+x = list(c(1,2,3,4), c(5,6,7,8))
+## 回傳list的結果
+lapply(x, sum)
+class(lapply(x, sum))
+## 回傳簡化的結果(vector)
+sapply(x, sum)
+class(sapply(x, sum))
+
+lapply(x,addThree)
+## 匿名函式
+lapply(x,function(e){e+3})
+
+m1 = matrix(1:4, byrow=TRUE, nrow=2)
+m2 = matrix(5:8, byrow=TRUE, nrow=2)
+li = list(m1, m2)
+lapply(li, function(e){e[1,]})
+lapply(li, mean)
+```
+
