@@ -7,22 +7,8 @@
 ### CLASS 2
 - http://rpubs.com/YorkLin/riii_190726
 
-
-### DB102
-### CLASS 1
-- http://rpubs.com/YorkLin/riii_190619
-
-### CLASS 2 
-- http://rpubs.com/YorkLin/riii_190709 
-
-### CLASS 3
-- http://rpubs.com/YorkLin/riii_190711
-
-### CLASS 4
-- http://rpubs.com/YorkLin/riii_190716
-
-### CLASS 5
-- http://rpubs.com/YorkLin/riii_190725
+### CLASS 3 
+- http://rpubs.com/YorkLin/riii_190808
 
 ## Download R
 - http://cran.csie.ntu.edu.tw/bin/windows/base/R-3.5.3-win.exe 
