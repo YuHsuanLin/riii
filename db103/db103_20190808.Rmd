@@ -277,3 +277,63 @@ test_s = 'abcdef'
 nchar(test_s)
 substring(test_s,2,nchar('abcdef')-1)
 ```
+
+
+```{R}
+#appledaily$category[appledaily$category == '國際","LA","SF","NY","US'] = "國際"
+#appledaily$category[appledaily$category == '國際","SF","US'] = "國際"
+```
+
+### 儲存處理過的檔案
+```{R}
+#applenews = appledaily
+#save(applenews,'./Statistics/applenews.RData')
+```
+
+### 遺失值處理(missing value)
+```{R}
+applenews = appledaily
+
+idx= sample(1:nrow(applenews),size=30)
+applenews[idx,'clicked'] = NA
+
+
+#找尋遺失值
+is.na(applenews)
+sum(is.na(applenews$clicked))
+
+sapply(names(applenews),function(e){ sum(is.na(applenews[,e])) >0 })
+
+cleaned_data = applenews[!is.na(applenews$clicked),]
+
+#移除missing value
+complete.cases(applenews)
+cleaned_data = applenews[complete.cases(applenews),]
+str(cleaned_data)
+
+#以全體平均填補
+applenews = appledaily
+applenews[idx,'clicked'] = NA
+
+mean_clicked = as.integer(mean(applenews$clicked,na.rm=T))
+applenews$clicked[is.na(applenews$clicked)] = mean_clicked
+
+sum(is.na(applenews$clicked))
+```
+
+### 遺失值處理(missing value)(續)
+```{R}
+#以類別平均填補
+applenews = appledaily
+applenews[idx,'clicked'] = NA
+
+cat_means = tapply(applenews$clicked,applenews$category,function(e){as.integer(mean(e,na.rm=T))})
+cat_means
+
+for(i in names(cat_means)){
+  applenews[applenews$category == i & is.na(applenews$clicked),'clicked'] = cat_means[i]
+}
+
+sum(is.na(applenews$clicked))
+```
+
