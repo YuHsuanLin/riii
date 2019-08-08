@@ -302,9 +302,9 @@ applenews[idx,'clicked'] = NA
 is.na(applenews)
 sum(is.na(applenews$clicked))
 
-sapply(names(applenews),function(e){ sum(is.na(applenews[,e])) >0 })
-
 cleaned_data = applenews[!is.na(applenews$clicked),]
+
+sapply(names(applenews),function(e){ sum(is.na(applenews[,e])) >0 })
 
 #移除missing value
 complete.cases(applenews)
@@ -315,7 +315,7 @@ str(cleaned_data)
 applenews = appledaily
 applenews[idx,'clicked'] = NA
 
-mean_clicked = as.integer(mean(applenews$clicked,na.rm=T))
+mean_clicked = round(mean(applenews$clicked,na.rm=T),0)
 applenews$clicked[is.na(applenews$clicked)] = mean_clicked
 
 sum(is.na(applenews$clicked))
@@ -327,8 +327,8 @@ sum(is.na(applenews$clicked))
 applenews = appledaily
 applenews[idx,'clicked'] = NA
 
-cat_means = tapply(applenews$clicked,applenews$category,function(e){as.integer(mean(e,na.rm=T))})
-cat_means
+cat_means = tapply(applenews$clicked,applenews$category,function(e){round(mean(e,na.rm=T),0)})
+cat_means["3C"]
 
 for(i in names(cat_means)){
   applenews[applenews$category == i & is.na(applenews$clicked),'clicked'] = cat_means[i]
