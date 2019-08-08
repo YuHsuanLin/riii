@@ -250,6 +250,7 @@ head(clicked)
 ```{R}
 #利用gsub函數取代
 s = "aaa bbb ccc aaa bbb aaa"
+sub("aaa","",s)
 gsub("aaa","",s)
 
 #grep()  ==> return index
