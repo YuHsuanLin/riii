@@ -337,3 +337,31 @@ for(i in names(cat_means)){
 sum(is.na(applenews$clicked))
 ```
 
+### mice
+```{R}
+#install.packages('mice')
+library(mice)
+data(iris)
+na_list = sample(1:nrow(iris),15)
+iris[na_list,'Sepal.Length'] = NA
+
+mice.data <- mice(data=iris,m = 3,method = "cart")
+
+complete(mice.data,1)
+
+complete(mice.data,1)[na_list,'Sepal.Length']
+complete(mice.data,2)[na_list,'Sepal.Length']
+complete(mice.data,3)[na_list,'Sepal.Length']
+
+##比較各模型預測結果是否穩定(mean接近0,var很小)
+diff1 = complete(mice.data,1)[na_list,'Sepal.Length'] - complete(mice.data,2)[na_list,'Sepal.Length']
+
+diff2 = complete(mice.data,1)[na_list,'Sepal.Length'] - complete(mice.data,3)[na_list,'Sepal.Length']
+
+diff3 = complete(mice.data,2)[na_list,'Sepal.Length'] - complete(mice.data,3)[na_list,'Sepal.Length']
+
+mean(c(diff1,diff2,diff3))
+var(c(diff1,diff2,diff3))
+
+complete(mice.data,1)
+```
