@@ -154,3 +154,64 @@ ggsave(filename = './g2.jpg',plot=g2)
 #library('esquisse')
 #esquisse::esquisser()
 ```
+
+
+```{R}
+setwd('~/lecture/riii')
+load('./Statistics/appledaily.RData')
+str(appledaily)
+as.POSIXct(appledaily[1,'dt'],format='%Y年%m月%d日%H:%M')
+
+#比較as.POSIX() 和 as.Date()
+unclass(as.POSIXct(appledaily$dt,format = '%Y年%m月%d日%H:%M'))
+unclass(as.Date(appledaily$dt,format = '%Y年%m月%d日%H:%M'))
+
+
+#比較as.POSIXct() 和 as.POSIXlt()
+t1 = as.POSIXct(appledaily$dt,format = '%Y年%m月%d日%H:%M')
+class(t1)
+head(unclass(t1))
+
+t2 = as.POSIXlt(appledaily$dt,format = '%Y年%m月%d日%H:%M')
+class(t2)
+unclass(t2)
+
+strptime(appledaily$dt,'%Y年%m月%d日%H:%M')
+
+
+appledaily$dt = as.POSIXct(appledaily$dt,format = '%Y年%m月%d日%H:%M')
+
+str(appledaily)
+```
+
+### lubridate package
+- https://r4ds.had.co.nz/dates-and-times.html
+```{R}
+#install.packages('lubridate')
+library(lubridate)
+
+# Extracting information
+now_date = now()
+
+year(now_date)
+month(now_date,label=T)
+day(now_date)
+hour(now_date)
+minute(now_date)
+second(now_date)
+wday(now_date,label=T)
+
+# Parsing dates and times
+ymd(20190129)
+mdy(01292019)
+dmy(29012019)
+
+ymd('2019/01/29')
+ymd('2019.01.29')
+
+ymd('2019.01.29')
+ymd_hm('2019/1/29 14:40',tz='Asia/Taipei')
+with_tz(ymd_hm('2019/1/29 14:40',tz='Asia/Taipei'),tzone='America/Los_Angeles')
+
+appledaily$dt = ymd_hm(appledaily$dt)
+```
