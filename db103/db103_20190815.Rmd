@@ -31,10 +31,6 @@ head(filter(applenews, category == "娛樂"))
 head(select(applenews,category,clicked))
 
 #使用Chaining
-select(applenews,category:clicked) %>%
-  filter(category == '娛樂') %>%
-  head()
-
 applenews %>% 
   select(category:clicked) %>%
   filter(category == '娛樂') %>%
