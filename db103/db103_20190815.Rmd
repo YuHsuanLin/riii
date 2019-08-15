@@ -174,7 +174,7 @@ sample(c(0,1), size= 10, replace = T)
 sample.int(20, 12) # 兩個參數都要放整數，此例為取1:20中的12個不重複樣本
 
 set.seed(2)
-#把資料分成training data 和 validation data
+#把資料分成training data 和 testing data
 ind<-sample(1:2, size=nrow(churnTrain), replace=T, prob=c(0.7, 0.3))
 trainset=churnTrain[ind==1,]
 testset=churnTrain[ind==2,]
@@ -233,3 +233,47 @@ confusionMatrix(table(predictions, testset$churn))
 ?confusionMatrix
 ```
 
+### use caret package
+```{R}
+#install.packages("caret")
+library(caret)
+control=trainControl(method="repeatedcv", number=10, repeats=3)
+model =train(churn~., data=churnTrain, method="rpart", trControl=control)
+
+predictions = predict(model,churnTest)
+table(predictions,churnTest$churn)
+confusionMatrix(table(predictions,churnTest$churn))
+
+
+control=trainControl(method="repeatedcv", number=10, repeats=3,summaryFunction = prSummary,classProbs=T)
+model =train(churn~., data=churnTrain, method="rpart", trControl=control)
+
+
+tune_funs = expand.grid(cp=seq(0,0.1,0.01))
+model =train(churn~., data=churnTrain, method="rpart", trControl=control,tuneGrid=tune_funs)
+
+model
+predictions = predict(model, churnTest)
+confusionMatrix(table(predictions,churnTest$churn))
+```
+
+### caret 套件使用說明
+```{R}
+# 查詢caret package 有實作的所有演算法
+names(getModelInfo())
+# 查詢caret package 有沒有實作rpart演算法
+names(getModelInfo())[grep('rpart',names(getModelInfo()))]
+# 查詢rpart model資訊
+getModelInfo('rpart')
+# 查詢rpart model可以tune的parameters
+getModelInfo('rpart')$rpart$parameters
+```
+
+
+### find importance variable
+```{R}
+library('caret')
+importance = varImp(model, scale=T)
+importance
+plot(importance)
+```
