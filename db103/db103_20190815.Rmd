@@ -39,27 +39,6 @@ applenews %>%
 
 ## dplyr 其他常用函式
 ```{R}
-
-### arrange (資料排序)
-applenews %>% 
-  select(category:clicked) %>%
-  filter(category == '娛樂') %>%
-  arrange(desc(clicked)) %>%
-  head()
-
-##
-# 總點擊數
-freqsum = applenews %>%
-  select(clicked) %>% 
-  sum()
-
-applenews$portion = applenews$clicked / freqsum
-
-#使用mutate產生新欄位
-#新增portion欄位
-applenews = applenews %>%
-  mutate(portion= clicked / freqsum)
-
 #group_by & summarise
 applenews %>%
   group_by(category) %>%
@@ -69,15 +48,31 @@ applenews %>%
 #多個欄位計算
 applenews %>%
   group_by(category) %>% 
-  summarise_at(.vars=vars(clicked,portion),.funs=funs(sum,mean,min,max,sd))
-
-applenews %>%
-  group_by(category) %>% 
-  summarise_at(.vars=vars(clicked),.funs=funs(sum,mean))
+  summarise_at(.vars=vars(clicked),.funs=funs(sum,mean,min,max,sd))
 
 applenews %>%
   group_by(category) %>%
   summarise_at(.funs=funs(min,max), .vars=vars(matches('clicked')), na.rm=T)
+
+### arrange (資料排序)
+applenews %>% 
+  select(category:clicked) %>%
+  filter(category == '娛樂') %>%
+  arrange(desc(clicked)) %>%
+  head()
+
+#使用mutate產生新欄位
+# 總點擊數
+freqsum = applenews %>%
+  select(clicked) %>% 
+  sum()
+
+#原先R加入新欄位資料
+applenews$portion = applenews$clicked / freqsum
+
+#新增portion欄位
+applenews = applenews %>%
+  mutate(portion_2= clicked / freqsum)
 ```
 
 ## alter mysql 8.0 password encryption
