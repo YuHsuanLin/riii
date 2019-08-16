@@ -50,9 +50,9 @@ rf_model <- randomForest(churn ~., data = churnTrain, ntree=50,mtry=4)
 confusionMatrix(table(predict(rf_model,churnTest),churnTest$churn))
 
 rf.predict.prob <- predict(rf_model, churnTest, type="prob")
-rf.prediction <- prediction(rf.predict.prob[,1], as.factor(churnTest$churn))
+rf.prediction <- prediction(rf.predict.prob[,"yes"], as.factor(churnTest$churn))
 rf.auc <- performance(rf.prediction, measure = "auc", x.measure = "cutoff")
-rf.performance <- performance(rf.prediction, "tpr","fpr")
+rf.performance <- performance(rf.prediction, measure="tpr",x.measure="fpr")
 plot(rf.performance)
 
 #比較CART和RandomForest
