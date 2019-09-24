@@ -146,3 +146,32 @@ read_csv('data/2330.csv',col_names=T,col_types = cols(
   Volume = col_double()
 ))
 ```
+
+### read excel file
+```{R}
+#install.packages("readxl")
+library(readxl)
+setwd('~/lecture/riii/')
+FinancialReport <- read_excel("./data/FinancialReport.xlsx")
+#View(FinancialReport)
+summary(FinancialReport)
+```
+
+### read json
+```{R}
+setwd('~/lecture/riii/')
+library(jsonlite)
+json_data<- fromJSON('./data/rent.json')
+json_data <- as_tibble(json_data)
+head(json_data)
+```
+
+### read xml
+```{R}
+library(XML)
+url <- 'http://opendata.epa.gov.tw/ws/Data/ATM00698/?$format=xml'
+weather <- xmlToDataFrame(url)
+#View(weather)
+#str(weather)
+#weather[ weather$SiteName == '臺北',  c('DataCreationDate','Temperature')   ]
+```
