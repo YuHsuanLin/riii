@@ -75,3 +75,11 @@ tw2330 = read.csv("data/2330.csv", header=TRUE)
 #tw2330 = read.csv('https://github.com/YuHsuanLin/riii/raw/master/data/2330.csv')
 test.data = read.table("data/match.txt" ,header = FALSE, sep="|")
 ```
+
+### p70
+```{R}
+setwd('~/lecture/riii')
+tw2330 = read.csv("./data/2330.csv", header=TRUE)
+str(tw2330)
+tw2330$Date = as.Date(tw2330$Date)
+```
