@@ -223,12 +223,6 @@ for(i in 1:nrow(mat)){
   }
 }
 
-for(i in seq_len(nrow(mat))) {
-  for(j in seq_len(ncol(mat))) { 
-    print(mat[i, j])
-  }
-}
-
 sum = 0;
 cnt = 0;
 while(cnt <= 100){
