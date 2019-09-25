@@ -1,0 +1,78 @@
+---
+title: "R_basic3"
+author: "York Lin"
+date: "2019年09月26日"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+### p90 practice
+```{R}
+match_func = function(filename){
+  match_df = read.table(filename,header = T,sep='|')
+  mat = matrix(data=-1,nrow=5,ncol=5)
+  rownames(mat) = c("A","B","C","D","E")
+  colnames(mat) = c("A","B","C","D","E")
+  for(i in 1:nrow(match_df)){
+    mat[match_df[i,1],match_df[i,2]] = match_df[i,3]
+  }
+  return(mat)
+}
+
+match_func2 = function(filename,header=F,sep='|'){
+  match_df = read.table(filename,header = header,sep=sep)
+  mat = matrix(data=-1,nrow=length(levels(match_df[,1])),ncol=length(levels(match_df[,2])),dimnames = list(levels(match_df[,1]),levels(match_df[,2])))
+  for(i in 1:nrow(match_df)){
+    mat[match_df[i,1],match_df[i,2]] = match_df[i,3]
+  }
+  mat
+}
+```
+
+### 統計量
+```{R}
+#集中量數:mean median mode
+
+a = c(173,178,168,160,173,168,173,185,175,178,182)
+mean(a)
+
+#有極端值
+b = c(a, 10000)
+mean(b)
+
+a
+sort(a)
+median(a)
+
+sort(b)
+median(b)
+
+table(a)
+which.max(table(a))
+names(which.max(table(a)))
+
+mean(cdc$height)
+median(cdc$height)
+as.numeric(names(which.max(table(cdc$height))))
+
+#離差量數:range IQR variance stardard deviation
+#全距
+range(cdc$height)
+#四分位距
+IQR(cdc$height)
+#變異數
+var(cdc$height)
+#標準差
+sqrt(var(cdc$height))
+sd(cdc$height)
+#摘要數據
+summary(cdc$height)
+```
+
+### Covariance & Correlation
+```{R}
+cdc[,c('height','weight','wtdesire','age')]
+cov(cdc[,c('height','weight','wtdesire','age')])
+cor(cdc[,c('height','weight','wtdesire','age')])
+```
