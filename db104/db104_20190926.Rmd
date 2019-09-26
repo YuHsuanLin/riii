@@ -86,3 +86,27 @@ cdc[,c('height','weight','wtdesire','age')]
 cov(cdc[,c('height','weight','wtdesire','age')])
 cor(cdc[,c('height','weight','wtdesire','age')])
 ```
+
+### 統計圖
+```{R}
+#屬貭資料
+#長條圖
+barplot(table(cdc$smoke100))
+?barplot
+barplot(table(cdc$smoke100),xlab='有無吸菸',ylab='人數',main='有無吸菸習慣',col='blue',family="Songti SC")
+
+#圓餅圖
+pie(table(cdc$smoke100))
+pie(table(cdc$genhlth))
+pie(table(cdc$genhlth),col = rainbow(5))
+
+rainbow(5)
+#加上各分類比例
+pct = round(table(cdc$genhlth) / length(cdc$genhlth) *100,1)
+labels = paste(names(pct),pct,"%")
+pie(table(cdc$genhlth), labels = labels)
+
+#馬賽克圖
+gender_smokers = table(cdc$gender,cdc$smoke100)
+mosaicplot(gender_smokers)
+```
