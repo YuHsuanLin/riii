@@ -254,3 +254,6 @@ g2 = ggplot(precounted,aes(x=genhlth,y=Freq))+ geom_bar(stat='identity')
 #save
 ggsave(filename = './g2.jpg',plot=g2)
 ```
+
+## antv documentation
+- https://antv.alipay.com/zh-cn/vis/chart/index.html
