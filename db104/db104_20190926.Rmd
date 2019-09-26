@@ -270,3 +270,29 @@ devtools::install_github("dreamRs/esquisse")
 #library('esquisse')
 #esquisse::esquisser()
 ```
+
+
+```{R}
+setwd('~/lecture/riii')
+load('./Statistics/appledaily.RData')
+str(appledaily)
+as.POSIXct(appledaily[1,'dt'],format='%Y年%m月%d日%H:%M')
+
+#比較as.POSIX() 和 as.Date()
+unclass(as.POSIXct(appledaily$dt,format = '%Y年%m月%d日%H:%M'))
+unclass(as.Date(appledaily$dt,format = '%Y年%m月%d日%H:%M'))
+
+
+#比較as.POSIXct() 和 as.POSIXlt()
+t1 = as.POSIXct(appledaily$dt,format = '%Y年%m月%d日%H:%M')
+class(t1)
+head(unclass(t1))
+
+t2 = as.POSIXlt(appledaily$dt,format = '%Y年%m月%d日%H:%M')
+class(t2)
+unclass(t2)
+
+appledaily$dt = as.POSIXct(appledaily$dt,format = '%Y年%m月%d日%H:%M')
+
+str(appledaily)
+```
