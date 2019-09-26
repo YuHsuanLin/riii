@@ -198,6 +198,7 @@ g+geom_bar()
 g+geom_bar() + ylab('次數') + ggtitle('健康狀況長條圖')
 #fill => 填滿顏色; color => 邊線顏色
 g+geom_bar(fill='snow',color='black')
+g+geom_bar(aes(fill=gender),color='black')
 
 g+geom_bar(aes(fill=gender))+ylab("次數")+ggtitle("健康狀況長條圖")
 ```
