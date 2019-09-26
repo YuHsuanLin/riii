@@ -9,11 +9,14 @@ editor_options:
 
 ### p90 practice
 ```{R}
-match_func = function(filename){
-  match_df = read.table(filename,header = T,sep='|')
-  mat = matrix(data=-1,nrow=5,ncol=5)
-  rownames(mat) = c("A","B","C","D","E")
-  colnames(mat) = c("A","B","C","D","E")
+match_func = function(filename,header,sep){
+  match_df = read.table(filename,header = header,sep=sep)
+  #mat = matrix(data=-1,nrow=5,ncol=5)
+  mat = matrix(data=-1,nrow=length(levels(match_df[,1])),ncol=length(levels(match_df[,2])))
+  #rownames(mat) = c("A","B","C","D","E")
+  rownames(mat) = levels(match_df[,1])
+  #colnames(mat) = c("A","B","C","D","E")
+  colnames(mat) = levels(match_df[,2])
   for(i in 1:nrow(match_df)){
     mat[match_df[i,1],match_df[i,2]] = match_df[i,3]
   }
@@ -32,6 +35,13 @@ match_func2 = function(filename,header=F,sep='|'){
 
 ### 統計量
 ```{R}
+setwd("~/lecture/riii")
+load("./Statistics/cdc.Rdata")
+cdc$exerany = as.factor(cdc$exerany)
+cdc$hlthplan = as.factor(cdc$hlthplan)
+cdc$smoke100 = as.factor(cdc$smoke100)
+str(cdc)
+
 #集中量數:mean median mode
 
 a = c(173,178,168,160,173,168,173,185,175,178,182)
