@@ -257,3 +257,10 @@ ggsave(filename = './g2.jpg',plot=g2)
 
 ## antv documentation
 - https://antv.alipay.com/zh-cn/vis/chart/index.html
+
+## Esquisse
+```{R}
+#install.packages('esquisse')
+#library('esquisse')
+#esquisse::esquisser()
+```
