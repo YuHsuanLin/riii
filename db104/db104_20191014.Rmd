@@ -1,0 +1,85 @@
+---
+title: "R_basic4"
+author: "York Lin"
+date: "2019年10月14日"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+### 遺失值處理(missing value)
+```{R}
+setwd('~/lecture/riii')
+load('./Statistics/applenews.RData')
+
+idx= sample(1:nrow(applenews),size=30)
+applenews[idx,'clicked'] = NA
+
+#找尋遺失值
+is.na(applenews)
+sum(is.na(applenews$clicked))
+
+cleaned_data = applenews[!is.na(applenews$clicked),]
+
+sapply(names(applenews),function(e){ sum(is.na(applenews[,e])) >0 })
+
+#移除missing value
+complete.cases(applenews)
+cleaned_data = applenews[complete.cases(applenews),]
+str(cleaned_data)
+
+#以全體平均填補
+load('./Statistics/applenews.RData')
+applenews[idx,'clicked'] = NA
+
+mean_clicked = round(mean(applenews$clicked,na.rm=T),0)
+applenews$clicked[is.na(applenews$clicked)] = mean_clicked
+
+sum(is.na(applenews$clicked))
+```
+
+### 遺失值處理(missing value)(續)
+```{R}
+#以類別平均填補
+setwd('~/lecture/riii')
+load('./Statistics/applenews.RData')
+applenews[idx,'clicked'] = NA
+
+cat_means = tapply(applenews$clicked,applenews$category,function(e){round(mean(e,na.rm=T),0)})
+cat_means["3C"]
+
+for(i in names(cat_means)){
+  applenews[applenews$category == i & is.na(applenews$clicked),'clicked'] = cat_means[i]
+}
+
+sum(is.na(applenews$clicked))
+```
+
+### mice
+```{R}
+#install.packages('mice')
+library(mice)
+data(iris)
+na_list = sample(1:nrow(iris),15)
+iris[na_list,'Sepal.Length'] = NA
+
+mice.data <- mice(data=iris,m = 3,method = "cart")
+
+complete(mice.data,1)
+
+complete(mice.data,1)[na_list,'Sepal.Length']
+complete(mice.data,2)[na_list,'Sepal.Length']
+complete(mice.data,3)[na_list,'Sepal.Length']
+
+##比較各模型預測結果是否穩定(mean接近0,var很小)
+diff1 = complete(mice.data,1)[na_list,'Sepal.Length'] - complete(mice.data,2)[na_list,'Sepal.Length']
+
+diff2 = complete(mice.data,1)[na_list,'Sepal.Length'] - complete(mice.data,3)[na_list,'Sepal.Length']
+
+diff3 = complete(mice.data,2)[na_list,'Sepal.Length'] - complete(mice.data,3)[na_list,'Sepal.Length']
+
+mean(c(diff1,diff2,diff3))
+var(c(diff1,diff2,diff3))
+
+complete(mice.data,1)
+```

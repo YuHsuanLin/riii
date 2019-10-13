@@ -7,6 +7,12 @@
 ### CLASS 2
 - http://rpubs.com/YorkLin/riii_190924
 
+### CLASS 3 
+- http://rpubs.com/YorkLin/riii_190926
+
+### CLASS 4 
+- http://rpubs.com/YorkLin/riii_191014
+
 ## Download R
 - http://cran.csie.ntu.edu.tw/bin/windows/base/R-3.5.3-win.exe 
 - http://course.largitdata.com/course/33
