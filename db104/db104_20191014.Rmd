@@ -190,5 +190,4 @@ dbGetQuery(conn,'select * from iris') %>% filter(Species == 'setosa')
 dbGetQuery(conn,'select `Sepal.Length` from iris')
 
 dbListTables(conn)
-
 ```
