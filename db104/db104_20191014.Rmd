@@ -19,14 +19,14 @@ applenews[idx,'clicked'] = NA
 is.na(applenews)
 sum(is.na(applenews$clicked))
 
-cleaned_data = applenews[!is.na(applenews$clicked),]
-
 sapply(names(applenews),function(e){ sum(is.na(applenews[,e])) >0 })
+
+cleaned_data = applenews[!is.na(applenews$clicked),]
 
 #移除missing value
 complete.cases(applenews)
-cleaned_data = applenews[complete.cases(applenews),]
-str(cleaned_data)
+cleaned_data2 = applenews[complete.cases(applenews),]
+str(cleaned_data2)
 
 #以全體平均填補
 load('./Statistics/applenews.RData')
