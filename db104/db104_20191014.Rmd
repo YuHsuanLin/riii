@@ -109,9 +109,41 @@ head(filter(applenews, category == "娛樂"))
 head(select(applenews,category,clicked))
 
 #使用Chaining
-applenews %>% 
-  select(category,clicked) %>%
+applenews %>%
+  select(.,category,clicked) %>%
   filter(category == '娛樂') %>%
   head()
+```
+
+### dplyr(續)
+```{R}
+#dplyr 的欄位選取
+
+#選擇列舉出的欄位
+head(select(applenews,category,clicked))
+#選擇從category~clicked欄位
+head(select(applenews,title:dt,category:clicked))
+#選擇欄位名稱含有click字串的欄位
+head(select(applenews,contains('click')))
+
+##iris - selected helpers
+head(select(iris,starts_with("Sepal")))
+head(select(iris,ends_with("Length")))
+
+
+#group_by & summarise
+applenews %>%
+  group_by(category) %>%
+  summarise(clicked_mean = mean(clicked, na.rm=TRUE)) %>%
+  arrange(desc(clicked_mean))
+
+#多個欄位計算
+applenews %>%
+  group_by(category) %>% 
+  summarise_at(.vars=vars(clicked),.funs=funs(sum,mean,min,max,sd))
+
+applenews %>%
+  group_by(category) %>%
+  summarise_at(.funs=funs(min,max), .vars=vars(matches('clicked')), na.rm=T)
 
 ```
