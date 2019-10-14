@@ -113,4 +113,5 @@ applenews %>%
   select(category,clicked) %>%
   filter(category == '娛樂') %>%
   head()
+
 ```
