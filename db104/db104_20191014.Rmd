@@ -83,3 +83,34 @@ var(c(diff1,diff2,diff3))
 
 complete(mice.data,1)
 ```
+
+
+### package dplyr
+- 類SQL語法,select,filter,arrange,mutate...
+- Chaining %>%, debug方便
+
+##### cheat sheet
+- https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf
+
+```{R}
+setwd('~/lecture/riii')
+load('Statistics/applenews.RData')
+str(applenews)
+
+applenews = applenews[,-1]
+
+#install.packages('dplyr')
+library(dplyr)
+
+#dplyr 的過濾功能
+head(filter(applenews, category == "娛樂"))
+
+#dplyr 的欄位選取
+head(select(applenews,category,clicked))
+
+#使用Chaining
+applenews %>% 
+  select(category,clicked) %>%
+  filter(category == '娛樂') %>%
+  head()
+```
