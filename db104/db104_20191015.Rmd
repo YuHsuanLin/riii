@@ -6,6 +6,7 @@ output: html_document
 editor_options: 
   chunk_output_type: console
 ---
+
 ## cp
 - http://mlwiki.org/index.php/Cost-Complexity_Pruning
 
@@ -22,7 +23,7 @@ churnTrain=churnTrain[,variable.list]
 churnTest=churnTest[,variable.list]
 
 set.seed(2)
-#把資料分成training data 和 validation data
+#把資料分成training data 和 testing data
 ind<-sample(1:2, size=nrow(churnTrain), replace=T, prob=c(0.7, 0.3))
 trainset=churnTrain[ind==1,]
 testset=churnTrain[ind==2,]
@@ -33,6 +34,7 @@ library('e1071')
 
 con = rpart.control(minsplit=20,cp=0.01)
 churn.rp<-rpart(churn ~., data=trainset,control = con)
+summary(churn.rp)
 
 printcp(churn.rp)
 #找出minimum cross-validation errors
@@ -46,7 +48,6 @@ text(prune.tree, all=TRUE, use.n=TRUE, cex=0.7)
 predictions <-predict(prune.tree, testset, type='class')
 table(predictions,testset$churn)
 confusionMatrix(table(predictions, testset$churn))
-
 ```
 
 ### use caret package
@@ -54,6 +55,7 @@ confusionMatrix(table(predictions, testset$churn))
 #install.packages("caret")
 library(caret)
 control=trainControl(method="repeatedcv", number=10, repeats=3)
+
 model =train(churn~., data=churnTrain, method="rpart", trControl=control)
 
 predictions = predict(model,churnTest)
@@ -75,13 +77,15 @@ getModelInfo('rpart')$rpart$parameters
 
 ### caret tune
 ```{R}
-control=trainControl(method="repeatedcv", number=10, repeats=3,summaryFunction = prSummary,classProbs=T)
+control=trainControl(method="repeatedcv", number=10, repeats=3,summaryFunction = multiClassSummary,classProbs=T)
+
+
 tune_funs = expand.grid(cp=seq(0,0.1,0.01))
+
+
 model =train(churn~., data=churnTrain, method="rpart", trControl=control,tuneGrid=tune_funs)
 
 model
 predictions = predict(model, churnTest)
 confusionMatrix(table(predictions,churnTest$churn))
 ```
-
-
