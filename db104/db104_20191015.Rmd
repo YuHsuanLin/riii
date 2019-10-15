@@ -83,7 +83,7 @@ control=trainControl(method="repeatedcv", number=10, repeats=3,summaryFunction =
 tune_funs = expand.grid(cp=seq(0,0.1,0.01))
 
 
-model =train(churn~., data=churnTrain, method="rpart", trControl=control,tuneGrid=tune_funs)
+model =train(churn~., data=churnTrain, method="rpart", trControl=control,tuneGrid=tune_funs,metric='AUC')
 
 model
 predictions = predict(model, churnTest)
