@@ -10,7 +10,7 @@ what is R?
 - https://zh.wikipedia.org/wiki/R%E8%AF%AD%E8%A8%80
 
 R vs Python?
-- https://www.datacamp.com/community/tutorials/r-or-python-for-data-analysis
+- https://www.guru99.com/r-vs-python.html
 - https://www.kdnuggets.com/2019/05/poll-top-data-science-machine-learning-platforms.html
 
 Kaggle
