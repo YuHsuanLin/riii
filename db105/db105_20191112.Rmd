@@ -126,18 +126,11 @@ x + c(1,2,1,2)
 
 x == c(1,99,3,4)
 
-c(1,2,3)
-c(2,T,3+0i,"one")
-c(2,T,3+0i)
 c(c(1,2,3,4),c(5))
 
 x = c(1,2,3,4,NA)
 sum(x)
 sum(x, na.rm=T)
-
-x = c(1,2,3,4,NA)
-is.na(x)
-sum(x[!is.na(x)])
 
 height_vec = c(180,169,173)
 height_vec
