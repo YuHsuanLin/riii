@@ -219,3 +219,58 @@ while(cnt <= 100){
 }
 sum
 ```
+
+##p86
+```{R}
+mat = matrix(data=rep(1,9^2),nrow = 9)
+mat = matrix(data=0,nrow=9,ncol=9)
+for(i in 1:nrow(mat)){
+  for(j in 1:ncol(mat)){
+    #mat[i,j] = i * j;
+    #mat[i,j] = paste(i,"*",j,"= ",i*j)
+    mat[i,j] = sprintf("%s * %s = %s",i,j,i*j)
+  }
+}
+mat
+
+rep(1,9^2)
+
+mat1 = matrix(1:9, nrow = 9);
+mat2 = matrix(1:9, nrow = 1);
+mat = mat1 %*% mat2;
+mat
+```
+
+### Function
+```{R}
+addThree = function(a){
+    a+3
+}
+addThree(3)
+
+#with default arguments
+addThree_2 = function(a = 3) {
+    return(a+3)
+}
+addThree_2()
+
+#每行程式結尾可加;可不加
+addThree_3 = function(a = 3) {
+    a+3;
+}
+addThree_3()
+
+#lazy function
+f2 = function(a, b = 2, c = NULL) {
+   return(b + 1)
+}
+f2()
+
+#local variable
+b = 3
+f3 = function() {
+    b = 2
+    return(b)
+}
+f3()
+```
