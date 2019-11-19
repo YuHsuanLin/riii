@@ -158,7 +158,7 @@ head(json_data)
 ```{R}
 #install.packages("XML")
 library(XML)
-#url <- 'http://opendata.epa.gov.tw/ws/Data/ATM00698/?$format=xml'
+rurl <- 'http://opendata.epa.gov.tw/ws/Data/ATM00698/?$format=xml'
 #weather <- xmlToDataFrame(url)
 #View(weather)
 #str(weather)
