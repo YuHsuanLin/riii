@@ -108,3 +108,59 @@ merge(x = df1, y = df2, by = "CustomerId", all.y = TRUE)
 #Cross join: 
 merge(x = df1, y = df2, by = NULL)
 ```
+
+
+###readr package
+- http://hadley.nz/
+- https://github.com/tidyverse/readr
+
+```{R}
+#install.packages("tidyverse")
+library('tidyverse')
+#install.packages("readr")
+#library("readr")
+
+setwd('~/lecture/riii')
+
+read.csv('data/2330.csv',header = T)
+stock = read_csv('data/2330.csv',col_names=T)
+
+read_csv('data/2330.csv',col_names=T,col_types = cols(
+  Date = col_date(format = ""),
+  Open = col_double(),
+  High = col_double(),
+  Low = col_double(),
+  Close = col_double(),
+  Volume = col_double()
+))
+```
+
+### read excel file
+```{R}
+#install.packages("readxl")
+library(readxl)
+setwd('~/lecture/riii/')
+FinancialReport <- read_excel("./data/FinancialReport.xlsx")
+#View(FinancialReport)
+summary(FinancialReport)
+```
+
+### read json
+```{R}
+setwd('~/lecture/riii/')
+library(jsonlite)
+json_data<- fromJSON('./data/rent.json')
+json_data <- as_tibble(json_data)
+head(json_data)
+```
+
+### read xml
+```{R}
+#install.packages("XML")
+library(XML)
+#url <- 'http://opendata.epa.gov.tw/ws/Data/ATM00698/?$format=xml'
+#weather <- xmlToDataFrame(url)
+#View(weather)
+#str(weather)
+#weather[ weather$SiteName == '臺北',  c('DataCreationDate','Temperature')   ]
+```
