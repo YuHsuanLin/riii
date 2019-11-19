@@ -355,3 +355,7 @@ paste(table(cdc$exerany) / nrow(cdc) * 100, '%')
 #二維次數分配表
 table(cdc$gender,cdc$exerany)
 ```
+
+```{R}
+apply(m,1,function(e){ e / sum(e) })
+```
