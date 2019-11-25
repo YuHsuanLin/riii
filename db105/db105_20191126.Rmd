@@ -1,0 +1,58 @@
+---
+title: "R_basic3"
+author: "York Lin"
+date: "2019年09月26日"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+### p90 practice
+```{R}
+match_func = function(filename,header,sep){
+  match_df = read.table(filename,header = header,sep=sep)
+  #mat = matrix(data=-1,nrow=5,ncol=5)
+  mat = matrix(data=-1,nrow=length(levels(match_df[,1])),ncol=length(levels(match_df[,2])))
+  #rownames(mat) = c("A","B","C","D","E")
+  rownames(mat) = levels(match_df[,1])
+  #colnames(mat) = c("A","B","C","D","E")
+  colnames(mat) = levels(match_df[,2])
+  for(i in 1:nrow(match_df)){
+    mat[match_df[i,1],match_df[i,2]] = match_df[i,3]
+  }
+  return(mat)
+}
+
+match_func2 = function(filename,header=F,sep='|'){
+  match_df = read.table(filename,header = header,sep=sep)
+  mat = matrix(data=-1,nrow=length(levels(match_df[,1])),ncol=length(levels(match_df[,2])),dimnames = list(levels(match_df[,1]),levels(match_df[,2])))
+  for(i in 1:nrow(match_df)){
+    mat[match_df[i,1],match_df[i,2]] = match_df[i,3]
+  }
+  mat
+}
+```
+
+### 表格(續)
+```{R}
+setwd("~/lecture/riii")
+load("./Statistics/cdc.Rdata")
+cdc$exerany = as.factor(cdc$exerany)
+cdc$hlthplan = as.factor(cdc$hlthplan)
+cdc$smoke100 = as.factor(cdc$smoke100)
+str(cdc)
+
+#三維以上
+table(cdc$gender,cdc$genhlth,cdc$exerany)
+
+#連續型資料作表
+table(cdc$height)
+summary(cdc$height)
+head(cut(cdc$height,seq(45,95,by=5)))
+
+#包含上界不包含下界
+table(cut(cdc$height,seq(45,95,by=5),right=T))
+
+#包含下界不包含上界
+table(cut(cdc$height,seq(45,95,by=5),right=F))
+```
