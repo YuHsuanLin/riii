@@ -193,3 +193,38 @@ plot_prcomp(iris)
 #create_report(iris)
 ```
 
+### package:ggplot2
+##### documentation
+- http://docs.ggplot2.org/current/
+
+##### cheat sheet
+- https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf
+
+##### why ggplot2?
+- fancy by default, good for demo and report 
+- consistent across all kinds of plot in syntax and behavior
+- strong support community(the mostly download package on CRAN)
+```{R}
+#basic syntax
+#ggplot(data,aes(x,y,group,...))+geom_object(...)
+
+#install.packages('ggplot2')
+library('ggplot2')
+g <- ggplot(cdc,aes(x=height,y=weight))
+g+geom_point()
+
+g <- ggplot(cdc,aes(x=height,y=weight,col=gender))
+g+geom_point()
+
+g <- ggplot(cdc,aes(x=height,y=weight))
+g+geom_point(aes(col=gender))
+
+g <- ggplot(cdc,aes(x=genhlth))
+g+geom_bar()
+g+geom_bar() + ylab('次數') + ggtitle('健康狀況長條圖')
+#fill => 填滿顏色; color => 邊線顏色
+g+geom_bar(fill='snow',color='black')
+g+geom_bar(aes(fill=gender),color='black')
+
+g+geom_bar(aes(fill=gender))+ylab("次數")+ggtitle("健康狀況長條圖")
+```
