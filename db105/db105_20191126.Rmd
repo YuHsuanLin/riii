@@ -178,6 +178,10 @@ dev.off()
 ```
 
 ## data explorer
+## error 99 problem
+##downgrade pandoc 2.7 -> 2.6
+- https://github.com/boxuancui/DataExplorer/issues/116
+
 ```{R}
 #install.packages('DataExplorer')
 library('DataExplorer')
