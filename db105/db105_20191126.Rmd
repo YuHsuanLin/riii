@@ -61,3 +61,51 @@ table(cut(cdc$height,seq(45,95,by=5),right=T))
 #包含下界不包含上界
 table(cut(cdc$height,seq(45,95,by=5),right=F))
 ```
+
+### 統計量
+```{R}
+#集中量數:mean median mode
+
+a = c(173,178,168,160,173,168,173,185,175,178,182)
+mean(a)
+
+#有極端值
+b = c(a, 226)
+mean(b)
+
+a
+sort(a)
+median(a)
+
+sort(b)
+median(b)
+
+table(a)
+which.max(table(a))
+names(which.max(table(a)))
+as.numeric(names(which.max(table(a))))
+
+mean(cdc$height)
+median(cdc$height)
+as.numeric(names(which.max(table(cdc$height))))
+
+#離差量數:range IQR variance stardard deviation
+#全距
+range(cdc$height)
+#四分位距
+IQR(cdc$height)
+#變異數
+var(cdc$height)
+#標準差
+sqrt(var(cdc$height))
+sd(cdc$height)
+#摘要數據
+summary(cdc$height)
+```
+
+### Covariance & Correlation
+```{R}
+cdc[,c('height','weight','wtdesire','age')]
+cov(cdc[,c('height','weight','wtdesire','age')])
+cor(cdc[,c('height','weight','wtdesire','age')])
+```
