@@ -1,7 +1,7 @@
 ---
 title: "R_basic3"
 author: "York Lin"
-date: "2019年09月26日"
+date: "2019年11月26日"
 output: html_document
 editor_options: 
   chunk_output_type: console
@@ -42,8 +42,12 @@ cdc$hlthplan = as.factor(cdc$hlthplan)
 cdc$smoke100 = as.factor(cdc$smoke100)
 str(cdc)
 
-#三維以上
-table(cdc$gender,cdc$genhlth,cdc$exerany)
+#一維次數分配表
+table(cdc$exerany)
+
+#相對比例
+table(cdc$exerany) / length(cdc$exerany)
+
 
 #連續型資料作表
 table(cdc$height)
