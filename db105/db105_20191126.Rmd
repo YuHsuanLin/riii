@@ -88,7 +88,9 @@ as.numeric(names(which.max(table(a))))
 mean(cdc$height)
 median(cdc$height)
 as.numeric(names(which.max(table(cdc$height))))
+```
 
+```{R}
 #離差量數:range IQR variance stardard deviation
 #全距
 range(cdc$height)
