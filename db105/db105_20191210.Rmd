@@ -169,7 +169,6 @@ applenews %>%
 filter(applenews, category %in% c('娛樂','社會'))
 
 #dplyr 的欄位選取
-
 #選擇列舉出的欄位
 head(select(applenews,category,clicked))
 #選擇從category~clicked欄位
@@ -180,7 +179,6 @@ head(select(applenews,contains('click')))
 ##iris - selected helpers
 head(select(iris,starts_with("Sepal")))
 head(select(iris,ends_with("Length")))
-
 
 #group_by & summarise
 applenews %>%
