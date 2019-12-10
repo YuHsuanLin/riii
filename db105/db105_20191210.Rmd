@@ -24,7 +24,7 @@ test_str[grep('a',test_str)]
 setwd('~/lecture/riii')
 load('./Statistics/applenews.RData')
 
-applenews[grep('中國',applenews$title[1:5]),]
+applenews[grep('中國',applenews$title[1:10]),"title"]
 
 #grepl() ==> return boolean 
 grepl('a',test_str)
@@ -37,7 +37,11 @@ class(splited)
 
 ### 取出list裡面部分元素
 sapply(splited,function(e){e[1]})
-unlist(splited)[seq(from=1,to=4,by=2)]
+
+splited_vec = unlist(splited)
+length(splited_vec)
+seq(from=1,to=length(splited_vec),by=2)
+splited_vec[seq(from=1,to=length(splited_vec),by=2)]
 
 #substring() ==> 取得部份字串
 test_s = 'abcdef'
