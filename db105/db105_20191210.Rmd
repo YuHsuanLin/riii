@@ -9,9 +9,6 @@ editor_options:
 
 ### 其他常見字串處理函式
 ```{R}
-setwd('~/lecture/riii')
-load('./Statistics/appledaily.RData')
-
 #sub (取代第一個遇到的字串)
 s = "aaa bbb ccc aaa bbb aaa"
 sub("aaa","",s)
@@ -24,7 +21,10 @@ test_str = c('abcd','bcd','cde')
 grep('a',test_str)
 test_str[grep('a',test_str)]
 
-appledaily[grep('中國',appledaily$title[1:5]),]
+setwd('~/lecture/riii')
+load('./Statistics/applenews.RData')
+
+applenews[grep('中國',applenews$title[1:5]),]
 
 #grepl() ==> return boolean 
 grepl('a',test_str)
