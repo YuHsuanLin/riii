@@ -159,3 +159,25 @@ plot(rpart_perf.rocr,col='red')
 plot(rf.performance,col='black',add=T)
 legend(x=0.7, y=0.2, legend =c('randomforest','rpart'), fill= c("black","red"))
 ```
+
+
+# 分群問題
+### 距離計算
+```{R}
+x =c(0, 0, 1, 1, 1, 1)
+y =c(1, 0, 1, 1, 0, 1)
+
+#euclidean
+?dist
+rbind(x,y)
+dist(rbind(x,y), method ="euclidean")
+
+#city block
+dist(rbind(x,y), method ="manhattan")
+
+z = c(1,1,1,0,1,1)
+rbind(x,y,z)
+dist(rbind(x,y,z), method ="euclidean")
+dist(rbind(x,y,z), method ="manhattan")
+
+```
