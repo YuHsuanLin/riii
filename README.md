@@ -1,20 +1,8 @@
 ﻿# R 語言基礎
 
-### DB105
+### DB106
 ### CLASS 1
-- http://rpubs.com/YorkLin/riii_191112
-
-### CLASS 2 
-- http://rpubs.com/YorkLin/riii_191119
-
-### CLASS 3 
-- http://rpubs.com/YorkLin/riii_191126
-
-### CLASS 4 
-- http://rpubs.com/YorkLin/riii_191210
-
-### CLASS 5 
-- http://rpubs.com/YorkLin/riii_191217
+- http://rpubs.com/YorkLin/riii_200107
 
 ## Download R
 - http://cran.csie.ntu.edu.tw/bin/windows/base/R-3.5.3-win.exe 
