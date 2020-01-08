@@ -1,0 +1,70 @@
+---
+title: "R_basic2"
+author: "York Lin"
+date: "2020年01月09日"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+### Dataframe
+```{R}
+data("iris")
+head(iris)
+tail(iris, 10)
+str(iris)
+summary(iris)
+
+#use $ 
+iris$Sepal.Length
+iris$Species=="setosa"
+iris[iris$Species=="setosa",]
+
+#使用which 做資料篩選
+which(iris$Species=="setosa")
+
+#用order做資料排序
+iris[order(iris$Sepal.Length, decreasing = TRUE),]
+sort(iris$Sepal.Length, decreasing = TRUE)
+
+#merge進行資料合併
+
+df1 = data.frame(CustomerId = c(1:6), Product = c(rep("Toaster", 3), rep("Radio", 3)))
+df2 = data.frame(CustomerId = c(2, 4, 6), State = c(rep("Alabama", 2), rep("Ohio", 1)))
+
+#Inner join:
+merge(x = df1, y= df2, by="CustomerId")
+
+#Outer join: 
+merge(x = df1, y = df2, by = "CustomerId", all = TRUE)
+
+#Left outer: 
+merge(x = df1, y = df2, by = "CustomerId", all.x = TRUE)
+
+#Right outer:
+merge(x = df1, y = df2, by = "CustomerId", all.y = TRUE)
+
+#Cross join: 
+merge(x = df1, y = df2, by = NULL)
+```
+
+### File read and write
+```{R}
+# getwd()
+setwd('~/lecture/riii')
+# setwd("__your_working_directory_path__")
+tw2330 = read.csv("data/2330.csv", header=TRUE)
+#tw2330 = read.csv('https://github.com/YuHsuanLin/riii/raw/master/data/2330.csv')
+test.data = read.table("data/match.txt" ,header = FALSE, sep="|")
+```
+
+### as. is.
+```{R}
+# as. 形態或物件轉換
+as.numeric(c("1","2","3"))
+# is. 判斷式
+x = c(1,2,3,NA)
+is.na(x)
+!is.na(x)
+x[!is.na(x)]
+```
