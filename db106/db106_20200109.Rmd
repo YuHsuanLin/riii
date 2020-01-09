@@ -15,7 +15,7 @@ tail(iris, 10)
 str(iris)
 summary(iris)
 
-#use $ 
+#use $
 iris$Sepal.Length
 iris$Species=="setosa"
 iris[iris$Species=="setosa",]
