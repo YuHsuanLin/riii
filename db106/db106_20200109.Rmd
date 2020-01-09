@@ -133,7 +133,7 @@ summary(FinancialReport)
 
 ### read json
 ```{R}
-install.packages("dplyr")
+#install.packages("dplyr")
 library('dplyr')
 
 setwd('~/lecture/riii/')
@@ -154,5 +154,82 @@ url <- 'http://opendata.epa.gov.tw/ws/Data/ATM00698/?$format=xml'
 #View(weather)
 #str(weather)
 #weather[ weather$SiteName == '臺北',  c('DataCreationDate','Temperature')   ]
+```
+
+
+### Flow Control
+```{R}
+x=5;
+if(x>3){
+  print("x > 3")
+}else{
+  print("x <= 3")
+}
+
+if(x>3) print("x > 3") else print("x <= 3")
+
+test = ifelse(x>3,"x > 3","x <= 3")
+test
+
+data(iris)
+iris$new_species = factor(ifelse(iris$Species == "setosa","IsSetosa","NotSetosa"))
+str(iris)
+
+x=5;
+if(x>3){
+  print ("x > 3");
+} else if (x ==3){
+  print ("x == 3");
+}else{
+  print("x <= 3");
+}
+
+for(i in 1:10){
+  print(i)
+}
+
+sum=0
+for(i in 1:100){
+  sum= sum+ i;
+}
+sum
+
+sum(1:100)
+
+mat = matrix(1:9, byrow=TRUE, nrow=3)
+for(i in 1:nrow(mat)){
+  for(j in 1:ncol(mat)){
+    print(mat[i,j])
+  }
+}
+
+sum = 0;
+cnt = 0;
+while(cnt <= 100){
+  sum = sum + cnt;
+  cnt = cnt + 1;
+}
+sum
+```
+
+##p86
+```{R}
+mat = matrix(data=rep(1,9^2),nrow = 9)
+mat = matrix(data=0,nrow=9,ncol=9)
+for(i in 1:nrow(mat)){
+  for(j in 1:ncol(mat)){
+    #mat[i,j] = i * j;
+    #mat[i,j] = paste(i,"*",j,"= ",i*j)
+    mat[i,j] = sprintf("%s * %s = %s",i,j,i*j)
+  }
+}
+mat
+
+rep(1,9^2)
+
+mat1 = matrix(1:9, nrow = 9);
+mat2 = matrix(1:9, nrow = 1);
+mat = mat1 %*% mat2;
+mat
 ```
 
