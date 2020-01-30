@@ -190,7 +190,6 @@ g+ geom_histogram()+facet_grid(~genhlth)
 g+ geom_histogram()+facet_grid(gender~genhlth)
 ```
 
-
 ## antv documentation
 - https://antv.alipay.com/zh-cn/vis/chart/index.html
 
@@ -219,4 +218,18 @@ g2 = ggplot(precounted,aes(x=genhlth,y=Freq))+ geom_bar(stat='identity')
 
 #save
 ggsave(filename = './g2.jpg',plot=g2)
+```
+
+
+## Esquisse
+## if mac OS cannot install, try this:
+####
+brew install pkg-config
+install.packages("gdtools", type = "source")
+devtools::install_github("dreamRs/esquisse")
+####
+```{R}
+#install.packages('esquisse')
+#library('esquisse')
+#esquisse::esquisser()
 ```
