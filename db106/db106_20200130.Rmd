@@ -366,3 +366,33 @@ nchar(test_s)
 substring(test_s,2,nchar('abcdef')-1)
 ```
 
+### 遺失值處理(missing value)
+```{R}
+setwd('~/lecture/riii')
+load('./Statistics/applenews.RData')
+
+idx= sample(1:nrow(applenews),size=30)
+applenews[idx,'clicked'] = NA
+
+#找尋遺失值
+is.na(applenews)
+sum(is.na(applenews$clicked))
+
+sapply(names(applenews),function(e){ sum(is.na(applenews[,e])) >0 })
+
+cleaned_data = applenews[!is.na(applenews$clicked),]
+
+#移除missing value
+complete.cases(applenews)
+cleaned_data2 = applenews[complete.cases(applenews),]
+str(cleaned_data2)
+
+#以全體平均填補
+load('./Statistics/applenews.RData')
+applenews[idx,'clicked'] = NA
+
+mean_clicked = round(mean(applenews$clicked,na.rm=T),0)
+applenews$clicked[is.na(applenews$clicked)] = mean_clicked
+
+sum(is.na(applenews$clicked))
+```
