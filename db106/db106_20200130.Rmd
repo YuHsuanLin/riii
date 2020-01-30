@@ -323,3 +323,46 @@ clicked = as.integer(str_match(appledaily$clicked,"人氣\\((\\d+)\\)")[,2])
 appledaily$clicked = clicked
 head(clicked)
 ```
+
+### 其他常見字串處理函式
+```{R}
+#sub (取代第一個遇到的字串)
+s = "aaa bbb ccc aaa bbb aaa"
+sub("aaa","",s)
+
+#利用gsub函數取代 (全局取代)
+gsub("aaa","",s)
+
+#grep()  ==> return index
+test_str = c('abcd','bcd','cde')
+grep('a',test_str)
+test_str[grep('a',test_str)]
+
+setwd('~/lecture/riii')
+load('./Statistics/applenews.RData')
+
+applenews[grep('中國',applenews$title[1:10]),"title"]
+
+#grepl() ==> return boolean 
+grepl('a',test_str)
+test_str[grepl('a',test_str)]
+
+#strsplit() ==> 字串分割
+splited = strsplit(c('abc-def','ddd-ggg'),'-')
+splited
+class(splited)
+
+### 取出list裡面部分元素
+sapply(splited,function(e){e[1]})
+
+splited_vec = unlist(splited)
+length(splited_vec)
+seq(from=1,to=length(splited_vec),by=2)
+splited_vec[seq(from=1,to=length(splited_vec),by=2)]
+
+#substring() ==> 取得部份字串
+test_s = 'abcdef'
+nchar(test_s)
+substring(test_s,2,nchar('abcdef')-1)
+```
+
