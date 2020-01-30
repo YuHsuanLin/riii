@@ -1,0 +1,42 @@
+---
+title: "R_basic3"
+author: "York Lin"
+date: "2020年01月30日"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+### p90 practice
+```{R}
+
+match_func = function(filename,header=F,sep='|'){
+  match = read.table(filename,header = header,sep=sep)
+  mat = matrix(data=rep(-1,25),nrow=5)
+  rownames(mat) = c("A","B","C","D","E")
+  colnames(mat) = c("A","B","C","D","E")
+  for (i in 1:nrow(match)){ 
+    mat[match[i,1],match[i,2]] = match[i,3] 
+  }
+  return(mat)
+}
+
+match_func = function(filename,header,sep){
+  match_df = read.table(filename,header = header,sep=sep)
+  mat = matrix(data=-1,nrow=length(levels(match_df[,1])),ncol=length(levels(match_df[,2])),dimnames = list(levels(match_df[,1]),levels(match_df[,2])))
+  for(i in 1:nrow(match_df)){
+    mat[match_df[i,1],match_df[i,2]] = match_df[i,3]
+  }
+  return(mat)
+}
+```
+
+### 統計圖
+```{R}
+setwd("~/lecture/riii")
+load("./Statistics/cdc.Rdata")
+cdc$exerany = as.factor(cdc$exerany)
+cdc$hlthplan = as.factor(cdc$hlthplan)
+cdc$smoke100 = as.factor(cdc$smoke100)
+str(cdc)
+```
