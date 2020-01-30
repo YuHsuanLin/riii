@@ -49,7 +49,11 @@ barplot(table(cdc$smoke100),xlab='有無吸菸',ylab='人數',main='有無吸菸
 #圓餅圖
 pie(table(cdc$smoke100))
 pie(table(cdc$genhlth))
+
+# col參數可以帶入index,字串,色碼
 pie(table(cdc$genhlth),col = rainbow(5))
+pie(table(cdc$genhlth),col = c(1,2,3,4,5))
+pie(table(cdc$genhlth),col=c("black","red","green","blue","yellow"))
 
 rainbow(5)
 #加上各分類比例
@@ -60,4 +64,64 @@ pie(table(cdc$genhlth), labels = labels)
 #馬賽克圖
 gender_smokers = table(cdc$gender,cdc$smoke100)
 mosaicplot(gender_smokers)
+```
+
+### 統計圖(續)
+```{R}
+#屬量資料
+
+#直方圖
+hist(cdc$height)
+
+par(mfrow=c(1,3))
+hist(cdc$height)
+hist(cdc$height,breaks = 30)
+hist(cdc$height,breaks = 50)
+
+#莖葉圖
+stem(cdc$age)
+tmp=sample(cdc$age,100)
+stem(sample(cdc$age,100))
+?stem
+stem(sample(cdc$age,100),scale=2)
+
+#盒鬚圖
+par(mfrow=c(1,1))
+boxplot(cdc$weight)
+boxplot(cdc$weight, horizontal=TRUE)
+boxplot(cdc$weight ~ cdc$gender)
+boxplot(cdc$height ~ cdc$gender)
+
+bmi = (cdc$weight/cdc$height^2) * 703
+boxplot(bmi ~ cdc$genhlth)
+
+#觀察兩組資料間關係:點散布圖
+plot(cdc$weight, cdc$height)
+plot(cdc$weight, cdc$wtdesire)
+
+plot(cdc[,c('height','weight','wtdesire')])
+
+png(filename='./test123.png')
+plot(cdc$weight, cdc$height)
+dev.off()
+```
+
+## data explorer
+## create_report() error 99 problem
+## downgrade pandoc 2.7 -> 2.6
+- https://github.com/boxuancui/DataExplorer/issues/116
+
+```{R}
+#install.packages('DataExplorer')
+library('DataExplorer')
+help(package = 'DataExplorer')
+
+introduce(iris)
+dummify(iris)
+plot_missing(iris)
+plot_histogram(iris)
+plot_boxplot(iris,by='Species')
+plot_correlation(iris[,-5])
+plot_prcomp(iris)
+#create_report(iris)
 ```
