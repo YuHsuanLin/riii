@@ -189,3 +189,34 @@ g+ geom_histogram()+facet_wrap(~genhlth)
 g+ geom_histogram()+facet_grid(~genhlth)
 g+ geom_histogram()+facet_grid(gender~genhlth)
 ```
+
+
+## antv documentation
+- https://antv.alipay.com/zh-cn/vis/chart/index.html
+
+### ggplot2(續)
+```{R}
+#coordinate
+g <- ggplot(cdc,aes(x=genhlth))
+g+geom_bar()+coord_flip()
+
+g+geom_bar()+coord_polar(theta = 'x')
+g+geom_bar()+coord_polar(theta = 'y')
+g+geom_bar(aes(fill=gender))+coord_polar(theta = 'y')
+
+#pie chart
+ggplot(cdc,aes(x=1)) + geom_bar(aes(fill=genhlth)) + coord_polar(theta = 'y')
+```
+
+```{R}
+precounted = as.data.frame(table(cdc$genhlth))
+names(precounted)[1]= 'genhlth'
+precounted
+
+precounted = as.data.frame(table(cdc$genhlth,dnn = c('genhlth')))
+precounted
+g2 = ggplot(precounted,aes(x=genhlth,y=Freq))+ geom_bar(stat='identity')
+
+#save
+ggsave(filename = './g2.jpg',plot=g2)
+```
