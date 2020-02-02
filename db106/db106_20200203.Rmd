@@ -1,0 +1,118 @@
+---
+title: "R_basic4"
+author: "York Lin"
+date: "2020年02月03日"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+### package dplyr
+- 類SQL語法,select,filter,arrange,mutate...
+- Chaining %>%, debug方便
+
+##### cheat sheet
+- https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf
+
+```{R}
+setwd('~/lecture/riii')
+load('Statistics/applenews.RData')
+str(applenews)
+
+applenews = applenews[,-1]
+
+#install.packages('dplyr')
+library(dplyr)
+
+#dplyr 的過濾功能
+head(filter(applenews, category == "娛樂"))
+
+#dplyr 的欄位選取
+head(select(applenews,category,clicked))
+
+head(select(filter(applenews,category == '娛樂',clicked >= 100000),category,clicked),3)
+
+applenews %>%
+filter(.,category == '娛樂',clicked >= 100000) %>%
+  select(.,category,clicked) %>%
+  head(.,3)
+
+#使用Chaining
+applenews %>%
+  select(.,category,clicked) %>%
+  filter(category == '娛樂') %>%
+  head()
+```
+
+### dplyr(續)
+```{R}
+## %in% 檢查元素的值
+filter(applenews, category %in% c('娛樂','社會'))
+
+#dplyr 的欄位選取
+#選擇列舉出的欄位
+head(select(applenews,category,clicked))
+#選擇從category~clicked欄位
+head(select(applenews,title:dt,category:clicked))
+#選擇欄位名稱含有click字串的欄位
+head(select(applenews,contains('click')))
+
+##iris - selected helpers
+head(select(iris,starts_with("Sepal")))
+head(select(iris,ends_with("Length")))
+
+#group_by & summarise
+applenews %>%
+  group_by(category) %>%
+  summarise(clicked_mean = mean(clicked, na.rm=TRUE)) %>%
+  arrange(desc(clicked_mean))
+
+#多個欄位計算
+applenews %>%
+  group_by(category) %>%
+  summarise_at(.funs=funs(min,max,mean,median,sd), .vars=vars(clicked))
+
+```
+
+
+## alter mysql 8.0 password encryption
+- https://stackoverflow.com/questions/49194719/authentication-plugin-caching-sha2-password-cannot-be-loaded
+
+```
+ALTER USER 'yourusername'@'localhost' IDENTIFIED WITH mysql_native_password BY 'youpassword';
+
+CREATE DATABASE test CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```
+
+```
+console login
+mysql -u USERNAME -p PASSWORD -h HOSTNAMEORIP DATABASENAME
+```
+### dplyr連接資料庫範例(mysql)
+- 可改用 RMariaDB package
+
+```{R}
+#install.packages('dplyr')
+#install.packages('RMariaDB')
+#install.packages('dbplyr')
+library('dplyr')
+library('dbplyr')
+library('RMariaDB')
+
+data("iris")
+##iris example
+conn = dbConnect(MariaDB(),dbname='test',host='127.0.0.1',port=3306,user='root',password='pythonetl')
+db_drop_table(conn,'iris')
+copy_to(conn,iris,temporary = F)
+
+tbl(conn,"iris") %>%
+  select(starts_with('Sepal'),'Species') %>%
+  group_by(Species) %>%
+  summarise_at(.funs=funs(mean(.,na.rm=T),sd(.,na.rm=T)),.vars=vars(starts_with('Sepal'))) %>%
+  collect()
+
+dbGetQuery(conn,'select * from iris') %>% filter(Species == 'setosa')
+dbGetQuery(conn,'select `Sepal.Length` from iris')
+
+dbListTables(conn)
+```
