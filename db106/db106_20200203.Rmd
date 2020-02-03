@@ -49,11 +49,18 @@ applenews %>%
 ## %in% 檢查元素的值
 filter(applenews, category %in% c('娛樂','社會'))
 
+#and 
+head(filter(applenews, category == "娛樂" & clicked > 10000))
+head(filter(applenews, category == "娛樂", clicked > 10000))
+
+#or
+head(filter(applenews, category == "娛樂" | clicked > 10000))
+
 #dplyr 的欄位選取
 #選擇列舉出的欄位
 head(select(applenews,category,clicked))
 #選擇從category~clicked欄位
-head(select(applenews,title:dt,category:clicked))
+select(applenews,title:category) %>% head()
 #選擇欄位名稱含有click字串的欄位
 head(select(applenews,contains('click')))
 
@@ -71,7 +78,6 @@ applenews %>%
 applenews %>%
   group_by(category) %>%
   summarise_at(.funs=funs(min,max,mean,median,sd), .vars=vars(clicked))
-
 ```
 
 
