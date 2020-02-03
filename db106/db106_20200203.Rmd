@@ -200,3 +200,12 @@ test_tree = prune(churn.rp,cp=0.04)
 plot(test_tree, margin=0.1)
 text(test_tree, all=TRUE, use.n=TRUE, cex=0.7)
 ```
+
+## 模型驗證
+```{R}
+library('caret')
+library('e1071')
+predictions <-predict(prune.tree, testset, type='class')
+table(predictions,testset$churn)
+confusionMatrix(table(predictions, testset$churn))
+```
