@@ -147,7 +147,7 @@ sample(1:10, size = 5)
 sample(c(0,1), size= 10, replace = T)
 sample.int(20, 12) # 兩個參數都要放整數，此例為取1:20中的12個不重複樣本
 
-set.seed(2)
+set.seed(222)
 #把資料分成training data 和 testing data
 ind<-sample(1:2, size=nrow(mlc_churn), replace=T, prob=c(0.7, 0.3))
 trainset=mlc_churn[ind==1,]
@@ -178,4 +178,25 @@ text(churn.rp, cex=0.7)
 #install.packages('rpart.plot')
 library('rpart.plot')
 rpart.plot(churn.rp)
+```
+
+## cp
+- http://mlwiki.org/index.php/Cost-Complexity_Pruning
+
+### Prune
+```{R}
+printcp(churn.rp)
+plotcp(churn.rp)
+
+#找出minimum cross-validation errors
+min_row = which.min(churn.rp$cptable[,"xerror"])
+churn.cp = churn.rp$cptable[min_row, "CP"]
+#將churn.cp設為臨界值來修剪樹
+prune.tree=prune(churn.rp, cp=churn.cp)
+plot(prune.tree, uniform=TRUE,branch = 0.6, margin=0.1)
+text(prune.tree, all=TRUE, use.n=TRUE, cex=0.7)
+
+test_tree = prune(churn.rp,cp=0.04)
+plot(test_tree, margin=0.1)
+text(test_tree, all=TRUE, use.n=TRUE, cex=0.7)
 ```
