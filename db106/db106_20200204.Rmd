@@ -210,3 +210,33 @@ rect.hclust(hc, k =3, border="blue")
 c_1 = customer[fit == 1,]
 summary(c_1)
 ```
+
+### 分裂式階層式(top-down)
+```{r}
+#install.packages('cluster')
+library(cluster)
+?diana
+dv =diana(customer_s, metric ="euclidean")
+summary(dv)
+plot(dv)
+
+fit2 =cutree(dv,k=4)
+c_1 = customer[fit2 ==2,]
+summary(c_1)
+```
+
+
+### k-means
+```{R}
+str(customer_s)
+set.seed(22)
+fit =kmeans(customer_s, centers=4)
+?kmeans
+
+barplot(t(fit$centers), beside =TRUE,xlab="cluster", ylab="value")
+?barplot
+fit$centers
+
+summary(customer[fit$cluster == 1,])
+```
+
