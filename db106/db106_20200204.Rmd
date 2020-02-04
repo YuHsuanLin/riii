@@ -78,9 +78,7 @@ getModelInfo('rpart')$rpart$parameters
 
 control=trainControl(method="repeatedcv", number=10, repeats=3,summaryFunction = multiClassSummary,classProbs=T)
 
-#control=trainControl(method="repeatedcv", number=10, repeats=3)
 tune_funs = expand.grid(cp=seq(0,0.1,0.01))
-
 
 model =train(churn~., data=trainset, method="rpart", trControl=control,tuneGrid=tune_funs,metric="AUC")
 
@@ -96,3 +94,23 @@ importance = varImp(model, scale=T)
 importance
 plot(importance)
 ```
+
+### ROC
+- https://www.youtube.com/watch?v=OAl6eAyP-yo
+- http://www.navan.name/roc/
+
+```{R}
+#install.packages("ROCR")
+library(ROCR)
+predictions <-predict(model, testset, type="prob")
+head(predictions)
+pred.to.roc<-predictions[, "yes"]
+head(pred.to.roc)
+pred.rocr<-prediction(pred.to.roc, testset$churn)
+pred.rocr
+perf.rocr<-performance(pred.rocr, measure ="auc")
+perf.tpr.rocr<-performance(pred.rocr, measure="tpr",x.measure = "fpr")
+plot(perf.tpr.rocr,main=paste("AUC:",(perf.rocr@y.values)))
+```
+
+
