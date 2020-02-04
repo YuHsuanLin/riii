@@ -130,8 +130,6 @@ legend("topright",colnames(rf_model$err.rate),col=1:3,cex=0.8,fill=1:3)
 #find nest mtry
 tuneRF(trainset[,-17],trainset$churn)
 
-model = train(churn~.,data=trainset,method='rf',tuneGrid=expand.grid(mtry=c(2,4,8)))
-
 rf_model <- randomForest(churn ~., data = trainset, ntree=50,mtry=8)
 # rf_model = train(churn~.,data=churnTrain,method='rf')
 confusionMatrix(table(predict(rf_model,testset),testset$churn))
@@ -142,7 +140,6 @@ rf.auc <- performance(rf.prediction, measure = "auc")
 rf.performance <- performance(rf.prediction, measure="tpr",x.measure="fpr")
 plot(rf.performance)
 ```
-
 
 #### 比較CART和RandomForest
 ```{R}
@@ -158,3 +155,58 @@ plot(rf.performance,col='black',add=T)
 legend(x=0.7, y=0.2, legend =c('randomforest','rpart'), fill= c("black","red"))
 ```
 
+# 分群問題
+### 距離計算
+```{R}
+x =c(0, 0, 1, 1, 1, 1)
+y =c(1, 0, 1, 1, 0, 1)
+
+#euclidean
+?dist
+rbind(x,y)
+dist(rbind(x,y), method ="euclidean")
+
+#city block
+dist(rbind(x,y), method ="manhattan")
+
+z = c(1,1,1,0,1,1)
+rbind(x,y,z)
+dist(rbind(x,y,z), method ="euclidean")
+dist(rbind(x,y,z), method ="manhattan")
+```
+
+### 聚合式(bottom-up)
+```{R}
+setwd('~/lecture/riii')
+customer=read.csv('data/customer.csv',header=TRUE)
+head(customer)
+str(customer)
+
+#數值變數作正規化
+customer_s =scale(customer[,-1])
+?scale
+
+#正規化後的變數平均數為0, 標準差為1
+round(mean(customer_s[,3]),3)
+round(sd(customer_s[,3]),3)
+
+?hclust
+hc=hclust(dist(customer_s, method="euclidean"), method="ward.D2")
+plot(hc,hang =-0.01, cex=0.7)
+
+hc3 =hclust(dist(customer, method="euclidean"), method="single")
+plot(hc3, hang =-0.01, cex=0.8)
+```
+
+### cutree
+```{R}
+fit =cutree(hc, k =4)
+fit
+table(fit)
+plot(hc, hang =-0.01, cex=0.7)
+rect.hclust(hc, k =4, border="red")
+rect.hclust(hc, k =3, border="blue")
+
+c_1 = customer[fit == 1,]
+summary(c_1)
+```
