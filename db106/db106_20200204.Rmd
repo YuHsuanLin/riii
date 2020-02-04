@@ -114,3 +114,47 @@ plot(perf.tpr.rocr,main=paste("AUC:",(perf.rocr@y.values)))
 ```
 
 
+- http://www.rpubs.com/skydome20/R-Note16-Ensemble_Learning
+### 補充：隨機森林(Random Forest)
+```{R}
+#install.packages('randomForest')
+library(randomForest)
+library('caret')
+library('e1071')
+library(ROCR)
+
+rf_model = randomForest(formula=churn ~ .,data=trainset)
+#find best ntree
+plot(rf_model)
+legend("topright",colnames(rf_model$err.rate),col=1:3,cex=0.8,fill=1:3)
+#find nest mtry
+tuneRF(trainset[,-17],trainset[,17])
+
+model = train(churn~.,data=trainset,method='rf',tuneGrid=expand.grid(mtry=c(2,4,8)))
+
+rf_model <- randomForest(churn ~., data = trainset, ntree=50,mtry=4)
+# rf_model = train(churn~.,data=churnTrain,method='rf')
+confusionMatrix(table(predict(rf_model,testset),testset$churn))
+
+rf.predict.prob <- predict(rf_model, testset, type="prob")
+rf.prediction <- prediction(rf.predict.prob[,"yes"], as.factor(testset$churn))
+rf.auc <- performance(rf.prediction, measure = "auc")
+rf.performance <- performance(rf.prediction, measure="tpr",x.measure="fpr")
+plot(rf.performance)
+```
+
+
+#### 比較CART和RandomForest
+```{R}
+tune_funs = expand.grid(cp=seq(0,0.1,0.01))
+rpart_model =train(churn~., data=churnTrain, method="rpart",tuneGrid=tune_funs)
+
+rpart_prob_yes = predict(rpart_model,churnTest,type='prob')[,1]
+rpart_pred.rocr = prediction(rpart_prob_yes,churnTest$churn)
+rpart_perf.rocr = performance(rpart_pred.rocr,measure = 'tpr',x.measure = 'fpr')
+
+plot(rpart_perf.rocr,col='red')
+plot(rf.performance,col='black',add=T)
+legend(x=0.7, y=0.2, legend =c('randomforest','rpart'), fill= c("black","red"))
+```
+
