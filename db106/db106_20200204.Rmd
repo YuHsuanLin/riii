@@ -56,7 +56,7 @@ control=trainControl(method="repeatedcv", number=10, repeats=3)
 
 model =train(churn~., data=trainset, method="rpart", trControl=control)
 
-predictions = predict(model,testset)
+predictions = predict(model,testset,type='raw')
 table(predictions,testset$churn)
 confusionMatrix(table(predictions,testset$churn))
 ```
