@@ -128,11 +128,11 @@ rf_model = randomForest(formula=churn ~ .,data=trainset)
 plot(rf_model)
 legend("topright",colnames(rf_model$err.rate),col=1:3,cex=0.8,fill=1:3)
 #find nest mtry
-tuneRF(trainset[,-17],trainset[,17])
+tuneRF(trainset[,-17],trainset$churn)
 
 model = train(churn~.,data=trainset,method='rf',tuneGrid=expand.grid(mtry=c(2,4,8)))
 
-rf_model <- randomForest(churn ~., data = trainset, ntree=50,mtry=4)
+rf_model <- randomForest(churn ~., data = trainset, ntree=50,mtry=8)
 # rf_model = train(churn~.,data=churnTrain,method='rf')
 confusionMatrix(table(predict(rf_model,testset),testset$churn))
 
@@ -147,10 +147,10 @@ plot(rf.performance)
 #### 比較CART和RandomForest
 ```{R}
 tune_funs = expand.grid(cp=seq(0,0.1,0.01))
-rpart_model =train(churn~., data=churnTrain, method="rpart",tuneGrid=tune_funs)
+rpart_model =train(churn~., data=trainset, method="rpart",tuneGrid=tune_funs)
 
-rpart_prob_yes = predict(rpart_model,churnTest,type='prob')[,1]
-rpart_pred.rocr = prediction(rpart_prob_yes,churnTest$churn)
+rpart_prob_yes = predict(rpart_model,testset,type='prob')[,1]
+rpart_pred.rocr = prediction(rpart_prob_yes,testset$churn)
 rpart_perf.rocr = performance(rpart_pred.rocr,measure = 'tpr',x.measure = 'fpr')
 
 plot(rpart_perf.rocr,col='red')
