@@ -240,3 +240,46 @@ fit$centers
 summary(customer[fit$cluster == 1,])
 ```
 
+### Evaluating model
+```{R}
+#silhouette
+library('cluster')
+set.seed(22)
+km =kmeans(customer_s, 4)
+kms=silhouette(km$cluster,dist(customer_s))
+summary(kms)
+plot(kms)
+```
+
+### cluster.stats
+```{R}
+#install.packages("fpc")
+library(fpc)
+?cluster.stats
+c_stats = cluster.stats(dist(customer_s),km$cluster)
+c_stats$avg.silwidth
+c_stats$within.cluster.ss
+```
+
+### 選擇k-means最佳k值
+```{R}
+nk=2:10
+
+cluster.stats(dist(customer_s),kmeans(customer_s,2)$cluster)
+cluster.stats(dist(customer_s),kmeans(customer_s,2)$cluster)$avg.silwidth
+
+cluster.stats(dist(customer_s),kmeans(customer_s,2)$cluster)$within.cluster.ss
+
+# avg silhouette
+SW = sapply(nk,function(k){
+  set.seed(22); cluster.stats(dist(customer_s),kmeans(customer_s,k)$cluster)$avg.silwidth
+})
+
+plot(x=nk,y=SW,type='l')
+
+#within sum of squares
+WSS =sapply(nk, function(k){set.seed(22);cluster.stats(dist(customer_s),kmeans(customer_s,k)$cluster)$within.cluster.ss})
+WSS
+plot(x=nk, y=WSS, type="l", xlab="number of k", ylab="within sum of squares")
+```
+
