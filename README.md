@@ -1,27 +1,11 @@
 ﻿# R 語言基礎
 
-### DB106
-### CLASS 1
-- http://rpubs.com/YorkLin/riii_200107
-
-### CLASS 2
-- http://rpubs.com/YorkLin/riii_200109
-
-### CLASS 3
-- http://rpubs.com/YorkLin/riii_20200130
-
-### CLASS 4
-- http://rpubs.com/YorkLin/riii_200203
-
-### CLASS 5
-- http://rpubs.com/YorkLin/riii_200204
-
 ## Download R
-- http://cran.csie.ntu.edu.tw/bin/windows/base/R-3.5.3-win.exe 
+- http://cran.csie.ntu.edu.tw/bin/windows/base/
 - http://course.largitdata.com/course/33
 
 ## Download RStudio
-- https://download1.rstudio.org/desktop/windows/RStudio-1.2.1335.exe 
+- https://rstudio.com/products/rstudio/download/ 
 - http://course.largitdata.com/course/34
 
 ## install R 3.5 on ubuntu16.04
