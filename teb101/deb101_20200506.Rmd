@@ -186,3 +186,40 @@ paste(c("big","bang"),1:2)
 paste(c("big","bang"),1:2,collapse = "+" )
 length(paste(c("big","bang"),1:2,collapse = "+" ))
 ```
+
+### Matrix
+```{R}
+matrix(1:9, byrow=TRUE, nrow=3)
+matrix(1:9, nrow=3)
+kevin = c(85,73)
+marry = c(72,64)
+jerry = c(59,66)
+mat = matrix(c(kevin, marry, jerry), nrow=3, byrow= TRUE)
+colnames(mat) = c('first', 'second')
+rownames(mat) = c('kevin', 'marry', 'jerry')
+mat
+
+#取得矩陣維度
+dim(mat)
+#取得矩陣列數
+nrow(mat)
+#取得矩陣欄數
+ncol(mat)
+#矩陣轉置(transpose)
+t(mat)
+
+#取第一列
+mat[1,]
+#取第一行
+mat[,1]
+#取第一、二列
+mat[1:2,]
+
+#取kevin和jerry成績
+mat[c('kevin','jerry'),]
+#取kevin和jerry成績的第一次考試成績
+mat[c('kevin','jerry'),'first']
+
+#取得第一次考試成績不及格的人
+mat[mat[,1] < 60,'first']
+```
