@@ -326,7 +326,7 @@ names(s)
 names(s) = names(iris[1:4])
 ```
 
-#連續變數常用統計量
+### 連續變數常用統計量
 ```{R}
 #集中趨勢
 mean(iris$Sepal.Length)
@@ -342,7 +342,7 @@ sd(iris$Sepal.Length)
 cor(iris[,-5])
 ```
 
-##dataexplorer
+### dataexplorer
 ## create_report() error 99 problem
 ## downgrade pandoc 2.7 -> 2.6
 - https://github.com/boxuancui/DataExplorer/issues/116
@@ -359,4 +359,33 @@ plot_boxplot(iris,by='Species')
 plot_correlation(iris[,-5])
 plot_prcomp(iris)
 #create_report(iris)
+```
+
+### dplyr
+```{R}
+#install.packages('dplyr')
+library('dplyr')
+
+#filter
+iris[iris$Species== 'setosa',]
+filter(iris,Species=='setosa')
+filter(iris,Species=='setosa' & Sepal.Length > 5.5)
+filter(iris,Species=='setosa',Sepal.Length > 5.5)
+filter(iris,Species=='setosa' | Species=='versicolor')
+filter(iris,Species %in% c('setosa','versicolor'))
+
+#select
+iris[,c('Sepal.Length','Sepal.Width')]
+select(iris,Sepal.Length,Sepal.Width)
+select(iris,Sepal.Length:Sepal.Width)
+select(iris,starts_with('Sepal'))
+select(iris,ends_with('Length'))
+
+#chaining
+iris %>%
+select(Sepal.Length,Species) %>%
+filter(Species=='setosa') %>%
+head()
+
+head(filter(select(iris,Sepal.Length,Species),Species=='setosa'))
 ```
