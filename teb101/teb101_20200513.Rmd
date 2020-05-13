@@ -433,7 +433,7 @@ data("iris")
 
 conn = dbConnect(MariaDB(),dbname='test',host='127.0.0.1',port=3306,user='root',password='pythonetl')
 
-
+dbListTables(conn)
 
 db_drop_table(conn,'iris')
 copy_to(conn,iris,temporary = F)
@@ -446,7 +446,4 @@ tbl(conn,"iris") %>%
 
 dbGetQuery(conn,'select * from iris') %>% filter(Species == 'setosa')
 dbGetQuery(conn,'select `Sepal.Length` from iris')
-
-dbListTables(conn)
-
 ```
