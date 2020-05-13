@@ -75,3 +75,14 @@ is.na(x)
 x[!is.na(x)]
 ```
 
+#example
+```{R}
+tw2330 = read.csv('~/lecture/riii/data/2330.csv',header = T)
+str(tw2330)
+tw2330$Date
+as.Date(tw2330$Date)
+class(as.Date(tw2330$Date))
+tw2330$Date_new = as.Date(tw2330$Date)
+str(tw2330)
+tw2330$Date_new >= "2018-01-01"
+```
