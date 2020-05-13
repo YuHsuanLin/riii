@@ -325,3 +325,38 @@ s = lapply(names(iris[1:4]),function(e){tapply(iris[,e],iris$Species,mean) })
 names(s)
 names(s) = names(iris[1:4])
 ```
+
+#連續變數常用統計量
+```{R}
+#集中趨勢
+mean(iris$Sepal.Length)
+median(iris$Sepal.Length)
+
+#離散趨勢
+range(iris$Sepal.Length)
+IQR(iris$Sepal.Length)
+var(iris$Sepal.Length)
+sd(iris$Sepal.Length)
+
+#相關性
+cor(iris[,-5])
+```
+
+##dataexplorer
+## create_report() error 99 problem
+## downgrade pandoc 2.7 -> 2.6
+- https://github.com/boxuancui/DataExplorer/issues/116
+```{R}
+#install.packages('DataExplorer')
+library('DataExplorer')
+help(package = 'DataExplorer')
+
+introduce(iris)
+dummify(iris)
+plot_missing(iris)
+plot_histogram(iris)
+plot_boxplot(iris,by='Species')
+plot_correlation(iris[,-5])
+plot_prcomp(iris)
+#create_report(iris)
+```
