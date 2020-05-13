@@ -387,5 +387,26 @@ select(Sepal.Length,Species) %>%
 filter(Species=='setosa') %>%
 head()
 
-head(filter(select(iris,Sepal.Length,Species),Species=='setosa'))
+#arrange
+iris %>%
+  select(Sepal.Length,Species) %>%
+  filter(Species=='setosa') %>%
+  arrange(desc(Sepal.Length)) %>%
+  head(10)
+
+### group_by + summarise
+iris %>%
+  group_by(Species) %>%
+  summarise(sepal_length_mean = mean(Sepal.Length)) %>%
+  arrange(sepal_length_mean)
+
+### group_by + summarise_at
+iris %>%
+  group_by(Species) %>%
+  summarise_at(.vars=vars(Sepal.Length,Sepal.Width,Petal.Length,Petal.Width),.funs=funs(mean))
+
+## dplyr 0.8up funs() -> list()
+iris %>%
+  group_by(Species) %>%
+  summarise_at(.vars=vars(Sepal.Length,Sepal.Width,Petal.Length,Petal.Width),.funs=list(mean,median,min,max))
 ```
