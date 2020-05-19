@@ -93,4 +93,28 @@ ggsave(filename='./your_file_name.png',plot = g2)
 #esquisse::esquisser()
 ```
 
+### outliers
+```{R}
+scale(iris$Sepal.Width)
+iris[abs(scale(iris$Sepal.Width)) > 3,]
 
+library(dplyr)
+iris %>% filter(!abs(scale(iris$Sepal.Width)) > 3)
+
+
+IQR(iris$Sepal.Width)
+q1 = quantile(iris$Sepal.Width,0.25)
+q3 = quantile(iris$Sepal.Width,0.75)
+low_limit = q1 - 1.5 * IQR(iris$Sepal.Width)
+up_limit = q3 + 1.5 * IQR(iris$Sepal.Width)
+iris$Sepal.Width < low_limit | iris$Sepal.Width > up_limit
+iris %>% filter(!iris$Sepal.Width < low_limit | iris$Sepal.Width > up_limit)
+
+
+boxplot(iris$Sepal.Width)
+boxplot.stats(iris$Sepal.Width)
+boxplot.stats(iris$Sepal.Width)$out
+condition = !iris$Sepal.Width %in% boxplot.stats(iris$Sepal.Width)$out
+
+boxplot(iris[condition,]$Sepal.Width)
+```
