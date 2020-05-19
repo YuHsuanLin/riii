@@ -43,5 +43,27 @@ g + geom_point(aes(col=Species))
 g <- ggplot(iris,aes(x=Species))
 g+geom_bar()
 g+geom_bar(fill='snow',color='black')
-g + ylab('Count') + ggtitle('iris')
 ```
+
+```{R}
+#stat
+g + geom_bar(stat = 'count')
+g + stat_count(geom='bar')
+
+# label , title
+g + geom_bar(stat = 'count') + ylab('Count') + ggtitle('iris')
+
+#theme
+g + geom_bar() + theme(text=element_text(size=16, family="Songti SC"))
+
+g + geom_bar() + theme_gray()
+
+#position
+iris$Sepal.Length.Cat = cut(iris$Sepal.Length,breaks= 3,right=F)
+levels(iris$Sepal.Length.Cat) = c("Short","Medium","Long")
+g = ggplot(iris,aes(x=Species))
+g+geom_bar(aes(fill=Sepal.Length.Cat),position='stack')
+g+geom_bar(aes(fill=Sepal.Length.Cat),position='dodge')
+g+geom_bar(aes(fill=Sepal.Length.Cat),position='fill')
+```
+
