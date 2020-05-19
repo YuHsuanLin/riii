@@ -26,6 +26,17 @@ strong support community(the mostly download package on CRAN)
 #install.packages('ggplot2')
 library('ggplot2')
 g <- ggplot(iris,aes(x=Sepal.Length,y=Sepal.Width))
+g + geom_point()
+
+g <- ggplot(iris,aes(x=Sepal.Length,y=Sepal.Width,col=Species))
+g + geom_point()
+
+g <- ggplot(iris,aes(x=Sepal.Length,y=Sepal.Width,shape=Species))
+g + geom_point()
+
+?aes()
+
+g <- ggplot(iris,aes(x=Sepal.Length,y=Sepal.Width))
 g + geom_point(aes(col=Species))
 
 #bar chart
