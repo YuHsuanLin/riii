@@ -10,7 +10,7 @@ editor_options:
 ## Regression
 ```{R}
 setwd('~/lecture/riii/')
-house = read.csv('~/lecture/riii/data/house-prices.csv',header = T)
+house = read.csv('./data/house-prices.csv',header = T)
 model = lm(formula = Price~SqFt,data = house)
 
 plot(house$SqFt,house$Price)
@@ -24,11 +24,14 @@ plot(model)
 #H0:殘差為常態分配
 shapiro.test(model$residuals)
 #檢查殘差是否獨立
+#H0: 樣本間獨立
+#H1: 不獨立
 install.packages('car')
 library(car)
 durbinWatsonTest(model)
 #檢定各殘差變異數是否相等
-#H0:各殘差變異數相等
+#H0:各殘差變異數為常數
+#H1:各殘差變異數非常數
 ncvTest(model)
 
 summary(model)
