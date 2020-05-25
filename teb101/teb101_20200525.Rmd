@@ -109,3 +109,99 @@ pred = predict(model2,testset[,-5],type='class')
 tbl =table(pred,testset[,5])
 tbl
 ```
+
+## logistic regression
+```{R}
+data(iris)
+iris <- iris[(iris$Species != 'setosa'),]
+iris$Species <- as.factor(iris$Species)
+model = glm(Species ~ ., data=iris, family = binomial)
+summary(model)
+
+predict(model,iris, type="response")
+round(predict(model,iris, type="response"),2)
+```
+
+### svm
+- https://www.youtube.com/watch?time_continue=42&v=3liCbRZPrZA&feature=emb_logo
+
+```{R}
+library(e1071)
+data(iris)
+iris <- iris[(iris$Species != 'setosa'),]
+iris$Species <- as.factor(iris$Species)
+model = svm(Species~., iris)
+summary(model)
+predict(model,iris[,-5])
+```
+
+# Classification
+### Decision Tree - using churn data in C50 package
+```{R}
+#install.packages('modeldata')
+library(modeldata)
+data(mlc_churn)
+
+str(mlc_churn)
+
+names(mlc_churn) %in% c("state", "area_code", "account_length")
+!names(mlc_churn) %in% c("state", "area_code", "account_length")
+#選擇建模變數
+variable.list = !names(mlc_churn) %in% c('state','area_code','account_length')
+mlc_churn=mlc_churn[,variable.list]
+
+str(mlc_churn)
+
+set.seed(2)
+#把資料分成training data 和 testing data
+ind<-sample(1:2, size=nrow(mlc_churn), replace=T, prob=c(0.7, 0.3))
+trainset=mlc_churn[ind==1,]
+testset=mlc_churn[ind==2,]
+```
+
+### rpart
+```{R}
+#install.packages('rpart')
+library('rpart')
+#使用rpart(CART)建立決策樹模型
+?rpart
+con = rpart.control(minsplit=20,cp=0.01)
+?rpart.control
+churn.rp<-rpart(churn ~., data=trainset,control = con)
+#churn.rp<-rpart(churn ~ total_day_charge + international_plan, data=trainset)
+
+churn.rp
+s = summary(churn.rp)
+s$cptable
+
+#畫出決策樹
+par(mfrow=c(1,1))
+?plot.rpart
+plot(churn.rp, uniform=TRUE,compress=TRUE,margin=0.02)
+text(churn.rp, cex=0.8)
+
+#install.packages('rpart.plot')
+library('rpart.plot')
+rpart.plot(churn.rp)
+```
+
+## cp
+- http://mlwiki.org/index.php/Cost-Complexity_Pruning
+
+### Prune
+```{R}
+printcp(churn.rp)
+plotcp(churn.rp)
+
+#找出minimum cross-validation errors
+min_row = which.min(churn.rp$cptable[,"xerror"])
+churn.cp = churn.rp$cptable[min_row, "CP"]
+#將churn.cp設為臨界值來修剪樹
+prune.tree=prune(churn.rp, cp=churn.cp)
+plot(prune.tree, uniform=TRUE,compress=TRUE,margin=0.02)
+text(prune.tree, cex=0.8)
+
+test_tree = prune(churn.rp,cp=0.04)
+plot(test_tree, uniform=TRUE,compress=TRUE,margin=0.02)
+text(test_tree, cex=0.8)
+```
