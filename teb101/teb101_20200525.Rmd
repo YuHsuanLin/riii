@@ -1,7 +1,7 @@
 ---
-title: "R_DataMining1"
+title: "R_DataMining2"
 author: "York Lin"
-date: "2020年05月19日"
+date: "2020年05月25日"
 output: html_document
 editor_options: 
   chunk_output_type: console

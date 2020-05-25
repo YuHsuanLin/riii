@@ -240,7 +240,6 @@ rules = rules[!is.redundant(rules)]
 inspect(rules)
 
 ## interestMeasure(其他衡量指標)
-
 quality(rules)
 ?interestMeasure
 kulc = interestMeasure(rules,measure = 'kulczynski',transactions = Groceries)
@@ -253,3 +252,8 @@ sort_rules %>% head() %>% inspect()
 
 plot(sort_rules[1:10],method='graph',shading='kulc')
 ```
+
+## fp-growth
+- https://kknews.cc/code/8pxzm9q.html
+- https://kknews.cc/tech/v9bqqaq.html
+
