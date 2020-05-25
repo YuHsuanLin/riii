@@ -209,6 +209,8 @@ text(test_tree, cex=0.8)
 
 ## 模型驗證
 ```{R}
+#install.packages('caret')
+#install.packages('e1071')
 library('caret')
 library('e1071')
 predictions <-predict(prune.tree, testset, type='class')
