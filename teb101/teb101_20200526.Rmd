@@ -1,0 +1,33 @@
+---
+title: "R_DataMining3"
+author: "York Lin"
+date: "2020年05月26日"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+### use caret package
+```{R}
+#install.packages("caret")
+library(caret)
+control=trainControl(method="repeatedcv", number=10, repeats=3)
+
+model =train(churn~., data=trainset, method="rpart", trControl=control)
+
+predictions = predict(model,testset,type='raw')
+table(predictions,testset$churn)
+confusionMatrix(table(predictions,testset$churn))
+```
+
+### caret 套件使用說明
+```{R}
+# 查詢caret package 有實作的所有演算法
+names(getModelInfo())
+# 查詢caret package 有沒有實作rpart演算法
+names(getModelInfo())[grep('rpart',names(getModelInfo()))]
+# 查詢rpart model資訊
+getModelInfo('rpart')
+# 查詢rpart model可以tune的parameters
+getModelInfo('rpart')$rpart$parameters
+```
