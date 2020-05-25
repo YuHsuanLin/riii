@@ -74,3 +74,38 @@ error = testset$Price - testset$predicted_price
 MAPE = mean(abs(testset$Price - testset$predicted_price) / testset$Price)
 MAPE
 ```
+
+## Classification
+```{R}
+#iris example
+#install.packages('rpart')
+library('rpart')
+data("iris")
+model = rpart(Species ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width,data=iris)
+summary(model)
+par(mfrow=c(1,1))
+plot(model,margin=0.1)
+text(model)
+
+plot(iris$Petal.Length,iris$Petal.Width,col = iris$Species)
+abline(h= 1.75, col= 'blue')
+abline(v = 2.45, col='red')
+
+predict(model,iris[,1:4],type='class')
+table(predict(model,iris[,1:4],type='class'),iris[,5])
+```
+
+## split training/testing data
+```{R}
+idx= sample(1:2,nrow(iris),replace=T,prob=c(0.7,0.3))
+trainset = iris[idx==1,]
+testset = iris[idx==2,]
+
+model2 = rpart(Species~.,data=trainset)
+plot(model2,margin=0.1)
+text(model2)
+
+pred = predict(model2,testset[,-5],type='class')
+tbl =table(pred,testset[,5])
+tbl
+```
