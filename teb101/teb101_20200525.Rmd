@@ -126,6 +126,7 @@ round(predict(model,iris, type="response"),2)
 - https://www.youtube.com/watch?time_continue=42&v=3liCbRZPrZA&feature=emb_logo
 
 ```{R}
+install.packages('e1071')
 library(e1071)
 data(iris)
 iris <- iris[(iris$Species != 'setosa'),]
@@ -204,4 +205,13 @@ text(prune.tree, cex=0.8)
 test_tree = prune(churn.rp,cp=0.04)
 plot(test_tree, uniform=TRUE,compress=TRUE,margin=0.02)
 text(test_tree, cex=0.8)
+```
+
+## 模型驗證
+```{R}
+library('caret')
+library('e1071')
+predictions <-predict(prune.tree, testset, type='class')
+table(predictions,testset$churn)
+confusionMatrix(table(predictions, testset$churn))
 ```
