@@ -72,9 +72,42 @@ confusionMatrix(table(predictions,testset$churn))
 
 # svm
 control=trainControl(method="repeatedcv", number=10, repeats=3,summaryFunction = multiClassSummary,classProbs=T)
-tune_funs = expand.grid(C=c(1,10,100))
-model =train(churn~., data=trainset, method="svmLinear",trControl=control,tuneGrid=tune_funs)
-model =train(churn~., data=trainset, method="svmRadial",trControl=control)
-predictions = predict(model, testset)
+
+getModelInfo('svmLinear')$svmLinear$parameters
+svm_linear_tune_funs = expand.grid(C=c(1,10,100))
+svm_linear_model =train(churn~., data=trainset, method="svmLinear",trControl=control,tuneGrid=svm_linear_tune_funs)
+
+predictions = predict(svm_linear_model, testset)
+confusionMatrix(table(predictions,testset$churn))
+
+getModelInfo('svmRadial')$svmRadial$parameters
+svm_radial_tune_funs = expand.grid(C=c(1,10),sigma=c(1,10))
+svm_radial_model =train(churn~., data=trainset, method="svmRadial",trControl=control,tuneGrid=svm_radial_tune_funs)
+
+predictions = predict(svm_radial_model, testset)
 confusionMatrix(table(predictions,testset$churn))
 ```
+
+### find importance variable
+```{R}
+library('caret')
+importance = varImp(model, scale=T)
+importance
+plot(importance)
+```
+
+### ROC
+- https://www.youtube.com/watch?v=OAl6eAyP-yo
+- http://www.navan.name/roc/
+
+```{R}
+#install.packages("ROCR")
+library(ROCR)
+pred <-predict(model, testset, type="prob")
+p_yes<-pred[, "yes"]
+predictions<-prediction(p_yes, testset$churn)
+per_auc<-performance(predictions, measure ="auc")
+per_fpr_tpr<-performance(predictions, measure="tpr",x.measure = "fpr")
+plot(per_fpr_tpr,main=paste("AUC:",(per_auc@y.values)))
+```
+
