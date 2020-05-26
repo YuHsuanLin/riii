@@ -182,8 +182,9 @@ table(fit)
 plot(hc, cex=0.4)
 rect.hclust(hc, k =3, border="red")
 
-summary(iris[fit$cluster == 1,])
+summary(iris[fit == 1,])
 ```
+
 # kmeans
 ```{R}
 set.seed(22)
@@ -196,4 +197,40 @@ barplot(t(k_model$centers), beside =TRUE,xlab="cluster", ylab="value")
 k_model$centers
 
 summary(iris[k_model$cluster == 1,])
+```
+
+
+```{R}
+library('cluster')
+set.seed(22)
+k_model =kmeans(iris_s, 3)
+kms=silhouette(k_model$cluster,dist(iris_s))
+summary(kms)
+plot(kms)
+
+## find k
+#install.packages("fpc")
+library(fpc)
+?cluster.stats
+c_stats = cluster.stats(dist(iris_s),k_model$cluster)
+c_stats$avg.silwidth
+c_stats$within.cluster.ss
+
+nk=2:6
+cluster.stats(dist(iris_s),kmeans(iris_s,2)$cluster)
+cluster.stats(dist(iris_s),kmeans(iris_s,2)$cluster)$avg.silwidth
+cluster.stats(dist(iris_s),kmeans(iris_s,2)$cluster)$within.cluster.ss
+
+# avg silhouette
+SW = sapply(nk,function(k){
+  set.seed(22); cluster.stats(dist(iris_s),kmeans(iris_s,k)$cluster)$avg.silwidth
+})
+
+plot(x=nk,y=SW,type='l')
+
+#within sum of squares
+WSS =sapply(nk, function(k){set.seed(22);cluster.stats(dist(iris_s),kmeans(iris_s,k)$cluster)$within.cluster.ss})
+WSS
+plot(x=nk, y=WSS, type="l", xlab="number of k", ylab="within sum of squares")
+
 ```
