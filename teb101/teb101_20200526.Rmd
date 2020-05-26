@@ -111,3 +111,37 @@ per_fpr_tpr<-performance(predictions, measure="tpr",x.measure = "fpr")
 plot(per_fpr_tpr,main=paste("AUC:",(per_auc@y.values)))
 ```
 
+
+- http://www.rpubs.com/skydome20/R-Note16-Ensemble_Learning
+### 補充：隨機森林(Random Forest)
+```{R}
+#install.packages('randomForest')
+library(randomForest)
+library('caret')
+library('e1071')
+library(ROCR)
+
+rf_model = randomForest(formula=churn ~ .,data=trainset)
+#find best ntree
+plot(rf_model)
+legend("topright",colnames(rf_model$err.rate),col=1:3,cex=0.8,fill=1:3)
+#find nest mtry
+tuneRF(trainset[,-17],trainset$churn)
+
+rf_model <- randomForest(churn ~., data = trainset, ntree=50,mtry=4)
+# rf_model = train(churn~.,data=churnTrain,method='rf')
+confusionMatrix(table(predict(rf_model,testset),testset$churn))
+
+
+rf_pred <-predict(rf_model, testset, type="prob")
+rf_p_yes<-rf_pred[, "yes"]
+rf_predictions<-prediction(rf_p_yes, testset$churn)
+rf_per_fpr_tpr<-performance(rf_predictions, measure="tpr",x.measure = "fpr")
+```
+
+#### 比較CART和RandomForest
+```{R}
+plot(per_fpr_tpr,col='red')
+plot(rf_per_fpr_tpr,col='black',add=T)
+legend(x=0.7, y=0.2, legend =c('randomforest','rpart'), fill= c("black","red"))
+```
