@@ -232,5 +232,61 @@ plot(x=nk,y=SW,type='l')
 WSS =sapply(nk, function(k){set.seed(22);cluster.stats(dist(iris_s),kmeans(iris_s,k)$cluster)$within.cluster.ss})
 WSS
 plot(x=nk, y=WSS, type="l", xlab="number of k", ylab="within sum of squares")
+```
+
+```{R}
+setwd('~/lecture/riii')
+customer=read.csv('./data/customer.csv',header = T) 
+
+head(customer)
+str(customer)
+
+customer_s =scale(customer[,-1])
+
+nk= 2:8
+SW = sapply(nk,function(k){ set.seed(22);
+cluster.stats(dist(customer_s),kmeans(customer_s,k)$cluster)$avg.silwidth })
+
+WSS = sapply(nk, function(k){ set.seed(22);
+cluster.stats(dist(customer_s),kmeans(customer_s,k)$cluster) $within.cluster.ss
+})
+
+plot(x=nk,y=SW,type='l')
+plot(x=nk,y=WSS,type='l')
+k_model = kmeans(customer_s,centers=4)
+
+single_c = hclust(dist(customer_s), method="single")
+hc_single = cutree(single_c, k = 4)
+complete_c = hclust(dist(customer_s), method="complete")
+hc_complete = cutree(complete_c, k = 4)
+
+sapply(
+list(kmeans = k_model$cluster,hc_single =
+hc_single,hc_complete = hc_complete), function(c) { cluster.stats(dist(customer_s), c)[c("avg.silwidth")] })
 
 ```
+
+### density-based method-DBSCAN
+- http://123android.blogspot.tw/2012/01/28dec11-data-mining.html
+```{R}
+#install.packages("mlbench")
+# mlbench package provides many methods to generate simulated data with different shapes and sizes.
+#In this example, we generate a Cassini problem graph
+library(mlbench)
+#install.packages("fpc")
+library(fpc)
+set.seed(2)
+p = mlbench.cassini(500)
+plot(p$x)
+
+?mlbench.cassini
+
+ds = dbscan(data = dist(p$x),eps= 0.2, MinPts = 5, method="dist")
+ds
+plot(ds, p$x)
+
+#filter群集的raw data
+cluster_1_raw = p$x[ds$cluster == 1,]
+cluster_1_raw
+```
+
