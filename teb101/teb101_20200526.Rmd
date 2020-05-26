@@ -217,13 +217,13 @@ c_stats$avg.silwidth
 c_stats$within.cluster.ss
 
 nk=2:6
-cluster.stats(dist(iris_s),kmeans(iris_s,2)$cluster)
-cluster.stats(dist(iris_s),kmeans(iris_s,2)$cluster)$avg.silwidth
-cluster.stats(dist(iris_s),kmeans(iris_s,2)$cluster)$within.cluster.ss
+cluster.stats(dist(iris_s),kmeans(iris_s,centers=2)$cluster)
+cluster.stats(dist(iris_s),kmeans(iris_s,centers=2)$cluster)$avg.silwidth
+cluster.stats(dist(iris_s),kmeans(iris_s,centers=2)$cluster)$within.cluster.ss
 
 # avg silhouette
 SW = sapply(nk,function(k){
-  set.seed(22); cluster.stats(dist(iris_s),kmeans(iris_s,k)$cluster)$avg.silwidth
+  set.seed(22); cluster.stats(dist(iris_s),kmeans(iris_s,centers=k)$cluster)$avg.silwidth
 })
 
 plot(x=nk,y=SW,type='l')
