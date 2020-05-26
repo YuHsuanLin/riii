@@ -184,3 +184,16 @@ rect.hclust(hc, k =3, border="red")
 
 summary(iris[fit$cluster == 1,])
 ```
+# kmeans
+```{R}
+set.seed(22)
+iris_s = as.data.frame(scale(iris[,-5]))
+k_model =kmeans(iris_s, centers=3)
+?kmeans
+
+barplot(t(k_model$centers), beside =TRUE,xlab="cluster", ylab="value")
+?barplot
+k_model$centers
+
+summary(iris[k_model$cluster == 1,])
+```
