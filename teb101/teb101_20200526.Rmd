@@ -24,11 +24,10 @@ ind<-sample(1:2, size=nrow(mlc_churn), replace=T, prob=c(0.7, 0.3))
 trainset=mlc_churn[ind==1,]
 testset=mlc_churn[ind==2,]
 
-
-
 control=trainControl(method="cv", number=10,summaryFunction = multiClassSummary,classProbs=T)
+#control=trainControl(method="cv", number=5)
 
-model =train(churn~., data=trainset, method="rpart", trControl=control)
+model =train(churn~., data=trainset, method="rpart",metric='F1', trControl=control)
 
 predictions = predict(model,testset,type='raw')
 table(predictions,testset$churn)
@@ -45,4 +44,37 @@ names(getModelInfo())[grep('rpart',names(getModelInfo()))]
 getModelInfo('rpart')
 # 查詢rpart model可以tune的parameters
 getModelInfo('rpart')$rpart$parameters
+```
+
+### caret tune
+```{R}
+
+control=trainControl(method="repeatedcv", number=10, repeats=3,summaryFunction = multiClassSummary,classProbs=T)
+
+tune_funs = expand.grid(cp=seq(0,0.1,0.01))
+
+model =train(churn~., data=trainset, method="rpart", trControl=control,tuneGrid=tune_funs,metric="F1")
+
+model
+predictions = predict(model, testset)
+confusionMatrix(table(predictions,testset$churn))
+```
+
+### svm
+- https://www.youtube.com/watch?time_continue=42&v=3liCbRZPrZA&feature=emb_logo
+
+### other algorithm
+```{R}
+#Logistic regression
+model =train(churn~., data=trainset, method="glm",family=binomial())
+predictions = predict(model, testset)
+confusionMatrix(table(predictions,testset$churn))
+
+# svm
+control=trainControl(method="repeatedcv", number=10, repeats=3,summaryFunction = multiClassSummary,classProbs=T)
+tune_funs = expand.grid(C=c(1,10,100))
+model =train(churn~., data=trainset, method="svmLinear",trControl=control,tuneGrid=tune_funs)
+model =train(churn~., data=trainset, method="svmRadial",trControl=control)
+predictions = predict(model, testset)
+confusionMatrix(table(predictions,testset$churn))
 ```
