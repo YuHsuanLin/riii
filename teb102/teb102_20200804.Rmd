@@ -1,0 +1,105 @@
+---
+title: "R_basic1"
+author: "York Lin"
+date: "2020年08月04日"
+output:
+  pdf_document: default
+  html_document: default
+editor_options:
+  chunk_output_type: console
+---
+what is R?
+- https://zh.wikipedia.org/wiki/R%E8%AF%AD%E8%A8%80
+
+R vs Python?
+- https://www.guru99.com/r-vs-python.html
+- https://www.kdnuggets.com/2019/05/poll-top-data-science-machine-learning-platforms.html
+
+Kaggle
+- https://www.kaggle.com/
+
+UCI dataset
+- https://archive.ics.uci.edu/ml/datasets.html
+
+# R intro
+### RDemo
+```{r}
+#使用範例資料
+data(anscombe)
+#使用資料中x1,y1變數畫出點散布圖
+plot(y1 ~ x1, data = anscombe)
+#建立回歸模型並assign到lmfit變數中
+lmfit <- lm(y1~x1, data=anscombe) 
+#在點散佈圖上加上迴歸線
+abline(lmfit, col="red")
+```
+
+### Basic type
+- numeric: 1,2,1.2
+- integer: 1L,2L,3L
+- complex: 1+4i
+- character: "string"
+- logical: TRUE,FALSE,T,F
+- date: "2018-05-01"
+- posixct, posixlt: "2018-05-01 08:00:00 CST"
+
+### Basic Objects
+##### (由相同資料型態組成)
+##### atomic:
+- vector
+- matrix
+- factor
+
+##### (可以有混合的資料型態)
+##### recursive:
+- dataframe
+- list
+
+### R basic command
+```{R}
+#文件查詢
+help(package="base")
+?base::sum
+?sum
+help.search("sum")
+??sum
+
+#範例演釋
+demo()
+#使用內建資料集
+data()
+#看現有變數
+ls()
+#移除變數
+rm()
+
+x = c(1,2,3)
+#查看資料型態
+class(x)
+#查看資料結構
+str(x)
+```
+
+### Basic computing
+```{R, echo=TRUE}
+3+8
+3-8
+3*8
+3/8
+3^2
+11%%2
+3<4
+2==5
+T == TRUE
+```
+
+### Assignment
+```{R}
+a = 3
+a <- 3 # ( alt + - )
+assign("a",3)
+
+a / 2
+a = a / 2
+a
+```
