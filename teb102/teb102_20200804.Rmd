@@ -224,3 +224,29 @@ mat[c('kevin','jerry'),'first']
 #取得第一次考試成績不及格的人
 mat[mat[,1] < 60,'first']
 ```
+
+### Matrix(續)
+```{R}
+#新增列與行
+mat2 = rbind(mat, c(78,63))
+rownames(mat2)[nrow(mat2)] = 'sam'
+mat2
+
+mat3 = cbind(mat2,c(82,77,70,64))
+colnames(mat3)[ncol(mat3)] = 'third'
+mat3
+
+rowMeans(mat3)
+colMeans(mat3)
+
+# arithmetic
+m1 = matrix(1:4, byrow=TRUE, nrow=2)
+m2 = matrix(5:8, byrow=TRUE, nrow=2)
+
+m1 + m2
+m1 - m2
+m1 * m2
+m1 / m2
+
+m1 %*% m2
+```
