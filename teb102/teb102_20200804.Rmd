@@ -324,4 +324,12 @@ iris[1:3,1]
 iris[1:3,"Sepal.Length"]
 head(iris[,1:2])
 iris$"Sepal.Length"
+
+
+#使用which 做資料篩選
+#which開頭函數回傳的是符合條件樣本的index
+which(iris$Species=="setosa")
+
+which.min(iris$Sepal.Length)
+which.max(iris$Sepal.Length)
 ```
