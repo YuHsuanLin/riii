@@ -250,3 +250,21 @@ m1 / m2
 
 m1 %*% m2
 ```
+
+```{R}
+kevin = c(85,73)
+marry = c(72,64)
+jerry = c(59,66)
+mat = matrix(c(kevin, marry, jerry), nrow=3, byrow= TRUE)
+colnames(mat) = c('first', 'second')
+rownames(mat) = c('kevin', 'marry', 'jerry')
+
+final = mat %*% c(0.4,0.6)
+final
+
+cbind(mat,final)
+mat2 = cbind(mat,final)
+mat2
+colnames(mat2)[ncol(mat2)] = 'final'
+mat2
+```
