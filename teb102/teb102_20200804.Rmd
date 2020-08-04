@@ -299,3 +299,29 @@ weather_factor = factor(weather)
 levels(weather_factor) = c("cloudy","rainy","sunny")
 weather_factor
 ```
+
+### Dataframe
+```{R}
+name <- c("Joe", "Bob", "Vicky")
+age <- c(28, 26, 34)
+gender <- c("Male","Male","Female")
+df <- data.frame(name, age, gender)
+class(df)
+str(df)
+summary(df)
+
+data("iris")
+head(iris)
+tail(iris)
+tail(iris, 10)
+str(iris)
+
+#取前三列資料
+iris[1:3,]
+#取前三列第一行的資料
+iris[1:3,1]
+#取前三列Sepal.Length欄位的資料
+iris[1:3,"Sepal.Length"]
+head(iris[,1:2])
+iris$"Sepal.Length"
+```
