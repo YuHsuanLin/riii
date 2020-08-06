@@ -353,3 +353,33 @@ plot_correlation(iris[,-5])
 plot_prcomp(iris)
 #create_report(iris)
 ```
+
+
+### dplyr
+```{R}
+#install.packages('dplyr')
+library('dplyr')
+
+#filter
+iris[iris$Species== 'setosa',]
+filter(iris,Species=='setosa')
+filter(iris,Species=='setosa' & Sepal.Length > 5.5)
+filter(iris,Species=='setosa',Sepal.Length > 5.5)
+filter(iris,Species=='setosa' | Species=='versicolor')
+filter(iris,Species %in% c('setosa','versicolor'))
+
+#select
+iris[,c('Sepal.Length','Sepal.Width')]
+select(iris,Sepal.Length,Sepal.Width)
+select(iris,Sepal.Length:Sepal.Width)
+select(iris,starts_with('Sepal'))
+select(iris,ends_with('Length'))
+
+
+head(filter(select(iris,Sepal.Length,Species),Species=='setosa'))
+#chaining
+iris %>%
+select(Sepal.Length,Species) %>%
+filter(Species=='setosa') %>%
+head()
+```
