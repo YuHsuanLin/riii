@@ -147,3 +147,28 @@ FinancialReport <- read_excel("./data/FinancialReport.xlsx")
 #View(FinancialReport)
 summary(FinancialReport)
 ```
+
+### read json
+```{R}
+#install.packages("dplyr")
+library('dplyr')
+
+setwd('~/lecture/riii/')
+library(jsonlite)
+json_data<- fromJSON('./data/rent.json')
+json_data <- as_tibble(json_data)
+head(json_data)
+
+#as_tibble(fromJSON('https://api.github.com/users/hadley/orgs'))
+```
+
+### read xml
+```{R}
+#install.packages("XML")
+library(XML)
+url <- 'http://opendata.epa.gov.tw/ws/Data/ATM00698/?$format=xml'
+#weather <- xmlToDataFrame(url)
+#View(weather)
+#str(weather)
+#weather[ weather$SiteName == '臺北',  c('DataCreationDate','Temperature')]
+```
