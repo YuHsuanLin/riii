@@ -234,3 +234,38 @@ while(cnt <= 100){
 }
 sum
 ```
+
+### Function
+```{R}
+addThree = function(a){
+    a+3
+}
+addThree(3)
+
+#with default arguments
+addThree_2 = function(a = 3) {
+    return(a+3)
+}
+addThree_2()
+
+#每行程式結尾可加;可不加
+addThree_3 = function(a = 3) {
+    a+3;
+}
+addThree_3()
+
+#lazy function
+addThree_4 = function(a = 3, b) {
+   return(a + 3)
+}
+addThree_4()
+
+#local variable
+b = 3
+f3 = function() {
+    b = 2
+    return(b)
+}
+f3()
+```
+
