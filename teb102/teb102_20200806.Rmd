@@ -162,6 +162,11 @@ head(json_data)
 #as_tibble(fromJSON('https://api.github.com/users/hadley/orgs'))
 ```
 
+### 3.6.3 cannot install XML
+```{R}
+install.packages("XML", repos = "http://www.omegahat.net/R")
+```
+
 ### read xml
 ```{R}
 #install.packages("XML")
@@ -171,4 +176,61 @@ url <- 'http://opendata.epa.gov.tw/ws/Data/ATM00698/?$format=xml'
 #View(weather)
 #str(weather)
 #weather[ weather$SiteName == '臺北',  c('DataCreationDate','Temperature')]
+```
+
+### Flow Control
+```{R}
+x=5;
+if(x>3){
+  print("x > 3")
+}else{
+  print("x <= 3")
+}
+
+if(x>3) print("x > 3") else print("x <= 3")
+
+test = ifelse(x>3,"x > 3","x <= 3")
+test
+
+data(iris)
+iris$new_species = factor(ifelse(iris$Species == "setosa","IsSetosa","NotSetosa"))
+str(iris)
+
+x=5;
+if(x>3){
+  print ("x > 3");
+} else if (x ==3){
+  print ("x == 3");
+}else{
+  print("x <= 3");
+}
+
+for(i in 1:10){
+  print(i)
+}
+
+seq(from=1,to=10)
+
+sum=0
+for(i in 1:100){
+  sum= sum+ i;
+}
+sum
+
+sum(1:100)
+
+mat = matrix(1:9, byrow=TRUE, nrow=3)
+for(i in 1:nrow(mat)){
+  for(j in 1:ncol(mat)){
+    print(mat[i,j])
+  }
+}
+
+sum = 0;
+cnt = 0;
+while(cnt <= 100){
+  sum = sum + cnt;
+  cnt = cnt + 1;
+}
+sum
 ```
