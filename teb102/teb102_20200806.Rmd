@@ -74,3 +74,40 @@ is.na(x)
 !is.na(x)
 x[!is.na(x)]
 ```
+
+#p70
+```{R}
+tw2330 = read.csv('./data/2330.csv',header=T)
+str(tw2330)
+tw2330$Date = as.Date(tw2330$Date)
+str(tw2330)
+tw2330[tw2330$Date >= as.Date('2017-01-01') & tw2330$Date < as.Date('2018-01-01'), ]
+tw2330_2017 = tw2330[tw2330$Date >= as.Date('2017-01-01') & tw2330$Date < as.Date('2018-01-01'), ]
+
+
+max(tw2330_2017$Close)
+
+which.max(tw2330_2017$Close)
+tw2330_2017[26,]
+
+tw2330_2017$Close
+order(tw2330_2017$Close)
+order(tw2330_2017$Close,decreasing = T)
+tw2330_2017[order(tw2330_2017$Close,decreasing = T),]
+```
+
+### List
+```{R}
+item= list(thing='hat',size=8.25)
+item$thing
+item$size
+
+flower= list(title="iris dataset", data= iris)
+class(flower)
+class(flower$data)
+flower$data[1,"Sepal.Width"]
+
+li = list(c(1,2,3,4),c(5,6,7,8))
+li[1] #還是list
+li[[1]] #value原始的物件
+```
