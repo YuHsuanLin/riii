@@ -1,0 +1,54 @@
+---
+title: "R_DataMining1"
+author: "York Lin"
+date: "2020年08月11日"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+### dplyr
+```{R}
+#install.packages('dplyr')
+data("iris")
+library('dplyr')
+
+#filter
+iris[iris$Species== 'setosa',]
+filter(iris,Species=='setosa')
+
+#select
+iris[,c('Sepal.Length','Sepal.Width')]
+select(iris,Sepal.Length,Sepal.Width)
+
+head(filter(select(iris,Sepal.Length,Species),Species=='setosa'))
+
+#chaining
+iris %>%
+select(.,Sepal.Length,Species) %>%
+filter(.,Species=='setosa') %>%
+head(.)
+
+#arrange
+iris %>%
+  select(Sepal.Length,Species) %>%
+  filter(Species=='setosa') %>%
+  arrange(desc(Sepal.Length)) %>%
+  head(10)
+
+### group_by + summarise
+iris %>%
+  group_by(Species) %>%
+  summarise(sepal_length_mean = mean(Sepal.Length)) %>%
+  arrange(sepal_length_mean)
+
+### group_by + summarise_at
+iris %>%
+  group_by(Species) %>%
+  summarise_at(.vars=vars(Sepal.Length,Sepal.Width,Petal.Length,Petal.Width),.funs=funs(mean))
+
+## dplyr 0.8up funs() -> list()
+iris %>%
+  group_by(Species) %>%
+  summarise_at(.vars=vars(Sepal.Length,Sepal.Width,Petal.Length,Petal.Width),.funs=list(mean,median,min,max))
+```
