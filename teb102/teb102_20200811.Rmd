@@ -45,7 +45,7 @@ iris %>%
 ### group_by + summarise_at
 iris %>%
   group_by(Species) %>%
-  summarise_at(.vars=vars(Sepal.Length,Sepal.Width,Petal.Length,Petal.Width),.funs=funs(mean))
+  summarise_at(.vars=vars(Sepal.Length,Sepal.Width,Petal.Length,Petal.Width),.funs=funs(mean,median,max,min,sd))
 
 ## dplyr 0.8up funs() -> list()
 iris %>%
