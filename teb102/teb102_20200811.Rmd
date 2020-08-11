@@ -97,3 +97,42 @@ tbl(conn,'iris') %>%
 dbGetQuery(conn,'select * from iris') %>% filter(Species == 'setosa')
 dbGetQuery(conn,'select `Sepal.Length` from iris')
 ```
+
+
+## ggplot2
+### documentation
+- http://docs.ggplot2.org/current/
+
+### cheat sheet
+- https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf
+
+### why ggplot2?
+fancy by default, good for demo and report 
+consistent across all kinds of plot in syntax and behavior
+strong support community(the mostly download package on CRAN)
+
+```{R}
+#basic syntax
+#ggplot(data,aes(x,y,group,...))+geom_object(...)
+
+#install.packages('ggplot2')
+library('ggplot2')
+g <- ggplot(iris,aes(x=Sepal.Length,y=Sepal.Width))
+g + geom_point()
+
+g <- ggplot(iris,aes(x=Sepal.Length,y=Sepal.Width,col=Species))
+g + geom_point()
+
+g <- ggplot(iris,aes(x=Sepal.Length,y=Sepal.Width,shape=Species))
+g + geom_point()
+
+?aes()
+
+g <- ggplot(iris,aes(x=Sepal.Length,y=Sepal.Width))
+g + geom_point(aes(col=Species))
+
+#bar chart
+g <- ggplot(iris,aes(x=Species))
+g+geom_bar()
+g+geom_bar(fill='snow',color='black')
+```
