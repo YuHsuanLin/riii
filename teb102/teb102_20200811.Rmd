@@ -52,3 +52,43 @@ iris %>%
   group_by(Species) %>%
   summarise_at(.vars=vars(Sepal.Length,Sepal.Width,Petal.Length,Petal.Width),.funs=list(mean,median,min,max))
 ```
+
+
+### alter mysql 8.0 password encryption
+- https://stackoverflow.com/questions/49194719/authentication-plugin-caching-sha2-password-cannot-be-loaded
+
+在MySQL workbench執行以下指令
+```
+ALTER USER 'yourusername'@'localhost' IDENTIFIED WITH mysql_native_password BY 'youpassword';
+
+CREATE DATABASE test CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```
+### connect MySQL example
+```{R}
+#install.packages('dplyr')
+#install.packages('RMariaDB')
+#install.packages('dbplyr')
+library('dplyr')
+library('dbplyr')
+library('RMariaDB')
+
+data("iris")
+
+conn = dbConnect(MariaDB(),dbname='test',host='127.0.0.1',port=3306,user='root',password='pythonetl')
+
+dbListTables(conn)
+
+db_drop_table(conn,'iris')
+copy_to(conn,iris,temporary = F)
+
+tbl(conn,"iris") %>%
+  select(starts_with('Sepal'),'Species') %>%
+  group_by(Species) %>%
+  summarise_at(.funs=funs(mean(.,na.rm=T),sd(.,na.rm=T)),.vars=vars(starts_with('Sepal'))) %>%
+  collect()
+
+?show_query
+
+dbGetQuery(conn,'select * from iris') %>% filter(Species == 'setosa')
+dbGetQuery(conn,'select `Sepal.Length` from iris')
+```
