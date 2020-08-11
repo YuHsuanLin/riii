@@ -159,3 +159,31 @@ g+geom_bar(aes(fill=Sepal.Length.Cat),position='stack')
 g+geom_bar(aes(fill=Sepal.Length.Cat),position='dodge')
 g+geom_bar(aes(fill=Sepal.Length.Cat),position='fill')
 ```
+
+
+```{R}
+g <- ggplot(iris,aes(x=Sepal.Width))
+g+geom_histogram(aes(fill=Species))
+
+#facet
+g <- ggplot(iris,aes(x=Sepal.Width))
+g+ geom_histogram()+facet_wrap(~Species)
+g+ geom_histogram()+facet_grid(~Species)
+g2 = g+ geom_histogram()+facet_grid(Species~Sepal.Length.Cat)
+
+ggsave(filename='./your_file_name.png',plot = g2)
+```
+
+## Esquisse
+## if mac OS cannot install, try this:
+####
+#brew install pkg-config
+#install.packages("gdtools", type = "source")
+#devtools::install_github("dreamRs/esquisse")
+####
+```{R}
+#install.packages('esquisse')
+#library('esquisse')
+#esquisse::esquisser()
+```
+
