@@ -213,3 +213,35 @@ condition = !iris$Sepal.Width %in% boxplot.stats(iris$Sepal.Width)$out
 boxplot(iris[condition,]$Sepal.Width)
 ```
 
+### missing values
+```{R}
+na_list = sample(1:nrow(iris),15)
+iris[na_list,'Sepal.Length'] = NA
+
+is.na(iris)
+sum(is.na(iris$Sepal.Length))
+
+#移除遺失值樣本
+complete.cases(iris)
+rm.data <- iris[complete.cases(iris), ]
+str(rm.data)
+
+#以全體平均值填補
+mean(iris$Sepal.Length,na.rm=T)
+
+mean_length = as.numeric(mean(iris$Sepal.Length,na.rm=T))
+iris$Sepal.Length[is.na(iris$Sepal.Length)] = mean_length
+
+
+iris[na_list,'Sepal.Length'] = NA
+#以類別平均值填補
+cat_means = tapply(iris$Sepal.Length,iris$Species,function(e){as.numeric(mean(e,na.rm=T))})
+
+iris[is.na(iris$Sepal.Length) & iris$Species == 'setosa','Sepal.Length'] = cat_means['setosa']
+
+for(i in 1:length(names(cat_means))){
+  iris[iris$Species == names(cat_means)[i] & is.na(iris$Sepal.Length),'Sepal.Length'] = cat_means[i]
+}
+
+```
+
