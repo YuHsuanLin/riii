@@ -242,6 +242,28 @@ iris[is.na(iris$Sepal.Length) & iris$Species == 'setosa','Sepal.Length'] = cat_m
 for(i in 1:length(names(cat_means))){
   iris[iris$Species == names(cat_means)[i] & is.na(iris$Sepal.Length),'Sepal.Length'] = cat_means[i]
 }
-
 ```
 
+#mice
+```{R}
+#install.packages('mice')
+library(mice)
+
+iris[na_list,'Sepal.Length'] = NA
+
+mice.data <- mice(data=iris,m = 3,method = "cart")
+complete(mice.data,1)
+complete(mice.data,1)[na_list,'Sepal.Length']
+
+
+diff1 = complete(mice.data,1)[na_list,'Sepal.Length'] - complete(mice.data,2)[na_list,'Sepal.Length']
+
+diff2 = complete(mice.data,1)[na_list,'Sepal.Length'] - complete(mice.data,3)[na_list,'Sepal.Length']
+
+diff3 = complete(mice.data,2)[na_list,'Sepal.Length'] - complete(mice.data,3)[na_list,'Sepal.Length']
+
+mean(c(diff1,diff2,diff3))
+var(c(diff1,diff2,diff3))
+
+complete(mice.data,1)
+```
