@@ -267,3 +267,50 @@ var(c(diff1,diff2,diff3))
 
 complete(mice.data,1)
 ```
+
+## 讀取交易資料
+```{R}
+#install.packages("arules")
+#install.packages("arulesViz")
+library(arules)
+library(arulesViz)
+t1 = read.transactions('~/lecture/riii/data/transactions.txt',sep=',')
+t1
+inspect(t1)
+image(t1)
+
+t2 = read.csv('~/lecture/riii/data/transactions_matrix.txt',sep=',',header = T)
+t2
+t2 = as.matrix(t2)
+t2 = as(t2,"transactions")
+inspect(t2)
+```
+
+## apriori
+```{R}
+library(dplyr)
+
+data("Groceries")
+#Groceries = read.transactions("~/lecture/riii/data/groceries.csv",sep=",")
+summary(Groceries)
+inspect(Groceries[1:5])
+itemFrequency(Groceries)
+sort(itemFrequency(Groceries),decreasing = T) %>% head()
+
+itemFrequencyPlot(Groceries,topN = 10)
+itemFrequencyPlot(Groceries,topN = 10,type = "absolute")
+itemFrequencyPlot(Groceries,topN = 10,horiz = T,
+ main = "Item Frequency",xlab = "Relative Frequency")
+
+itemFrequencyPlot(Groceries,support = 0.1,
+ main = "Item Frequency with S = 0.1",ylab = "Relative Frequency")
+
+?apriori
+rules = apriori(Groceries,parameter = list(support = 0.006,confidence = 0.3))
+summary(rules)
+
+inspect(rules[1:5])
+
+sort(rules, by = "confidence") %>% head(10) %>% inspect()
+sort(rules, by = "lift") %>% head(10) %>% inspect()
+```
