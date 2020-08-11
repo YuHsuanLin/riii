@@ -81,11 +81,16 @@ dbListTables(conn)
 db_drop_table(conn,'iris')
 copy_to(conn,iris,temporary = F)
 
-tbl(conn,"iris") %>%
+tbl(conn,'iris') %>%
   select(starts_with('Sepal'),'Species') %>%
   group_by(Species) %>%
   summarise_at(.funs=funs(mean(.,na.rm=T),sd(.,na.rm=T)),.vars=vars(starts_with('Sepal'))) %>%
   collect()
+
+tbl(conn,'iris') %>%
+  select(starts_with('Sepal'),'Species') %>%
+  group_by(Species) %>%
+  summarise_at(.funs=funs(mean(.,na.rm=T),sd(.,na.rm=T)),.vars=vars(starts_with('Sepal'))) %>% show_query()
 
 ?show_query
 
