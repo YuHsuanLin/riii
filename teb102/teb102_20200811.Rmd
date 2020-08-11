@@ -314,3 +314,31 @@ inspect(rules[1:5])
 sort(rules, by = "confidence") %>% head(10) %>% inspect()
 sort(rules, by = "lift") %>% head(10) %>% inspect()
 ```
+
+## apriori(續)
+```{R}
+##篩選包含優格規則
+yogurtr1 = subset(rules,items %pin% "yog")
+summary(yogurtr1)
+inspect(yogurtr1[1:15])
+
+##去除重複規則(subset)
+is.redundant(rules)
+rules[is.redundant(rules)]
+inspect(rules[is.redundant(rules)])
+rules = rules[!is.redundant(rules)]
+inspect(rules)
+
+## interestMeasure(其他衡量指標)
+quality(rules)
+?interestMeasure
+kulc = interestMeasure(rules,measure = 'kulczynski',transactions = Groceries)
+ir = interestMeasure(rules,measure = 'imbalance',transactions = Groceries)
+quality(rules)$kulc = kulc
+quality(rules)$ir = ir
+
+sort_rules= sort(rules, by = "kulc")
+sort_rules %>% head() %>% inspect()
+
+plot(sort_rules[1:10],method='graph',shading='kulc')
+```
