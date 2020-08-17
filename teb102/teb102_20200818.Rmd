@@ -1,0 +1,38 @@
+---
+title: "R_DataMining2"
+author: "York Lin"
+date: "2020年08月18日"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+## Regression
+```{R}
+setwd('~/lecture/riii/')
+house = read.csv('./data/house-prices.csv',header = T)
+model = lm(formula = Price~SqFt,data = house)
+
+plot(house$SqFt,house$Price)
+abline(model,col='red')
+
+#殘差分析
+par(mfrow=c(2,2))
+plot(model)
+
+#檢定殘差是否為常態分配
+#H0:殘差為常態分配
+shapiro.test(model$residuals)
+#檢查殘差是否獨立
+#H0: 樣本間獨立
+#H1: 不獨立
+install.packages('car')
+library(car)
+durbinWatsonTest(model)
+#檢定各殘差變異數是否相等
+#H0:各殘差變異數為常數
+#H1:各殘差變異數非常數
+ncvTest(model)
+
+summary(model)
+```
