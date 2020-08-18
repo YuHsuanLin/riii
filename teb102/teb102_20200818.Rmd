@@ -37,3 +37,41 @@ ncvTest(model)
 
 summary(model)
 ```
+
+```{R}
+
+sample(1:10,size=5)
+
+set.seed(222)
+idx = sample(1:2,size=nrow(house),replace = T,prob=c(0.7,0.3))
+trainset = house[idx==1,]
+testset = house[idx==2,]
+lm_model = lm(Price~.,data=trainset[,-1])
+
+summary(lm_model)
+
+## backward stepwise
+step_lm_model = step(lm_model)
+step_lm_model = step(lm_model, direction='backward')
+summary(step_lm_model)
+plot(step_lm_model)
+
+## forward stepwise
+null_lm = lm(Price~1,data=trainset[,-1])
+f_step_lm_model = step(null_lm,scope=list(lower=null_lm,upper=lm_model), direction='forward')
+
+
+shapiro.test(f_step_lm_model$residuals)
+durbinWatsonTest(f_step_lm_model)
+ncvTest(f_step_lm_model)
+
+vif(f_step_lm_model)
+
+summary(f_step_lm_model)
+
+testset$predicted_price =predict(f_step_lm_model,testset)
+error = testset$Price - testset$predicted_price
+
+MAPE = mean(abs(error / testset$Price))
+MAPE
+```
