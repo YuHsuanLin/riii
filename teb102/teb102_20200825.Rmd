@@ -73,3 +73,27 @@ model
 predictions = predict(model, testset)
 confusionMatrix(table(predictions,testset$churn))
 ```
+
+
+### find importance variable
+```{R}
+library('caret')
+importance = varImp(model, scale=T)
+importance
+plot(importance)
+```
+
+### ROC
+- https://www.youtube.com/watch?v=OAl6eAyP-yo
+- http://www.navan.name/roc/
+
+```{R}
+#install.packages("ROCR")
+library(ROCR)
+pred <-predict(model, testset, type="prob")
+p_yes<-pred[, "yes"]
+predictions<-prediction(p_yes, testset$churn)
+per_auc<-performance(predictions, measure ="auc")
+per_fpr_tpr<-performance(predictions, measure="tpr",x.measure = "fpr")
+plot(per_fpr_tpr,main=paste("AUC:",(per_auc@y.values)))
+```
