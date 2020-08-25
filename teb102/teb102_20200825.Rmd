@@ -133,3 +133,42 @@ plot(rf_per_fpr_tpr,col='black',add=T)
 legend(x=0.7, y=0.2, legend =c('randomforest','rpart'), fill= c("black","red"))
 ```
 
+# 分群問題
+### 距離計算
+```{R}
+x =c(0, 0, 1, 1, 1, 1)
+y =c(1, 0, 1, 1, 0, 1)
+
+#euclidean
+?dist
+rbind(x,y)
+dist(rbind(x,y), method ="euclidean")
+
+#city block
+dist(rbind(x,y), method ="manhattan")
+
+z = c(1,1,1,0,1,1)
+rbind(x,y,z)
+dist(rbind(x,y,z), method ="euclidean")
+dist(rbind(x,y,z), method ="manhattan")
+```
+
+
+## iris cluster
+```{R}
+# hclust
+data(iris)
+d = dist(iris[,-5],method = 'euclidean')
+hc = hclust(d,method='ward.D2')
+#hc = hclust(d,method='single')
+#hc = hclust(d,method='complete')
+plot(hc,cex=0.4)
+
+fit =cutree(hc, k =3)
+fit
+table(fit)
+plot(hc, cex=0.4)
+rect.hclust(hc, k =3, border="red")
+
+summary(iris[fit == 1,])
+```
